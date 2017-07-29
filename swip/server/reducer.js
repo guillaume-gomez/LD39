@@ -33,8 +33,9 @@ function createReducer (config) {
       case actions.TYPE.RECONNECT:
         return reconnect(state, data);
 
-      case actions.TYPE.LEAVE_CLUSTER:
-        return leaveCluster(state, data);
+      case actions.TYPE.LEAVE_CLUSTER: {
+         return leaveCluster(state, data);
+       }
       default:
         return state;
     }
@@ -339,9 +340,15 @@ function createReducer (config) {
     const { clusterID } = client;
     const newClusterID = uid();
     const clusterData = config.cluster.init(client);
+    const clusterDataModified = Object.assign({}, clusterData, { currentScreenId: client.id });
 
-    const newCluster = { [newClusterID]: { id: newClusterID, data: clusterData } };
+    const newCluster = { [newClusterID]: { id: newClusterID, data: clusterDataModified } };
     const updatedClusters = Object.assign( {}, newCluster, removeEmptyCluster(clusters, clients, clusterID) );
+    updatedClustersPendingSplit = {};
+    Object.keys(updatedClusters).forEach(key => {
+      const data = Object.assign({}, updatedClusters[key].data, { pendingSplit: null });
+      updatedClustersPendingSplit[key] = Object.assign({}, updatedClusters[key], { data });
+    });
 
     const clientData = config.client.init(client);
     const openings = {
@@ -353,11 +360,22 @@ function createReducer (config) {
     const updatedClient = Object.assign({}, client, { openings, adjacentClientIDs: [], data: clientData, clusterID: newClusterID });
     const updatedClients = Object.assign({}, { [updatedClient.id]: updatedClient }, removeClient(clients, client));
     const result = update(state, {
-      clusters: { $set: updatedClusters },
+      clusters: { $set: updatedClustersPendingSplit },
       clients: { $set: updatedClients },
     });
     return result;
   }
+
+  // function changePendingCluster(state, { id }) {
+  //   const { clients, clusters } = state;
+  //   const { clusterID } = clients[id];
+  //   const clusterState = utils.getClusterState(state, clusterID);
+  //   const clusterUpdated = Object.assign({}, clusterState, {pendingSplit: false, currentScreenId: clusterID });
+  //   const updatedClusters = Object.assign({}, clusters, clusterUpdated );
+  //   return update(state, {
+  //     clusters: { $set: updatedClusters }
+  //   });
+  // }
 }
 
 module.exports = createReducer;

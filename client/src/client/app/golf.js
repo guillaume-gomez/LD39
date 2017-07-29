@@ -85,13 +85,11 @@ function golf() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      var ball = state.cluster.data.ball;
-      var hole = state.cluster.data.hole;
-
+      const { currentScreenId, ball, hole } = state.cluster.data;
       ctx.save();
-
       applyTransform(ctx, converter, client.transform);
-      drawBackground(ctx, client, bgColor);
+      const realColor = currentScreenId === client.id ? bgColor : null;
+      drawBackground(ctx, client, realColor);
       drawHole(ctx, hole);
 
       if (dragging) {

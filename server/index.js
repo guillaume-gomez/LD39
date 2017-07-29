@@ -83,7 +83,7 @@ swip(io, ee, {
           nextSpeedX = 0;
           nextSpeedY = 0;
         }
-
+        const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
           ball: {
             x: { $set: nextPosX },
@@ -91,6 +91,9 @@ swip(io, ee, {
             speedX: { $set: (nextSpeedX + downhillAccelerationX) * 0.97 },
             speedY: { $set: (nextSpeedY + downhillAccelerationY) * 0.97 },
           },
+          nbMove: { $set : 0 },
+          pendingSplit: { $set : pendingSplit },
+          currentScreenId: { $set: currentScreenId},
         };
       },
       merge: () => ({}),
@@ -98,6 +101,8 @@ swip(io, ee, {
     init: () => ({
       ball: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
       hole: { x: 200, y: 200, radius: 15 },
+      currentScreenId: 0,
+      pendingSplit: null,
       nbClients: 2,
     }),
   },
@@ -164,14 +169,24 @@ function isInsideHole (hole, ball) {
   return distance <= hole.radius && speed < SPEED_THRESHOLD;
 }
 
+function shouldIPassedProperty(cluster) {
+  const { clients } = cluster;
+  const { nbClients } = cluster.data;
+  return nbClients === clients.length
+}
 
 function removeFirstClient(cluster) {
-  const clients = cluster.clients;
-  const nbClients = cluster.data.nbClients;
-  if(nbClients === clients.length) {
-    const fn = () => { ee.emit(LEAVE_CLUSTER, clients[0].id)};
+  const { clients, data } = cluster;
+  let { currentScreenId, pendingSplit } = data;
+  if(shouldIPassedProperty(cluster) && !pendingSplit) {
+    const newClient = clients.find(client => client.id !== currentScreenId);
+    const fn = () => {
+      ee.emit(LEAVE_CLUSTER, newClient.id);
+    };
     setTimeout(fn, 1000);
+    return { pendingSplit: true, currentScreenId: newClient.id };
   }
+  return { pendingSplit: pendingSplit, currentScreenId: currentScreenId };
 }
 
 server.listen(3000);
