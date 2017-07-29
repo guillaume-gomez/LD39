@@ -1,0 +1,6 @@
+dist/bundle.js
+client/src/client/public/bundle.js
+client/src/client/public/bundle.js.map
+client/node_modules/*
+server/node_modules/*
+node_modules/*
