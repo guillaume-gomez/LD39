@@ -1,9 +1,18 @@
-export function drawBackground (ctx, client) {
+export function drawBackground (ctx, client, color = null) {
     ctx.save();
-    ctx.fillStyle = '#80d735';
+    ctx.fillStyle = color || '#80d735';
     ctx.fillRect(client.transform.x, client.transform.y, client.size.width, client.size.height);
     ctx.restore();
   }
+
+export function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 export function drawWalls (ctx, client) {
     var openings = client.openings;

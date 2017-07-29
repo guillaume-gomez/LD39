@@ -1,4 +1,4 @@
-import {drawBackground, drawWalls, openingSort, drawBall, drawArrow, drawHole, throttle} from "./renderingFunctions"
+import {drawBackground, drawWalls, openingSort, drawBall, drawArrow, drawHole, throttle, getRandomColor} from "./renderingFunctions"
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
 import Texture from "./texture";
@@ -14,6 +14,7 @@ function golf() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let test = null;
+  let bgColor = getRandomColor();
   //let stage = new Stage();
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
@@ -90,7 +91,7 @@ function golf() {
       ctx.save();
 
       applyTransform(ctx, converter, client.transform);
-      drawBackground(ctx, client);
+      drawBackground(ctx, client, bgColor);
       drawHole(ctx, hole);
 
       if (dragging) {
