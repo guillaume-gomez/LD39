@@ -8,7 +8,7 @@ const reducer = require('./reducer');
 const utils = require('./utils');
 const debugMiddleware = require('./debug-middleware.js');
 
-function swip (io, config) {
+function swip (io, ee, config) {
   const store = createStore(reducer(config), applyMiddleware(debugMiddleware));
 
   io.on('connection', (socket) => {
@@ -40,6 +40,10 @@ function swip (io, config) {
       const clientState = utils.getClientState(state, id);
 
       socket.emit(actions.TYPE.CHANGED, clientState);
+    });
+
+    ee.on(actions.TYPE.LEAVE_CLUSTER, (myid) => {
+      store.dispatch(actions.leaveCluster(myid));
     });
   });
 

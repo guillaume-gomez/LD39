@@ -33,6 +33,8 @@ function createReducer (config) {
       case actions.TYPE.RECONNECT:
         return reconnect(state, data);
 
+      case actions.TYPE.LEAVE_CLUSTER:
+        return leaveCluster(state, data);
       default:
         return state;
     }
@@ -283,7 +285,6 @@ function createReducer (config) {
   function disconnect (state, { id }) {
     const { clients, clusters } = state;
     const client = clients[id];
-
     if (!client) {
       return state;
     }
@@ -326,6 +327,36 @@ function createReducer (config) {
       _.partial(disconnect, _, { id }),
       _.partial(connect, _, { id, size }),
     ])(state);
+  }
+
+
+  function leaveCluster(state, { id }) {
+    const { clients, clusters } = state;
+    const client = clients[id];
+    if (!client) {
+      return state;
+    }
+    const { clusterID } = client;
+    const newClusterID = uid();
+    const clusterData = config.cluster.init(client);
+
+    const newCluster = { [newClusterID]: { id: newClusterID, data: clusterData } };
+    const updatedClusters = Object.assign( {}, newCluster, removeEmptyCluster(clusters, clients, clusterID) );
+
+    const clientData = config.client.init(client);
+    const openings = {
+      top: [],
+      bottom: [],
+      right: [],
+      left: [],
+    };
+    const updatedClient = Object.assign({}, client, { openings, adjacentClientIDs: [], data: clientData, clusterID: newClusterID });
+    const updatedClients = Object.assign({}, { [updatedClient.id]: updatedClient }, removeClient(clients, client));
+    const result = update(state, {
+      clusters: { $set: updatedClusters },
+      clients: { $set: updatedClients },
+    });
+    return result;
   }
 }
 

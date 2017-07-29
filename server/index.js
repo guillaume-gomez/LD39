@@ -4,28 +4,33 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const swip = require('../swip/server/index.js');
-console.log(`${__dirname}/../client`)
+
 app.use(express.static(`${__dirname}/../client`));
 
+const EventEmitter = require("events").EventEmitter;
+const ee = new EventEmitter();
+
+const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
 const SPEED_THRESHOLD = 50;
 const DOWNHILL_ACCELERATION_SCALE = 1 / 20;
 const ANGLE_INACCURACY = 3;
 
-swip(io, {
+swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
         const ball = cluster.data.ball;
         const hole = cluster.data.hole;
         const clients = cluster.clients;
-
         let downhillAccelerationX = 0;
         let downhillAccelerationY = 0;
         let nextPosX = ball.x + ball.speedX;
         let nextPosY = ball.y + ball.speedY;
         let nextSpeedX = ball.speedX;
         let nextSpeedY = ball.speedY;
+        removeFirstClient(cluster);
+
 
         const boundaryOffset = ball.radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(ball, c));
@@ -93,6 +98,7 @@ swip(io, {
     init: () => ({
       ball: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
       hole: { x: 200, y: 200, radius: 15 },
+      nbClients: 2,
     }),
   },
 
@@ -156,6 +162,16 @@ function isInsideHole (hole, ball) {
   const speed = Math.sqrt(Math.pow(ball.speedX, 2) + Math.pow(ball.speedY, 2));
 
   return distance <= hole.radius && speed < SPEED_THRESHOLD;
+}
+
+
+function removeFirstClient(cluster) {
+  const clients = cluster.clients;
+  const nbClients = cluster.data.nbClients;
+  if(nbClients === clients.length) {
+    const fn = () => { ee.emit(LEAVE_CLUSTER, clients[0].id)};
+    setTimeout(fn, 1000);
+  }
 }
 
 server.listen(3000);
