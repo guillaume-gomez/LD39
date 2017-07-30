@@ -75,6 +75,7 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       nbAttempts: MazeTools.initNbAttempt(),
+      maxAttempt: MazeTools.initNbAttempt(),
       maze: new MazeTools.Maze()
     }),
   },

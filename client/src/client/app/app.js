@@ -43,7 +43,7 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, ball, hole, currentRoomConstraint, hasStarted, nbAttempts } = state.cluster.data;
+      const { currentScreenId, ball, hole, currentRoomConstraint, hasStarted, nbAttempts, maxAttempt } = state.cluster.data;
 
       ctx.save();
       if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
@@ -63,7 +63,7 @@ function app() {
           character.render(ctx)
         }
         ctx.restore();
-        displayNbAttempt(ctx, nbAttempts, nbAttempts);
+        displayNbAttempt(ctx, nbAttempts, maxAttempt);
       } else {
         drawBackground(ctx, client, currentRoomConstraint.bgColor);
         showGameText(ctx);
