@@ -7,7 +7,7 @@ import Stage from "./stage";
 import Bitmap from "./bitmap";
 
 /* eslint-disable */
-function golf() {
+function app() {
   'use strict';
 
   var socket = io.connect();
@@ -145,6 +145,4 @@ function golf() {
 
 };
 
-export default golf;
-
-console.log("Example")
+export default app;
