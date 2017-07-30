@@ -33,7 +33,7 @@ swip(io, ee, {
         let nextSpeedY = ball.speedY;
         removeFirstClient(cluster);
 
-
+        const hasStarted = maze.getNbMove() > 0;
         const boundaryOffset = ball.radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(ball, c));
 
@@ -94,6 +94,7 @@ swip(io, ee, {
             speedY: { $set: (nextSpeedY + downhillAccelerationY) * 0.97 },
           },
           nbMove: { $set : 0 },
+          hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
           currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) }
@@ -107,6 +108,7 @@ swip(io, ee, {
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
+      hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze()
     }),
