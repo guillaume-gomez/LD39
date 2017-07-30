@@ -152,7 +152,7 @@ function createReducer (config) {
     const clientACluster = state.clusters[clientA.clusterID];
     const clientBCluster = state.clusters[clientB.clusterID];
     if(clientACluster.data.currentScreenId !== 0 || clientBCluster.data.currentScreenId !== 0) {
-      const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeB.direction : swipeA.direction;
+      const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeA.direction : swipeB.direction;
       let originCluster = null;
       let targetCluster = null;
       if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
