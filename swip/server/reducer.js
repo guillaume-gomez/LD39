@@ -146,6 +146,9 @@ function createReducer (config) {
 
     //////////////////////////////////////////////////////////do a functionn
     let updatedState = state;
+    if(!clientA || !clientB) {
+      return clearSwipes(state);
+    }
     const clientACluster = state.clusters[clientA.clusterID];
     const clientBCluster = state.clusters[clientB.clusterID];
     if(clientACluster.data.currentScreenId !== 0 || clientBCluster.data.currentScreenId !== 0) {
