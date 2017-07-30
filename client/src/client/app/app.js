@@ -12,7 +12,7 @@ function app() {
   var socket = io.connect();
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
-  let test = null;
+  let character = null;
   let bgColor = getRandomColor();
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
@@ -49,10 +49,10 @@ function app() {
       const realColor = currentScreenId === client.id ? bgColor : null;
       drawBackground(ctx, client, realColor);
       drawWalls(ctx, client);
-      if(test) {
-        test.x = hole.x - test.width/2;
-        test.y = hole.y - test.height/2;
-        test.render(ctx)
+      if(character) {
+        character.x = hole.x - character.width/2;
+        character.y = hole.y - character.height/2;
+        character.render(ctx)
       }
 
       ctx.restore();
@@ -66,34 +66,23 @@ function app() {
   }
 
   function onComplete() {
-    var data = assetsLoader.getInstance().getData();
-    // on initialise la racine en lui envoyant la référence vers le canvas
-    //stage.getInstance().init(canvas);
-
-    for( var alias in data ){
+    const data = assetsLoader.getInstance().getData();
+    for( const alias in data ){
         assetsManager.getInstance().addImage(data[alias],alias);
     }
-
-    // on crée un nouvel atlas
-    var atlas = new TextureAtlas();
-
-    // on lui associe une image qui sera celle partagée par toutes les textures stockée en son sein
+    let atlas = new TextureAtlas();
     atlas.data = assetsManager.getInstance().getImageByAlias("ground");
-
-    // on crée deux textures différentes, portant un nom différent, ayant chacune la même image
-    // mais pas les mêmes portions d'image associées
     atlas.createTexture( "texture_1", 0,0,256,156);
 
-    var texture = atlas.getTextureByName("texture_1"); // on retrouve notre texture
+    let texture = atlas.getTextureByName("texture_1"); // on retrouve notre texture
     let bmp = new Bitmap(); // on créer un nouvel objet de type Bitmap
     bmp.texture = texture; // on y associe la texture
     bmp.width = 256/2; // on définie la largeur
-    bmp.height = 156/2;//... puis la hauteur
+    bmp.height = 156/1.5;//... puis la hauteur
     bmp.x = 200;
     bmp.y = 200;
-    test = bmp;
+    character = bmp;
     //bmp.drawOnly(ctx)
-    //stage.getInstance().addChild(bmp); // on ajoute l'enfant à la racine
   }
 
 };
