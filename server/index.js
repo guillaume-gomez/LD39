@@ -57,7 +57,6 @@ swip(io, ee, {
             speedX: { $set: (nextSpeedX + downhillAccelerationX) * 0.97 },
             speedY: { $set: (nextSpeedY + downhillAccelerationY) * 0.97 },
           },
-          nbMove: { $set : 0 },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
