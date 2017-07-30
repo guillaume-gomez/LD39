@@ -7,6 +7,8 @@ const swip = require('../swip/server/index.js');
 
 app.use(express.static(`${__dirname}/../client`));
 
+const maze = require("./maze.js");
+
 const EventEmitter = require("events").EventEmitter;
 const ee = new EventEmitter();
 
@@ -15,6 +17,7 @@ const WALL_SIZE = 20;
 const SPEED_THRESHOLD = 50;
 const DOWNHILL_ACCELERATION_SCALE = 1 / 20;
 const ANGLE_INACCURACY = 3;
+
 
 swip(io, ee, {
   cluster: {
@@ -104,6 +107,7 @@ swip(io, ee, {
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
+      maze: new maze()
     }),
   },
 
