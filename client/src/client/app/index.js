@@ -1,2 +1,2 @@
-import golf from "./golf";
-golf();
+import app from "./app";
+app();
