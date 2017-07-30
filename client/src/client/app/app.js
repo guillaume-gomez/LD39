@@ -1,4 +1,4 @@
-import {drawBackground, drawWalls, openingSort, drawHole, drawBall, throttle, startGameText} from "./renderingFunctions"
+import {drawBackground, drawWalls, openingSort, drawHole, drawBall, throttle, startGameText,showEndGame} from "./renderingFunctions"
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
 import Texture from "./texture";
@@ -47,7 +47,9 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      if(hasStarted) {
+      if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
+        showEndGame(ctx);
+      } else if(hasStarted) {
         drawWalls(ctx, client);
         drawBall(ctx, ball);
         if(character) {
@@ -56,7 +58,7 @@ function app() {
           character.render(ctx)
         }
       } else {
-        startGameText(ctx, client);
+        startGameText(ctx);
       }
       ctx.restore();
 
