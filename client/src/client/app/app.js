@@ -1,4 +1,4 @@
-import {drawBackground, drawWalls, openingSort, drawHole, throttle} from "./renderingFunctions"
+import {drawBackground, drawWalls, openingSort, drawHole, drawBall, throttle, startGameText} from "./renderingFunctions"
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
 import Texture from "./texture";
@@ -42,18 +42,24 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, ball, hole, currentRoomConstraint } = state.cluster.data;
+      const { currentScreenId, ball, hole, currentRoomConstraint, hasStarted } = state.cluster.data;
+
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      drawWalls(ctx, client);
-      if(character) {
-        character.x = hole.x - character.width/2;
-        character.y = hole.y - character.height/2;
-        character.render(ctx)
+      if(hasStarted) {
+        drawWalls(ctx, client);
+        drawBall(ctx, ball);
+        if(character) {
+          character.x = ball.x - character.width/2;
+          character.y = ball.y - character.height/2;
+          character.render(ctx)
+        }
+      } else {
+        startGameText(ctx, client);
       }
-
       ctx.restore();
+
     });
   });
 
