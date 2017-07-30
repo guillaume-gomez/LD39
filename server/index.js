@@ -61,7 +61,8 @@ swip(io, ee, {
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
-          currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) }
+          currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) },
+          nbAttempts: { $set: maze.getNbAttempt() }
         };
       },
       merge: () => ({}),
@@ -74,6 +75,7 @@ swip(io, ee, {
       nbClients: 2,
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
+      nbAttempts: MazeTools.initNbAttempt(),
       maze: new MazeTools.Maze()
     }),
   },

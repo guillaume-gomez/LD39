@@ -23,6 +23,7 @@ class Maze {
     ];
     this.nbMove = 0;
     this.currentRoomType = BEGIN;
+    this.nbAttempts = initNbAttempt();
   }
 
   createMaze() {
@@ -108,6 +109,7 @@ class Maze {
     this.currentRoomType = this.matrix[newY][newX];
     this.matrix[newY][newX] = CURRENT_POSITION;
     this.nbMove++;
+    this.nbAttempts--;
     return true;
   }
 
@@ -119,11 +121,19 @@ class Maze {
     return this.currentRoomType;
   }
 
+  getNbAttempt() {
+    return this.nbAttempts;
+  }
+
   hasWin(type) {
     return this.currentRoomType;
   }
 
 };
+
+function initNbAttempt() {
+  return 2;
+}
 
 function getRoomConstraint(type) {
   switch(type) {
@@ -139,5 +149,6 @@ function getRoomConstraint(type) {
 module.exports = {
   Maze,
   TYPES,
-  getRoomConstraint
+  getRoomConstraint,
+  initNbAttempt
 };

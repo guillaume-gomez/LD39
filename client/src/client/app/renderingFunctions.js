@@ -162,7 +162,7 @@ export function throttle(fn, threshhold, scope) {
     };
   }
 
-export function startGameText(ctx) {
+export function showGameText(ctx) {
   ctx.beginPath();
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 320, 70);
@@ -180,4 +180,14 @@ export function showEndGame(ctx) {
   ctx.fillStyle = "white";
   ctx.font = "18pt sans-serif";
   ctx.fillText("You Win", 10, 40);
+}
+
+export function showLoseGame(ctx) {
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, 320, 70);
+  ctx.fill();
+  ctx.fillStyle = "white";
+  ctx.font = "18pt sans-serif";
+  ctx.fillText("You Lose :( refresh the page", 10, 40);
 }
