@@ -5,7 +5,11 @@ const EXIT = "o";
 const OTHER = "x";
 const CURRENT_POSITION = "p";
 
-const TYPES = [ BEGIN, EXIT, OTHER];
+const TYPES = {
+  BEGIN: BEGIN,
+  EXIT: EXIT,
+  OTHER: OTHER,
+};
 
 const SIZE = 4;
 
@@ -18,7 +22,7 @@ class Maze {
       [OTHER, OTHER, OTHER, OTHER],
     ];
     this.nbMove = 0;
-    //this.createMaze();
+    this.currentRoomType = BEGIN;
   }
 
   createMaze() {
@@ -101,6 +105,7 @@ class Maze {
     if(this.matrix[y][x] != BEGIN) {
       this.matrix[y][x] = OTHER;
     }
+    this.currentRoomType = this.matrix[newY][newX];
     this.matrix[newY][newX] = CURRENT_POSITION;
     this.nbMove++;
     return true;
@@ -110,5 +115,25 @@ class Maze {
     return this.nbMove;
   }
 
+  getCurrentRoomType() {
+    return this.currentRoomType;
+  }
+
 };
-module.exports = Maze;
+
+function getRoomConstraint(type) {
+  switch(type) {
+    case BEGIN:
+      return {bgColor: "#00FF00"};
+    case EXIT:
+      return {bgColor: "#0000FF"};
+    case OTHER:
+      return {bgColor: "#FF0000"};
+  }
+}
+
+module.exports = {
+  Maze,
+  TYPES,
+  getRoomConstraint
+};
