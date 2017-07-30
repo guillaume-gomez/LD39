@@ -145,24 +145,29 @@ function createReducer (config) {
 
 
     //////////////////////////////////////////////////////////do a functionn
+    let updatedState = state;
     const clientACluster = state.clusters[clientA.clusterID];
     const clientBCluster = state.clusters[clientB.clusterID];
-    const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeB.direction : swipeA.direction;
-    let originCluster = null;
-    let targetCluster = null;
-    if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
-      originCluster = clientACluster;
-      targetCluster = clientBCluster;
-    } else {
-      originCluster = clientBCluster;
-      targetCluster = clientACluster;
+    if(clientACluster.data.currentScreenId !== 0 || clientBCluster.data.currentScreenId !== 0) {
+      const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeB.direction : swipeA.direction;
+      let originCluster = null;
+      let targetCluster = null;
+      if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
+        originCluster = clientACluster;
+        targetCluster = clientBCluster;
+      } else {
+        originCluster = clientBCluster;
+        targetCluster = clientACluster;
+      }
+      const originMaze = originCluster.data.maze;
+      //move and check if out of map
+      if(!originMaze.movePosition(direction)) {
+        return clearSwipes(state);
+      }
+      updatedState = copyMaze(state, originCluster, targetCluster);
+      console.log(direction)
+      console.log(updatedState.clusters[targetCluster.id].data.maze)
     }
-    const originMaze = originCluster.data.maze;
-    //move and check if out of map
-    if(!originMaze.movePosition(direction)) {
-      return clearSwipes(state);
-    }
-    const updatedState = copyMaze(state, originCluster, targetCluster);
     //////////////////////////////////////////////////// end of the the function
 
     if (clientA.clusterID === clientB.clusterID) {
