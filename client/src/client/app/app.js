@@ -45,14 +45,15 @@ function app() {
       const { currentScreenId, ball, hole, currentRoomConstraint, hasStarted, nbAttempts } = state.cluster.data;
 
       ctx.save();
-      applyTransform(ctx, converter, client.transform);
-      drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
+        drawBackground(ctx, client, currentRoomConstraint.bgColor);
         showEndGame(ctx);
       } else if (nbAttempts <= 0) {
         drawBackground(ctx, client, "#FFDDDD");
         showLoseGame(ctx);
       } else if(hasStarted) {
+        applyTransform(ctx, converter, client.transform);
+        drawBackground(ctx, client, currentRoomConstraint.bgColor);
         drawWalls(ctx, client);
         drawBall(ctx, ball);
         if(character) {
@@ -61,6 +62,7 @@ function app() {
           character.render(ctx)
         }
       } else {
+        drawBackground(ctx, client, currentRoomConstraint.bgColor);
         showGameText(ctx);
       }
       ctx.restore();
