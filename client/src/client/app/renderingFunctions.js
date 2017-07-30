@@ -144,7 +144,7 @@ export function throttle(fn, threshhold, scope) {
     var last,
       deferTimer;
     return function () {
-      var context = scope || this;
+      var ctx = scope || this;
 
       var now = +new Date,
         args = arguments;
@@ -153,11 +153,11 @@ export function throttle(fn, threshhold, scope) {
         clearTimeout(deferTimer);
         deferTimer = setTimeout(function () {
           last = now;
-          fn.apply(context, args);
+          fn.apply(ctx, args);
         }, threshhold);
       } else {
         last = now;
-        fn.apply(context, args);
+        fn.apply(ctx, args);
       }
     };
   }
@@ -201,4 +201,23 @@ export function displayNbAttempt(ctx, currentAttempt, maxAttempt) {
   ctx.fillStyle = "white";
   ctx.font = "18pt sans-serif";
   ctx.fillText(`NbAttempts ${currentAttempt} / ${maxAttempt}`, 10, 40);
+}
+
+export function renderMaze(ctx, matrix, xOrigin = 10, yOrigin = 10) {
+  const width = 82;
+  const height = 82;
+  const sizeCells = 20;
+  ctx.translate(xOrigin, yOrigin);
+  for (var x = 0.5; x < width; x += sizeCells) {
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height - 2);
+    //ctx.fillRect(x, 0, 10, 10);
+  }
+
+  for (var y = 0.5; y < height; y += sizeCells) {
+    ctx.moveTo(0, y);
+    ctx.lineTo(width - 2, y);
+  }
+  ctx.strokeStyle = "#000";
+  ctx.stroke();
 }
