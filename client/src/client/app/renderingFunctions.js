@@ -124,6 +124,7 @@ export function drawArrow (ctx, ball, dragPosition) {
   }
 
 export function drawHole (ctx, hole) {
+    console.log(hole)
     ctx.save();
 
     ctx.fillStyle = 'black';
@@ -160,3 +161,13 @@ export function throttle(fn, threshhold, scope) {
       }
     };
   }
+
+export function startGameText(ctx) {
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, 320, 70);
+  ctx.fill();
+  ctx.fillStyle = "white";
+  ctx.font = "18pt sans-serif";
+  ctx.fillText("Welcome in this experiment", 10, 40);
+}
