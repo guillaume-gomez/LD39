@@ -1,4 +1,4 @@
-import {drawBackground, drawWalls, openingSort, drawHole, throttle, getRandomColor} from "./renderingFunctions"
+import {drawBackground, drawWalls, openingSort, drawHole, throttle} from "./renderingFunctions"
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
 import Texture from "./texture";
@@ -13,7 +13,6 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let character = null;
-  let bgColor = getRandomColor();
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
@@ -43,11 +42,10 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, ball, hole } = state.cluster.data;
+      const { currentScreenId, ball, hole, currentRoomConstraint } = state.cluster.data;
       ctx.save();
       applyTransform(ctx, converter, client.transform);
-      const realColor = currentScreenId === client.id ? bgColor : null;
-      drawBackground(ctx, client, realColor);
+      drawBackground(ctx, client, currentRoomConstraint.bgColor);
       drawWalls(ctx, client);
       if(character) {
         character.x = hole.x - character.width/2;

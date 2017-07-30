@@ -7,7 +7,7 @@ const swip = require('../swip/server/index.js');
 
 app.use(express.static(`${__dirname}/../client`));
 
-const maze = require("./maze.js");
+const MazeTools = require("./maze.js");
 
 const EventEmitter = require("events").EventEmitter;
 const ee = new EventEmitter();
@@ -23,8 +23,7 @@ swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
-        const ball = cluster.data.ball;
-        const hole = cluster.data.hole;
+        const { ball, hole, maze } = cluster.data;
         const clients = cluster.clients;
         let downhillAccelerationX = 0;
         let downhillAccelerationY = 0;
@@ -97,6 +96,7 @@ swip(io, ee, {
           nbMove: { $set : 0 },
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
+          currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) }
         };
       },
       merge: () => ({}),
@@ -107,7 +107,8 @@ swip(io, ee, {
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
-      maze: new maze()
+      currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
+      maze: new MazeTools.Maze()
     }),
   },
 
