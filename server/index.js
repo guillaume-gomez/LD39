@@ -37,47 +37,11 @@ swip(io, ee, {
         const boundaryOffset = ball.radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(ball, c));
 
-        if (client) {
-          if (Math.abs(client.data.rotationX) > ANGLE_INACCURACY) {
-            downhillAccelerationX = (client.data.rotationX - ANGLE_INACCURACY) * DOWNHILL_ACCELERATION_SCALE;
-          }
-
-          if (Math.abs(client.data.rotationY) > ANGLE_INACCURACY) {
-            downhillAccelerationY = (client.data.rotationY - ANGLE_INACCURACY) * DOWNHILL_ACCELERATION_SCALE;
-          }
-
-          // update speed and position if collision happens
-          if (((ball.speedX < 0) &&
-            ((nextPosX - boundaryOffset) < client.transform.x) &&
-            !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
-            nextPosX = client.transform.x + boundaryOffset;
-            nextSpeedX = ball.speedX * -1;
-          } else if (((ball.speedX > 0) &&
-            ((nextPosX + boundaryOffset) > (client.transform.x + client.size.width)) &&
-            !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
-            nextPosX = client.transform.x + (client.size.width - boundaryOffset);
-            nextSpeedX = ball.speedX * -1;
-          }
-
-          if (((ball.speedY < 0) &&
-            ((nextPosY - boundaryOffset) < client.transform.y &&
-            !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
-            nextPosY = client.transform.y + boundaryOffset;
-            nextSpeedY = ball.speedY * -1;
-          } else if (((ball.speedY > 0) &&
-            ((nextPosY + boundaryOffset) > (client.transform.y + client.size.height)) &&
-            !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
-          ) {
-            nextPosY = client.transform.y + (client.size.height - boundaryOffset);
-            nextSpeedY = ball.speedY * -1;
-          }
-        } else { // reset ball to first client of cluster
-          const firstClient = clients[0];
-          nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
-          nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
-          nextSpeedX = 0;
-          nextSpeedY = 0;
-        }
+        const firstClient = client || clients[0];
+        nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
+        nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
+        nextSpeedX = 0;
+        nextSpeedY = 0;
 
         if (isInsideHole(hole, ball)) {
           nextPosX = (ball.x + hole.x) / 2;
