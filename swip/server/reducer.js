@@ -143,13 +143,35 @@ function createReducer (config) {
     const swipeB = swipes[0];
     const clientB = state.clients[swipeB.id];
 
+
+    //////////////////////////////////////////////////////////do a functionn
+    const clientACluster = state.clusters[clientA.clusterID];
+    const clientBCluster = state.clusters[clientB.clusterID];
+    const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeB.direction : swipeA.direction;
+    let originCluster = null;
+    let targetCluster = null;
+    if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
+      originCluster = clientACluster;
+      targetCluster = clientBCluster;
+    } else {
+      originCluster = clientBCluster;
+      targetCluster = clientACluster;
+    }
+    const originMaze = originCluster.data.maze;
+    //move and check if out of map
+    if(!originMaze.movePosition(direction)) {
+      return clearSwipes(state);
+    }
+    const updatedState = copyMaze(state, originCluster, targetCluster);
+    //////////////////////////////////////////////////// end of the the function
+
     if (clientA.clusterID === clientB.clusterID) {
       return clearSwipes(state);
     }
 
-    const { clients, clusters } = mergeAndRecalculateClusters(state, clientA, swipeA, clientB, swipeB);
+    const { clients, clusters } = mergeAndRecalculateClusters(updatedState, clientA, swipeA, clientB, swipeB);
 
-    return update(state, {
+    return update(updatedState, {
       swipes: { $set: [] },
       clients: { $set: clients },
       clusters: { $set: clusters },
@@ -341,7 +363,6 @@ function createReducer (config) {
     const newClusterID = uid();
     const clusterData = config.cluster.init(client);
     const clusterDataModified = Object.assign({}, clusterData, { currentScreenId: client.id });
-
     const newCluster = { [newClusterID]: { id: newClusterID, data: clusterDataModified } };
     const updatedClusters = Object.assign( {}, newCluster, removeEmptyCluster(clusters, clients, clusterID) );
     updatedClustersPendingSplit = {};
