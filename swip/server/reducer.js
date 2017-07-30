@@ -366,6 +366,16 @@ function createReducer (config) {
     return result;
   }
 
+  function copyMaze(state, originCluster, targetCluster ) {
+    const updatedData = Object.assign({}, targetCluster.data, { maze: originCluster.data.maze });
+    const updatedTargetCluster = { [targetCluster.id] : Object.assign({}, targetCluster, { data: updatedData} ) };
+    const { clusters } = state;
+    const updatedClusters = Object.assign({}, clusters, updatedTargetCluster);
+    return update(state, {
+      clusters: { $set: updatedClusters },
+    });
+  }
+
   // function changePendingCluster(state, { id }) {
   //   const { clients, clusters } = state;
   //   const { clusterID } = clients[id];
