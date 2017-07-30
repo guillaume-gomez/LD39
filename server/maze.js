@@ -119,16 +119,20 @@ class Maze {
     return this.currentRoomType;
   }
 
+  hasWin(type) {
+    return this.currentRoomType;
+  }
+
 };
 
 function getRoomConstraint(type) {
   switch(type) {
     case BEGIN:
-      return {bgColor: "#00FF00"};
+      return { bgColor: "#00FF00", type: BEGIN };
     case EXIT:
-      return {bgColor: "#0000FF"};
+      return { bgColor: "#0000FF",type: EXIT };
     case OTHER:
-      return {bgColor: "#FF0000"};
+      return { bgColor: "#FF0000", type: OTHER };
   }
 }
 
