@@ -1,4 +1,4 @@
-import {drawBackground, drawWalls, openingSort, drawHole, drawBall, throttle, showGameText, showEndGame, showLoseGame} from "./renderingFunctions"
+import {drawBackground, drawWalls, openingSort, drawHole, drawBall, throttle, showGameText, showEndGame, showLoseGame, displayNbAttempt} from "./renderingFunctions"
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
 import Texture from "./texture";
@@ -62,6 +62,8 @@ function app() {
           character.y = ball.y - character.height/2;
           character.render(ctx)
         }
+        ctx.restore();
+        displayNbAttempt(ctx, nbAttempts, nbAttempts);
       } else {
         drawBackground(ctx, client, currentRoomConstraint.bgColor);
         showGameText(ctx);

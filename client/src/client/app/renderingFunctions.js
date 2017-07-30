@@ -191,3 +191,14 @@ export function showLoseGame(ctx) {
   ctx.font = "18pt sans-serif";
   ctx.fillText("You Lose :( refresh the page", 10, 40);
 }
+
+
+export function displayNbAttempt(ctx, currentAttempt, maxAttempt) {
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, 220, 70);
+  ctx.fill();
+  ctx.fillStyle = "white";
+  ctx.font = "18pt sans-serif";
+  ctx.fillText(`NbAttempts ${currentAttempt} / ${maxAttempt}`, 10, 40);
+}
