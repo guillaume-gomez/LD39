@@ -11,16 +11,14 @@ const SIZE = 4;
 
 class Maze {
   constructor() {
-    this.enter = null;
-    this.out = null;
     this.matrix = [
+      [OTHER, OTHER, OTHER, EXIT],
       [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
+      [OTHER, BEGIN, OTHER, OTHER],
       [OTHER, OTHER, OTHER, OTHER],
     ];
-    this.createMaze();
-    console.log(this.matrix);
+    this.nbMove = 0;
+    //this.createMaze();
   }
 
   createMaze() {
@@ -104,7 +102,12 @@ class Maze {
       this.matrix[y][x] = OTHER;
     }
     this.matrix[newY][newX] = CURRENT_POSITION;
+    this.nbMove++;
     return true;
+  }
+
+  getNbMove() {
+    return this.nbMove;
   }
 
 };
