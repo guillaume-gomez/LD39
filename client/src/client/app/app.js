@@ -1,6 +1,10 @@
-import { drawBackground, drawWalls, openingSort,
-         drawHole, drawBall, throttle
-      } from "./renderingFunctions"
+import {
+  drawBackground,
+  drawWalls,
+  openingSort,
+  throttle,
+  drawArrow
+} from "./renderingFunctions"
 
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
@@ -38,12 +42,52 @@ function app() {
       //client.emit('setHole', hole);
     });
 
+    client.onDragStart(function (evt) {
+      console.log("onDragStart")
+      if (state) {
+        var distanceX = evt.position[0].x - state.cluster.data.character.x;
+        var distanceY = evt.position[0].y - state.cluster.data.character.y;
+        var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+
+        if (distance < (2 * state.cluster.data.character.radius)) {
+          dragging = true;
+          dragPosition = evt.position[0];
+        }
+      }
+    });
+
+    client.onDragMove(function (evt) {
+      console.log("onDragMove")
+      var distanceX = evt.position[0].x - state.cluster.data.character.x;
+      var distanceY = evt.position[0].y - state.cluster.data.character.y;
+      var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+
+      if (dragging) {
+        if (distance > 150) {
+          dragPosition = {
+            x: state.cluster.data.character.x + (distanceX / distance) * 150,
+            y: state.cluster.data.character.y + (distanceY / distance) * 150
+          }
+        } else {
+          dragPosition = evt.position[0];
+        }
+      }
+    });
+
+    client.onDragEnd(function (evt) {
+      console.log("onDragEnd")
+      if (dragging) {
+        dragging = false;
+      }
+    });
+
     swip.sensor.onChangeOrientation(throttle(function (evt) {
       client.emit('updateOrientation', {
         rotationX: evt.rotation.x,
         rotationY: evt.rotation.y
       });
     }, 200));
+
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
@@ -57,6 +101,9 @@ function app() {
           characterSprite.x = character.x - characterSprite.width/2;
           characterSprite.y = character.y - characterSprite.height/2;
           characterSprite.render(ctx)
+        }
+        if (dragging) {
+          drawArrow(ctx, character, dragPosition);
         }
       }
       ctx.restore();
