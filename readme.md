@@ -1,4 +1,4 @@
-![Screen Shot 2017-07-31 at 21.48.55 copy.png](///raw/88f/2/z/6d13.png)
+![logo](/screenshots/logo.png)
 
 ## About
 The concept of this game if fairly simple, there’s a map, you and your friend (represented by the diamond shaped element) are stuck in there and need to find the exit. You can move in 4 directions and to do so you'll have to use your devices.
@@ -22,15 +22,15 @@ improvements.
 All assets have been made during the event.
 
 ## Screenshots
-![begin.gif](///raw/88f/2/z/6c3a.gif)
+![starting-game](screenshots/begin.gif)
 
-![ezgif.com-optimize.gif](///raw/88f/2/z/6ca5.gif)
+![finish-game](screenshots/end.gif)
 
-![first-screen.png](///raw/88f/2/z/6c97.png)
+![first-screen.png](screenshots/first-screen.png)
 
-![second-screen.png](///raw/88f/2/z/6c9a.png)
+![second-screen.png](screenshots/second-screen.png)
 
-![finish-screen.png](///raw/88f/2/z/6c9c.png)
+![finish-screen.png](screenshots/finish-screen.png)
 
 ### Controls
 - Move : Your fingers
