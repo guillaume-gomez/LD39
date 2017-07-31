@@ -23,19 +23,19 @@ swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
-        const { ball, hole, maze } = cluster.data;
+        const { character, hole, maze } = cluster.data;
         const clients = cluster.clients;
         let downhillAccelerationX = 0;
         let downhillAccelerationY = 0;
-        let nextPosX = ball.x + ball.speedX;
-        let nextPosY = ball.y + ball.speedY;
-        let nextSpeedX = ball.speedX;
-        let nextSpeedY = ball.speedY;
+        let nextPosX = character.x + character.speedX;
+        let nextPosY = character.y + character.speedY;
+        let nextSpeedX = character.speedX;
+        let nextSpeedY = character.speedY;
         removeFirstClient(cluster);
 
         const hasStarted = maze.getNbMove() > 0;
-        const boundaryOffset = ball.radius + WALL_SIZE;
-        const client = clients.find((c) => isParticleInClient(ball, c));
+        const boundaryOffset = character.radius + WALL_SIZE;
+        const client = clients.find((c) => isParticleInClient(character, c));
 
         const firstClient = client || clients[0];
         nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
@@ -43,15 +43,15 @@ swip(io, ee, {
         nextSpeedX = 0;
         nextSpeedY = 0;
 
-        if (isInsideHole(hole, ball)) {
-          nextPosX = (ball.x + hole.x) / 2;
-          nextPosY = (ball.y + hole.y) / 2;
+        if (isInsideHole(hole, character)) {
+          nextPosX = (character.x + hole.x) / 2;
+          nextPosY = (character.y + hole.y) / 2;
           nextSpeedX = 0;
           nextSpeedY = 0;
         }
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
-          ball: {
+          character: {
             x: { $set: nextPosX },
             y: { $set: nextPosY },
             speedX: { $set: (nextSpeedX + downhillAccelerationX) * 0.97 },
@@ -67,7 +67,7 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      ball: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
+      character: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
       hole: { x: 200, y: 200, radius: 15 },
       currentScreenId: 0,
       pendingSplit: null,
@@ -85,7 +85,7 @@ swip(io, ee, {
       hitBall: ({ cluster, client }, { speedX, speedY }) => ({
         cluster: {
           data: {
-            ball: {
+            character: {
               speedX: { $set: speedX },
               speedY: { $set: speedY },
             },
@@ -116,13 +116,13 @@ swip(io, ee, {
   },
 });
 
-function isParticleInClient (ball, client) {
+function isParticleInClient (character, client) {
   const leftSide = client.transform.x;
   const rightSide = (client.transform.x + client.size.width);
   const topSide = client.transform.y;
   const bottomSide = (client.transform.y + client.size.height);
 
-  return ball.x < rightSide && ball.x > leftSide && ball.y > topSide && ball.y < bottomSide;
+  return character.x < rightSide && character.x > leftSide && character.y > topSide && character.y < bottomSide;
 }
 
 function isWallOpenAtPosition (transform, openings, particlePos) {
@@ -131,11 +131,11 @@ function isWallOpenAtPosition (transform, openings, particlePos) {
   ));
 }
 
-function isInsideHole (hole, ball) {
-  const distanceX = hole.x - ball.x;
-  const distanceY = hole.y - ball.y;
+function isInsideHole (hole, character) {
+  const distanceX = hole.x - character.x;
+  const distanceY = hole.y - character.y;
   const distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
-  const speed = Math.sqrt(Math.pow(ball.speedX, 2) + Math.pow(ball.speedY, 2));
+  const speed = Math.sqrt(Math.pow(character.speedX, 2) + Math.pow(character.speedY, 2));
 
   return distance <= hole.radius && speed < SPEED_THRESHOLD;
 }
