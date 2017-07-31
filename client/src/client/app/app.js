@@ -50,8 +50,7 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, ball, hole, currentRoomConstraint, hasStarted, nbAttempts, maxAttempt } = state.cluster.data;
-
+      const { currentScreenId, ball, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
@@ -65,7 +64,7 @@ function app() {
         }
       }
       ctx.restore();
-      hud.draw(hasStarted, currentRoomConstraint, nbAttempts, maxAttempt);
+      hud.draw(hasStarted, currentRoomConstraint, maze);
     });
   });
 
