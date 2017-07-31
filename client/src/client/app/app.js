@@ -16,7 +16,7 @@ function app() {
   var socket = io.connect();
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
-  let character = null;
+  let characterSprite = null;
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
   window.addEventListener('resize', resizeHudCanvas, false);
@@ -35,8 +35,8 @@ function app() {
     var dragging = false;
 
     client.onClick(function (evt) {
-      var hole = { x: evt.position.x, y: evt.position.y };
-      client.emit('setHole', hole);
+      //var hole = { x: evt.position.x, y: evt.position.y };
+      //client.emit('setHole', hole);
     });
 
     swip.sensor.onChangeOrientation(throttle(function (evt) {
@@ -45,22 +45,19 @@ function app() {
         rotationY: evt.rotation.y
       });
     }, 200));
-
-
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, ball, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
+      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted) {
         drawWalls(ctx, client);
-        drawBall(ctx, ball);
-        if(character) {
-          character.x = ball.x - character.width/2;
-          character.y = ball.y - character.height/2;
-          character.render(ctx)
+        if(characterSprite) {
+          characterSprite.x = character.x - characterSprite.width/2;
+          characterSprite.y = character.y - characterSprite.height/2;
+          characterSprite.render(ctx)
         }
       }
       ctx.restore();
@@ -90,7 +87,7 @@ function app() {
     bmp.height = 130;//... puis la hauteur
     bmp.x = 200;
     bmp.y = 200;
-    character = bmp;
+    characterSprite = bmp;
     //bmp.drawOnly(ctx)
   }
 

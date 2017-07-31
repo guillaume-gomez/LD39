@@ -23,7 +23,7 @@ swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
-        const { character, hole, maze } = cluster.data;
+        const { character, maze } = cluster.data;
         const clients = cluster.clients;
         let downhillAccelerationX = 0;
         let downhillAccelerationY = 0;
@@ -43,12 +43,6 @@ swip(io, ee, {
         nextSpeedX = 0;
         nextSpeedY = 0;
 
-        if (isInsideHole(hole, character)) {
-          nextPosX = (character.x + hole.x) / 2;
-          nextPosY = (character.y + hole.y) / 2;
-          nextSpeedX = 0;
-          nextSpeedY = 0;
-        }
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
           character: {
@@ -68,7 +62,6 @@ swip(io, ee, {
     },
     init: () => ({
       character: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
-      hole: { x: 200, y: 200, radius: 15 },
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
@@ -96,7 +89,7 @@ swip(io, ee, {
       setHole: ({ cluster, client }, { x, y }) => ({
         cluster: {
           data: {
-            hole: {
+            ball: {
               x: { $set: x },
               y: { $set: y },
             },
@@ -129,15 +122,6 @@ function isWallOpenAtPosition (transform, openings, particlePos) {
   return openings.some((opening) => (
     particlePos >= (opening.start + transform) && particlePos <= (opening.end + transform)
   ));
-}
-
-function isInsideHole (hole, character) {
-  const distanceX = hole.x - character.x;
-  const distanceY = hole.y - character.y;
-  const distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
-  const speed = Math.sqrt(Math.pow(character.speedX, 2) + Math.pow(character.speedY, 2));
-
-  return distance <= hole.radius && speed < SPEED_THRESHOLD;
 }
 
 function shouldIPassedProperty(cluster) {
