@@ -43,13 +43,12 @@ function app() {
     });
 
     client.onDragStart(function (evt) {
-      console.log("onDragStart")
       if (state) {
         var distanceX = evt.position[0].x - state.cluster.data.character.x;
         var distanceY = evt.position[0].y - state.cluster.data.character.y;
         var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 
-        if (distance < (2 * state.cluster.data.character.radius)) {
+        if (distance < (3 * state.cluster.data.character.radius)) {
           dragging = true;
           dragPosition = evt.position[0];
         }
@@ -57,7 +56,6 @@ function app() {
     });
 
     client.onDragMove(function (evt) {
-      console.log("onDragMove")
       var distanceX = evt.position[0].x - state.cluster.data.character.x;
       var distanceY = evt.position[0].y - state.cluster.data.character.y;
       var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
@@ -68,6 +66,12 @@ function app() {
             x: state.cluster.data.character.x + (distanceX / distance) * 150,
             y: state.cluster.data.character.y + (distanceY / distance) * 150
           }
+          const { character } = state.cluster.data;
+          console.log(`${(evt.position[0].x - character.x) / 2}`, `${(evt.position[0].y - character.y) / 2}`);
+          client.emit('hitBall', {
+             speedX: (evt.position[0].x - character.x) / 200,
+             speedY: (evt.position[0].y - character.y) / 200
+          });
         } else {
           dragPosition = evt.position[0];
         }
@@ -75,9 +79,12 @@ function app() {
     });
 
     client.onDragEnd(function (evt) {
-      console.log("onDragEnd")
       if (dragging) {
         dragging = false;
+        client.emit('hitBall', {
+          speedX: 0,
+          speedY: 0
+        });
       }
     });
 
@@ -95,7 +102,7 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      if(hasStarted) {
+      //if(hasStarted) {
         drawWalls(ctx, client);
         if(characterSprite) {
           characterSprite.x = character.x - characterSprite.width/2;
@@ -105,7 +112,7 @@ function app() {
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
-      }
+      //}
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze);
     });
