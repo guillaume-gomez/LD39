@@ -19,6 +19,7 @@ function app() {
   let character = null;
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
+  window.addEventListener('resize', resizeHudCanvas, false);
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
@@ -94,7 +95,14 @@ function app() {
     //bmp.drawOnly(ctx)
   }
 
-  window.onload = hud.resize(document.getElementById("root").childNodes[0].width/2, document.getElementById("root").childNodes[0].height/2)
+  function resizeHudCanvas() {
+    const rootCanvas = document.getElementById("root").childNodes[0];
+     hud.resize(
+      rootCanvas.width,
+      rootCanvas.height);
+  }
+
+  window.onload = resizeHudCanvas();
 
 };
 
