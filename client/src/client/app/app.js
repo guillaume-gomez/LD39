@@ -1,4 +1,8 @@
-import {drawBackground, drawWalls, openingSort, drawHole, drawBall, throttle, showGameText, showEndGame, showLoseGame, displayNbAttempt} from "./renderingFunctions"
+import { drawBackground, drawWalls, openingSort,
+         drawHole, drawBall, throttle
+      } from "./renderingFunctions"
+
+import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
 import Texture from "./texture";
@@ -13,6 +17,8 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let character = null;
+  const hudCanvas = document.getElementById("hud");
+  let hud = new Hud(hudCanvas);
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
@@ -46,15 +52,9 @@ function app() {
       const { currentScreenId, ball, hole, currentRoomConstraint, hasStarted, nbAttempts, maxAttempt } = state.cluster.data;
 
       ctx.save();
-      if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
-        drawBackground(ctx, client, currentRoomConstraint.bgColor);
-        showEndGame(ctx);
-      } else if (nbAttempts <= 0) {
-        drawBackground(ctx, client, "#FFDDDD");
-        showLoseGame(ctx);
-      } else if(hasStarted) {
-        applyTransform(ctx, converter, client.transform);
-        drawBackground(ctx, client, currentRoomConstraint.bgColor);
+      applyTransform(ctx, converter, client.transform);
+      drawBackground(ctx, client, currentRoomConstraint.bgColor);
+      if(hasStarted) {
         drawWalls(ctx, client);
         drawBall(ctx, ball);
         if(character) {
@@ -62,14 +62,9 @@ function app() {
           character.y = ball.y - character.height/2;
           character.render(ctx)
         }
-        ctx.restore();
-        displayNbAttempt(ctx, nbAttempts, maxAttempt);
-      } else {
-        drawBackground(ctx, client, currentRoomConstraint.bgColor);
-        showGameText(ctx);
       }
       ctx.restore();
-
+      hud.draw(hasStarted, currentRoomConstraint, nbAttempts, maxAttempt);
     });
   });
 
@@ -98,6 +93,8 @@ function app() {
     character = bmp;
     //bmp.drawOnly(ctx)
   }
+
+  window.onload = hud.resize(document.getElementById("root").childNodes[0].width/2, document.getElementById("root").childNodes[0].height/2)
 
 };
 
