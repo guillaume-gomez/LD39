@@ -1,0 +1,17 @@
+client :
+{"id":"8lbfrah",
+"size":{"width":358.63590201600954,"height":556.8818589637482},
+"transform":{"x":-358.63590201600954,"y":358.1774308530569},
+"adjacentClientIDs":["kj4xt5s"],
+"clusterID":"rdixus3",
+"openings":{"left":[],"top":[],"right":[{"start":0,"end":750.5325691469432}],"bottom":[]},
+"data":{"rotationX":0,"rotationY":0}
+}
+
+cluster:
+ { id:rdixus3 ,
+ 	data:
+ { ball: Object,
+   hole: Object,
+   nbClients: 2 }
+}

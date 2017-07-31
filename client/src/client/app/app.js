@@ -96,10 +96,10 @@ function app() {
   }
 
   function resizeHudCanvas() {
-    const rootCanvas = document.getElementById("root").childNodes[0];
-     hud.resize(
-      rootCanvas.width,
-      rootCanvas.height);
+     const rootCanvas = document.getElementById("root").childNodes[0];
+      hud.resize(
+       rootCanvas.width,
+       rootCanvas.height);
   }
 
   window.onload = resizeHudCanvas();

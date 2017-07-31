@@ -8,8 +8,9 @@ html, body {
 #hud {
 	z-index: 2;
   position:absolute;
-  left:0px;
-  top:0px;
+  left:20px;
+  top:20px;
+  background: yellow;
 }
 
 #root {

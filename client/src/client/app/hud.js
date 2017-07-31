@@ -6,9 +6,10 @@ class Hud {
 	}
 
   resize(width, height) {
-    console.log("jjj")
-    this.canvas.height = height;
-    this.canvas.width = width;
+    //this.canvas.height = height;
+    //this.canvas.width = width;
+    this.canvas.height = 70;
+    this.canvas.width = 320;
   }
 
   //todo add abbraction in this function
