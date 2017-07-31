@@ -14,12 +14,15 @@ class Hud {
 
   //todo add abbraction in this function
   draw(hasStarted, currentRoomConstraint, nbAttempts, maxAttempt) {
+    //maybe remove this line
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
       this.showEndGame();
     } else if (nbAttempts <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
+      console.log(hasStarted)
       this.displayNbAttempt(nbAttempts, maxAttempt)
       //this.renderMaze(ctx);
     } else {
