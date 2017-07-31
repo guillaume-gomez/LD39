@@ -13,7 +13,7 @@ import Bitmap from "./bitmap";
 function app() {
   'use strict';
 
-  var socket = io.connect();
+  let socket = io.connect();
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
@@ -26,13 +26,13 @@ function app() {
     assetsLoader.getInstance().addFile("atari400.png","ground");
     assetsLoader.getInstance().addFile("character.png","character");
     assetsLoader.getInstance().load();
-    var converter = client.converter;
-    var stage = client.stage;
-    var ctx = stage.getContext('2d');
+    let converter = client.converter;
+    let stage = client.stage;
+    let ctx = stage.getContext('2d');
 
-    var state = null;
-    var dragPosition = null;
-    var dragging = false;
+    let state = null;
+    let dragPosition = null;
+    let dragging = false;
 
     client.onClick(function (evt) {
       //var hole = { x: evt.position.x, y: evt.position.y };
