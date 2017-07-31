@@ -146,7 +146,7 @@ class Maze {
 };
 
 function initNbAttempt() {
-  return 10;
+  return 5;
 }
 
 function getRoomConstraint(type) {
