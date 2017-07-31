@@ -4,3 +4,18 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
+#hud {
+	z-index: 2;
+  position:absolute;
+  left:0px;
+  top:0px;
+  background: yellow
+}
+
+#root {
+  z-index: 1;
+  position:absolute;
+  left:0px;
+  top:0px;
+}
