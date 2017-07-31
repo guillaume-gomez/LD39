@@ -25,21 +25,22 @@ const SIZE = 4;
 class Maze {
   constructor() {
     this.matrix = [
-      [OTHER, OTHER, OTHER, EXIT],
       [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, BEGIN, OTHER, OTHER],
+      [OTHER, OTHER, OTHER, OTHER],
+      [OTHER, OTHER, OTHER, OTHER],
       [OTHER, OTHER, OTHER, OTHER],
     ];
     this.discoveredMatrix = [
       [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
       [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, BEGIN_EXPLORED, UNKNOWN, UNKNOWN],
+      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
       [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
     ];
     this.nbMove = 0;
     this.currentRoomType = BEGIN;
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
+    this.createMaze();
   }
 
   createMaze() {
@@ -159,13 +160,13 @@ class Maze {
 };
 
 function initNbAttempt() {
-  return 10;
+  return 7;
 }
 
 function getRoomConstraint(type) {
   switch(type) {
     case BEGIN:
-      return { bgColor: "#cbced3", type: BEGIN };
+      return { bgColor: "#b5b9bf", type: BEGIN };
     case EXIT:
       return { bgColor: "#ead1b3", type: EXIT };
     case OTHER:
