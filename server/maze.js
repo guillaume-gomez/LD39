@@ -35,6 +35,7 @@ class Maze {
     this.nbMove = 0;
     this.currentRoomType = BEGIN;
     this.nbAttempts = initNbAttempt();
+    this.maxAttempt = initNbAttempt();
   }
 
   createMaze() {
