@@ -11,6 +11,7 @@ class Hud {
     this.canvas.width = width;
   }
 
+  //todo add abbraction in this function
   draw(hasStarted, currentRoomConstraint, nbAttempts, maxAttempt) {
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
