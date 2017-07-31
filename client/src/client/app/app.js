@@ -23,7 +23,6 @@ function app() {
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
-    assetsLoader.getInstance().addFile("atari400.png","ground");
     assetsLoader.getInstance().addFile("character.png","character");
     assetsLoader.getInstance().load();
     let converter = client.converter;
