@@ -13,20 +13,21 @@ class Hud {
   }
 
   //todo add abbraction in this function
-  draw(hasStarted, currentRoomConstraint, nbAttempts, maxAttempt) {
+  draw(hasStarted, currentRoomConstraint, maze) {
     //maybe remove this line
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
       this.showEndGame();
-    } else if (nbAttempts <= 0) {
+    } else if (maze.nbAttempts <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
-      console.log(hasStarted)
-      this.displayNbAttempt(nbAttempts, maxAttempt)
-      //this.renderMaze(ctx);
+      this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
+      this.drawMaze(maze.discoveredMatrix);
     } else {
       this.showGameText();
+       //this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
+      //this.drawMaze(maze.discoveredMatrix);
     }
     this.context.restore();
   }
@@ -68,26 +69,56 @@ class Hud {
     this.context.fillRect(0, 0, 220, 70);
     this.context.fill();
     this.context.fillStyle = "white";
-    this.context.font = "18pt sans-serif";
-    this.context.fillText(`NbAttempts ${currentAttempt} / ${maxAttempt}`, 10, 40);
+    this.context.font = "13pt sans-serif";
+    this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 10, 40);
   }
 
-  renderMaze(matrix, xOrigin = 10, yOrigin = 10) {
-    const width = 82;
-    const height = 82;
-    const sizeCells = 20;
-    this.context.translate(xOrigin, yOrigin);
-    for (var x = 0.5; x < width; x += sizeCells) {
-      this.context.moveTo(x, 0);
-      this.context.lineTo(x, height - 2);
+  drawMaze(matrix) {
+    const offset = 20;
+    const sizeCells = 15;
+    const width = 4 * sizeCells + 2;
+    const boxes = 4;
+    this.context.translate(this.canvas.width/2 - width/2 + offset, 5);
+    this.context.beginPath();
+    this.context.lineWidth = 1;
+    this.context.strokeStyle = 'black';
+    this.context.fillStyle = "white";
+    //draw grid
+    for (var row = 0; row < boxes; row++) {
+      for (var column = 0; column < boxes; column++) {
+        var x = column * sizeCells;
+        var y = row * sizeCells;
+        this.context.rect(x, y, sizeCells, sizeCells);
+        this.context.fill();
+        this.context.stroke();
+      }
     }
+    this.context.closePath();
 
-    for (var y = 0.5; y < height; y += sizeCells) {
-      this.context.moveTo(0, y);
-      this.context.lineTo(width - 2, y);
+    //helper function
+    const getColor = (val) => {
+      switch (val) {
+        case 0:
+          return "red";
+        case 1:
+          return "white";
+        case 2:
+          return "blue";
+        default:
+          return "red";
+      }
+    };
+    //fill case
+    for (var row = 0; row < boxes; row++) {
+      for (var column = 0; column < boxes; column++) {
+        const color = getColor(matrix[row][column]);
+        this.context.fillStyle = color;
+        var x = column * sizeCells;
+        var y = row * sizeCells;
+        this.context.fillRect(x, y, sizeCells, sizeCells);
+        this.context.stroke();
+      }
     }
-    this.context.strokeStyle = "#000";
-    this.context.stroke();
   }
 }
 export default Hud;
