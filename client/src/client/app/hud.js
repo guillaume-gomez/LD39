@@ -40,7 +40,9 @@ class Hud {
     this.context.fill();
     this.context.fillStyle = "white";
     this.context.font = "18pt sans-serif";
-    this.context.fillText("Welcome in this experiment", 10, 40);
+    this.context.fillText("Pinch to escape !!", 10, 40);
+    this.context.font = "8pt sans-serif";
+    this.context.fillText("LD 39", 10, 60);
   }
 
   showEndGame() {
