@@ -7,6 +7,7 @@ const CURRENT_POSITION = "p";
 const UNKNOWN = 0;
 const EXPLORED = 1;
 const BEGIN_EXPLORED = 2;
+const EXIT_EXPLORED = 3;
 
 
 const TYPES = {
@@ -15,7 +16,8 @@ const TYPES = {
   OTHER: OTHER,
   EXPLORED: EXPLORED,
   UNKNOWN: UNKNOWN,
-  BEGIN_EXPLORED: BEGIN_EXPLORED
+  BEGIN_EXPLORED: BEGIN_EXPLORED,
+  EXIT_EXPLORED: EXIT_EXPLORED
 };
 
 const SIZE = 4;
@@ -54,7 +56,7 @@ class Maze {
     this.matrix[xEnter][yEnter] = BEGIN;
     this.matrix[xOut][yOut] = EXIT;
 
-    this.discoveredMatrix[xEnter][yEnter] = EXPLORED;
+    this.discoveredMatrix[xEnter][yEnter] = BEGIN_EXPLORED;
   }
 
   getCurrentPosition() {
@@ -118,13 +120,21 @@ class Maze {
     if(newY < 0 || newY > (SIZE - 1)) {
       return false;
     }
+
+    //update the discovered matrix
+    if(this.matrix[newY][newX] === EXIT) {
+      this.discoveredMatrix[newY][newX] = EXIT_EXPLORED;
+    }
+    else {
+      this.discoveredMatrix[newY][newX] = EXPLORED;
+    }
     //let the begin visible, don't need to erase it
     if(this.matrix[y][x] != BEGIN) {
       this.matrix[y][x] = OTHER;
+      this.discoveredMatrix[y][x] = EXPLORED;
     }
     this.currentRoomType = this.matrix[newY][newX];
     this.matrix[newY][newX] = CURRENT_POSITION;
-    this.discoveredMatrix[newY][newX] = EXPLORED;
     this.nbMove++;
     this.nbAttempts--;
     return true;

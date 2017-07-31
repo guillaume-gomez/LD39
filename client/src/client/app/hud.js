@@ -19,6 +19,7 @@ class Hud {
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
       this.showEndGame();
+      this.drawMaze(maze.discoveredMatrix);
     } else if (maze.nbAttempts <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
@@ -99,13 +100,15 @@ class Hud {
     const getColor = (val) => {
       switch (val) {
         case 0:
-          return "red";
+          return "#607D8B";
         case 1:
-          return "white";
+          return "#FF5722";
         case 2:
-          return "blue";
+          return "#03A9F4";
+        case 3:
+          return "#8BC34A";
         default:
-          return "red";
+          return "#607D8B";
       }
     };
     //fill case
