@@ -165,11 +165,11 @@ function initNbAttempt() {
 function getRoomConstraint(type) {
   switch(type) {
     case BEGIN:
-      return { bgColor: "#2196F3", type: BEGIN };
+      return { bgColor: "#dde0e5", type: BEGIN };
     case EXIT:
-      return { bgColor: "#8BC34A",type: EXIT };
+      return { bgColor: "#ead1b3",type: EXIT };
     case OTHER:
-      return { bgColor: "#F44336", type: OTHER };
+      return { bgColor: "#ffffff", type: OTHER };
   }
 }
 

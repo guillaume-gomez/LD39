@@ -23,10 +23,10 @@ export function drawWalls (ctx, client) {
 
     ctx.save();
     ctx.lineWidth = 40;
-    ctx.shadowColor = '#dba863';
+    ctx.shadowColor = '#e2e1de';
     ctx.shadowBlur = 10;
 
-    ctx.strokeStyle = '#ffde99';
+    ctx.strokeStyle = '#f2f1ef';
 
     // left
     ctx.beginPath();
