@@ -42,7 +42,7 @@ class Hud {
     this.context.font = "18pt sans-serif";
     this.context.fillText("Pinch to escape !!", 10, 40);
     this.context.font = "8pt sans-serif";
-    this.context.fillText("LD 39", 10, 60);
+    this.context.fillText("LD 39: Pinch&scape", 10, 60);
   }
 
   showEndGame() {
