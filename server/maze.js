@@ -6,6 +6,7 @@ const OTHER = "x";
 const CURRENT_POSITION = "p";
 const UNKNOWN = 0;
 const EXPLORED = 1;
+const BEGIN_EXPLORED = 2;
 
 
 const TYPES = {
@@ -13,7 +14,8 @@ const TYPES = {
   EXIT: EXIT,
   OTHER: OTHER,
   EXPLORED: EXPLORED,
-  UNKNOWN: UNKNOWN
+  UNKNOWN: UNKNOWN,
+  BEGIN_EXPLORED: BEGIN_EXPLORED
 };
 
 const SIZE = 4;
@@ -29,7 +31,7 @@ class Maze {
     this.discoveredMatrix = [
       [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
       [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, EXPLORED, UNKNOWN, UNKNOWN],
+      [UNKNOWN, BEGIN_EXPLORED, UNKNOWN, UNKNOWN],
       [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
     ];
     this.nbMove = 0;
@@ -147,17 +149,17 @@ class Maze {
 };
 
 function initNbAttempt() {
-  return 5;
+  return 10;
 }
 
 function getRoomConstraint(type) {
   switch(type) {
     case BEGIN:
-      return { bgColor: "#00FF00", type: BEGIN };
+      return { bgColor: "#2196F3", type: BEGIN };
     case EXIT:
-      return { bgColor: "#0000FF",type: EXIT };
+      return { bgColor: "#8BC34A",type: EXIT };
     case OTHER:
-      return { bgColor: "#FF0000", type: OTHER };
+      return { bgColor: "#F44336", type: OTHER };
   }
 }
 
