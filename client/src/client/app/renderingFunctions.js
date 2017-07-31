@@ -89,7 +89,7 @@ export function openingSort (openingA, openingB) {
     return openingB.start - openingA.start;
   }
 
-export function drawBall (ctx, ball) {
+export function drawBall(ctx, character) {
     ctx.save();
 
     ctx.fillStyle = '#fff';
@@ -97,13 +97,13 @@ export function drawBall (ctx, ball) {
     ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
 
     ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
+    ctx.arc(character.x, character.y, character.radius, 0, 2 * Math.PI);
     ctx.fill();
 
     ctx.restore();
   }
 
-export function drawArrow (ctx, ball, dragPosition) {
+export function drawArrow(ctx, character, dragPosition) {
     var angle;
 
     ctx.save();
@@ -112,11 +112,11 @@ export function drawArrow (ctx, ball, dragPosition) {
     ctx.lineWidth = 3;
     ctx.shadowBlur = 5;
 
-    angle = -Math.atan2(dragPosition.x - ball.x, dragPosition.y - ball.y) + Math.PI / 2;
+    angle = -Math.atan2(dragPosition.x - character.x, dragPosition.y - character.y) + Math.PI / 2;
 
     ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius * 2, angle + Math.PI / 2, angle - Math.PI / 2);
-    ctx.arc(dragPosition.x, dragPosition.y, ball.radius, angle - Math.PI / 2, angle + Math.PI / 2);
+    ctx.arc(character.x, character.y, character.radius * 2, angle + Math.PI / 2, angle - Math.PI / 2);
+    ctx.arc(dragPosition.x, dragPosition.y, character.radius, angle - Math.PI / 2, angle + Math.PI / 2);
     ctx.fill();
 
     ctx.restore();
