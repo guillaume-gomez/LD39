@@ -93,26 +93,26 @@ So on linux, and mac, open a terminal and enter
   ifconfig
 ```
 
-![mac-inet](screenshots/mac-inet.png)
+![mac-inet](screenshots/ipv4-mac.png)
 
 
-For instance my local address is `192.168.1.98`
+For instance my local address is `192.168.1.125`
 
 On Windows, on a terminal too, and enter
 ```
   ipconfig
 ```
 
-![windows](screenshots/ipv4-windows.png) 
+![windows](screenshots/ipv4-windows.png)
 
 
-For instance my local address is `192.168.1.98`
+For instance my local address is `192.168.1.125`
 
 ** The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer) **
 
 ## Let's play
 You can now play the game easily.
-Open a browser on both your devices, and type `(YourLocalAddress):3000.` (in the case above `192.168.1.98:3000`)
+Open a browser on both your devices, and type `(YourLocalAddress):3000.` (in the case above `192.168.1.125:3000`)
 
 The game will start on your devices.
 
