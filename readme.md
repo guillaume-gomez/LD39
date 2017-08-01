@@ -92,7 +92,7 @@ So on linux, and mac, open a terminal and enter
 ```
   ifconfig
 ```
-![mac-inet](screenshots/mac.png) for instance my local address is `192.168.1.98`
+![mac-inet](screenshots/mac-inet.png) for instance my local address is `192.168.1.98`
 
 On Windows, on a terminal too, and enter
 ```
