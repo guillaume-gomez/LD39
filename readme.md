@@ -105,7 +105,7 @@ On Windows, on a terminal too, and enter
 
 For instance my local address is `192.168.1.125`
 
-** The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer) **
+**The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer)**
 
 ## Let's play
 You can now play the game easily.
