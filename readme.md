@@ -39,24 +39,24 @@ All assets have been made during the event.
 - Maxime Lambert: Concept / Game Design
 - Guillaume Gomez: Programming
 
-## Set up
+## Set up Project
 
-
+### Install dependency
 The project has one dependency [NodeJs](https://nodejs.org/en/)
 So first let's install NodeJs.
 
-### Windows and Mac
-	go the link and download the installer, then install it.
+#### Windows and MacOs
+go to the link and download the installer, then install it.
 
-### Linux
-	open a terminal
-	```
+#### Linux
+open a terminal
+```
     sudo apt-get update
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo apt-get install -y nodejs
-  ```
+ ```
 
-## Compile and start the game
+### Compile and start the game
 
 You need to get the sources.
 So click to download ZIP on the github main page of the game
@@ -66,7 +66,7 @@ I will assume you extract the zip directly in Downloads folders.
 You can extract it in another folder you will have able to identify how to go to it by youself in command line
 
 ### Windows, Linux and Mac
-  open a terminal
+open a terminal
   if you put the game in Downloads' folder, type
   ```
   cd Downloads/LD39-master
@@ -84,6 +84,7 @@ npm run build
 cd ..
 npm start
 ```
+__ the last commands launch the
 
 Ok, so your serveur is launched.
 if you want to see the result go to `localhost:3000` on your browser.
