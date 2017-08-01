@@ -63,7 +63,7 @@ You have to get the sources.
 To do it, you need to download the ZIP folder of the game on [Github](https://github.com/guillaume-gomez/LD39) (like in the picture below).
 ![download-zip](screenshots/github-download.png)
 
-For the next steps, let's consider that you **have extracted the ZIP** directly in the Downloads folder( you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide).
+For the next steps, let's consider that you **have extracted the ZIP** directly in the Downloads folder (you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide).
 
 ## Build from sources
 
@@ -92,7 +92,8 @@ So on linux, and mac, open a terminal and enter
 ```
   ifconfig
 ```
-![mac-inet](screenshots/mac-inet.png)
+
+![mac-inet](screenshots/mac-inet.png) 
 For instance my local address is `192.168.1.98`
 
 On Windows, on a terminal too, and enter
@@ -100,19 +101,21 @@ On Windows, on a terminal too, and enter
   ipconfig
 ```
 
-![windows](screenshots/ipv4-windows.png)
+![windows](screenshots/ipv4-windows.png) 
+
+
 For instance my local address is `192.168.1.98`
 
 ** The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer) **
 
 ## Let's play
 You can now play the game easilly
-Open a browser on both your devices, and type `(YourLocalAddress):3000.` (in your case `192.168.1.98:3000`)
+Open a browser on both your devices, and type `(YourLocalAddress):3000.` ( in your case `192.168.1.98:3000`)
 
 The game will start on your devices.
 
 If something went wrong, don't hesitate to restart the server by killing the terminal where the server is running.
-And restart it with command `npm start` (in the folder LD39-master of course)
+And restart it with command `npm start`( in the folder LD39-master of course)
 
 Enjoy !
 
