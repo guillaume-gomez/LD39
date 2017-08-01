@@ -1,10 +1,10 @@
 ![logo](/screenshots/logo.png)
 
 ## About
-The concept of this game if fairly simple, there’s a map, you and your friend( represented by the diamond shaped element) are stuck in there and need to find the exit. You can move in 4 directions and to do so you'll have to use your devices.
+The concept of this game if fairly simple, there’s a map, you and your friend (represented by the diamond shaped element) are stuck in there and need to find the exit. You can move in 4 directions and to do so you'll have to use your devices.
 For instance, to move to the right, it's super easy : You put your second device on the right of the first one
 and you just pinch ! The second device become the new spot where you and your friend are (as seen on
-the mini map in game) and you keep on going until you find the exit !( before you run out of power and die a horrible death of course ^^)
+the mini map in game) and you keep on going until you find the exit ! (before you run out of power and die a horrible death of course ^^)
 
 ## Dev process
 
@@ -12,7 +12,7 @@ For this LD, the theme being running out of power, we thought about an "escape b
 it's too late" kind of game but with a interesting twist in the gameplay.
 In this game, to move from one room to another you use 2 real life devices
 to build your path !
-We used a library called [Swip JS](https://github.com/paulsonnentag/swip) that let you connect several devices( smartphones, iphones, ipads,
+We used a library called [Swip JS](https://github.com/paulsonnentag/swip) that let you connect several devices (smartphones, iphones, ipads,
 or even a laptop with touch screen) with only one move, a pinch on the screens.
 
 Since we had to go on the LD39 journey with a super small team, we decided to keep
@@ -60,7 +60,7 @@ To do it, you need to download the ZIP folder of the game on [Github](https://gi
 
 ![download-zip](screenshots/github-download.png)
 
-For the next steps, let's consider that you **have extracted the ZIP** directly in the Downloads folder( you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide).
+For the next steps, let's consider that you **have extracted the ZIP** directly in the Downloads folder (you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide).
 
 ## Build from sources
 
