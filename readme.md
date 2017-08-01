@@ -42,11 +42,12 @@ All assets have been made during the event.
 ## Set up Project
 
 ### Install dependency
-The project has one dependency [NodeJs](https://nodejs.org/en/)
-So first let's install NodeJs.
+The project has one dependency :
+    - NodeJs
+So first let's install it :
 
 #### Windows and MacOs
-go to the link and download the installer, then install it.
+go to the [link](https://nodejs.org/en/) and download the installer, then install it.
 
 #### Linux
 open a terminal
