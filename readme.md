@@ -79,27 +79,27 @@ npm run build
 cd ..
 npm start
 ```
-_The last command launch the server_
+_The last command launch the server_.
 
-Ok, so your serveur is launched.
-if you want to see the result go to `localhost:3000` on your browser.
-But, I does not work on your devices( Smartphone, Iphone, Ipads, Kindle, etc) for network reason.
-Anyway, connect your devices in the same network as your Pc (by simply connecting your device on WIFI).
+Ok, so your serveur is started( Do not kill the terminal until you stop playing the game).
+Now you can see the result on your computer, to visualize go to `localhost:3000` on your favorite browser.
 
-The Last tricky part it is to identify the local network address.
+There is one last step to connect your portable devices( Smartphone, Iphone, Ipads, Kindle, etc).
+
+You will need your network local address by typing in **another** terminal( your devices need to be connected on the same network as your pc by simply connecting your device on WIFI).
 
 So on linux, and mac, open a terminal and enter
 ```
-  ipconfig
-```
-[mac-inet](screenshots/mac) for instance my local address is `192.168.1.98`
-
-on Windows, on a terminal too, and enter
-```
   ifconfig
 ```
+![mac-inet](screenshots/mac.png) for instance my local address is `192.168.1.98`
+
+On Windows, on a terminal too, and enter
+```
+  ipconfig
+```
 and remember the ipv4 section
-[mac-inet](screenshots/ipv4-windows) for instance my local address is `192.168.1.98`
+![windows](screenshots/ipv4-windows.png) for instance my local address is `192.168.1.98`
 
 ** Otherwise your MAC adress, the local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network( basicaly when you turn of your computer) **
 
