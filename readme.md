@@ -123,7 +123,7 @@ And restart it with command `npm start` (in the folder LD39-master of course)
 
 Enjoy !
 
-*** the server can be still buggy :| , but i will work on it ***
+_the server can be still buggy :| , but i will work on it_
 
 
 ### Let's play
