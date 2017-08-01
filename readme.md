@@ -63,7 +63,7 @@ You have to get the sources.
 To do it, you need to download the ZIP folder of the game on [Github](https://github.com/guillaume-gomez/LD39) (like in the picture below).
 ![download-zip](screenshots/github-download.png)
 
-For the next steps, let's consider that you have extracted the Zip directly in the download folder. (you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide.
+For the next steps, let's consider that you **have extracted the ZIP** directly in the Downloads folder( you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide).
 
 ## Build from sources
 
