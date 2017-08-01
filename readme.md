@@ -42,15 +42,15 @@ All assets have been made during the event.
 ## Set up Project
 
 ### Install dependency
-The project has one dependency :
-    - NodeJs
+The project has one dependency : NodeJs.
+
 So first let's install it :
 
 #### Windows and MacOs
-go to the [link](https://nodejs.org/en/) and download the installer, then install it.
+You can download installer on the [NodeJs website](https://nodejs.org/en/).
 
 #### Linux
-open a terminal
+Open a terminal
 ```
     sudo apt-get update
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
@@ -61,7 +61,7 @@ open a terminal
 
 You need to get the sources.
 So click to download ZIP on the github main page of the game
-[download-zip](screenshots/github-download.png)
+![download-zip](screenshots/github-download.png)
 
 I will assume you extract the zip directly in Downloads folders.
 You can extract it in another folder you will have able to identify how to go to it by youself in command line
