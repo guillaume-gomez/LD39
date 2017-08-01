@@ -92,24 +92,22 @@ So on linux, and mac, open a terminal and enter
 ```
   ifconfig
 ```
-![mac-inet](screenshots/mac-inet.png) for instance my local address is `192.168.1.98`
+![mac-inet](screenshots/mac-inet.png)
+For instance my local address is `192.168.1.98`
 
 On Windows, on a terminal too, and enter
 ```
   ipconfig
 ```
-and remember the ipv4 section
-![windows](screenshots/ipv4-windows.png) for instance my local address is `192.168.1.98`
 
-** Otherwise your MAC adress, the local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network( basicaly when you turn of your computer) **
+![windows](screenshots/ipv4-windows.png)
+For instance my local address is `192.168.1.98`
 
+** The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer) **
 
 ## Let's play
-After all this configuration, you deversed to try it out the game.
-So open a browser on yout both devices, and go to IPV4address:3000.
-In my case
-  on linux, i went go `192.168.1.98:3000`
-  on windows, i went to `192.168.1.125`
+You can now play the game easilly
+Open a browser on both your devices, and type `(YourLocalAddress):3000.` (in your case `192.168.1.98:3000`)
 
 The game will start on your devices.
 
@@ -118,7 +116,4 @@ And restart it with command `npm start` (in the folder LD39-master of course)
 
 Enjoy !
 
-_the server can be still buggy :| , but i will work on it_
-
-
-### Let's play
+_the server can be still buggy :| , but I will work on it_
