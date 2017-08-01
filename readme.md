@@ -39,6 +39,41 @@ All assets have been made during the event.
 - Maxime Lambert: Concept / Game Design
 - Guillaume Gomez: Programming
 
+## Set up
+
+
+The project has one dependency [NodeJs](https://nodejs.org/en/)
+So first let's install NodeJs.
+
+### Windows and Mac
+	go the link and download the installer, then install it.
+
+### Linux
+	open a terminal
+	```
+    sudo apt-get update
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+  ```
+
+## Compile and start the game
+
+You need to get the sources.
+So click to download ZIP on the github main page of the game
+[download-zip](screenshots/github-download.png)
+
+I will assume you extract the zip directly in Downloads folders.
+You can extract it in another folder you will have able to identify how to go to it by youself in command line
+
+### Windows, Linux and Mac
+  open a terminal
+  if you put the game in Downloads' folder, type
+  ```
+  cd Downloads/LD39-master
+  ```
+
+Then copy and paste commands from the section Build from sources
+
 ## Build from sources
 ```
 npm install
@@ -50,4 +85,44 @@ cd ..
 npm start
 ```
 
-go to `localhost:3000` on your browser
+Ok, so your serveur is launched.
+if you want to see the result go to `localhost:3000` on your browser.
+But, I does not work on your devices( Smartphone, Iphone, Ipads, Kindle, etc) for network reason.
+Anyway, connect your devices in the same network as your Pc (by simply connecting your device on WIFI).
+
+The Last tricky part it is to identify the local network address.
+
+So on linux, and mac, open a terminal and enter
+```
+  ipconfig
+```
+[mac-inet](screenshots/mac) for instance my local address is `192.168.1.98`
+
+on Windows, on a terminal too, and enter
+```
+  ifconfig
+```
+and remember the ipv4 section
+[mac-inet](screenshots/ipv4-windows) for instance my local address is `192.168.1.98`
+
+** Otherwise your MAC adress, the local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network( basicaly when you turn of your computer) **
+
+
+## Let's play
+After all this configuration, you deversed to try it out the game.
+So open a browser on yout both devices, and go to IPV4address:3000.
+In my case
+  on linux, i went go `192.168.1.98:3000`
+  on windows, i went to `192.168.1.125`
+
+The game will start on your devices.
+
+If something went wrong, don't hesitate to restart the server by killing the terminal where the server is running.
+And restart it with command `npm start` (in the folder LD39-master of course)
+
+Enjoy !
+
+*** the server can be still buggy :| , but i will work on it ***
+
+
+### Let's play
