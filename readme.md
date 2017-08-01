@@ -35,10 +35,6 @@ All assets have been made during the event.
 ### Controls
 - Move : Your fingers
 
-## Team
-- Maxime Lambert: Concept / Game Design
-- Guillaume Gomez: Programming
-
 ## Set up Project
 
 ### Install dependency
@@ -122,3 +118,8 @@ And restart it with command `npm start` (in the folder LD39-master of course)
 Enjoy !
 
 _the server can be still buggy :| , but I will work on it_
+
+
+## Team
+- Maxime Lambert: Concept / Game Design
+- Guillaume Gomez: Programming
