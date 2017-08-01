@@ -59,24 +59,18 @@ Open a terminal
 
 ### Compile and start the game
 
-You need to get the sources.
-So click to download ZIP on the github main page of the game
+You have to get the sources.
+To do it, you need to download the ZIP folder of the game on [Github](https://github.com/guillaume-gomez/LD39) (like in the picture below).
 ![download-zip](screenshots/github-download.png)
 
-I will assume you extract the zip directly in Downloads folders.
-You can extract it in another folder you will have able to identify how to go to it by youself in command line
-
-### Windows, Linux and Mac
-open a terminal
-  if you put the game in Downloads' folder, type
-  ```
-  cd Downloads/LD39-master
-  ```
-
-Then copy and paste commands from the section Build from sources
+For the next steps, let's consider that you have extracted the Zip directly in the download folder. (you can extract it whatever you want but you will need to adapt the path in the command lines in the next part of the guide.
 
 ## Build from sources
+
+#### Windows, Linux and Mac
+Open a terminal, and type the following
 ```
+cd Downloads/LD39-master
 npm install
 npm run build
 cd client
@@ -85,7 +79,7 @@ npm run build
 cd ..
 npm start
 ```
-__ the last commands launch the
+_The last command launch the server_
 
 Ok, so your serveur is launched.
 if you want to see the result go to `localhost:3000` on your browser.
