@@ -3,7 +3,8 @@ import {
   drawWalls,
   openingSort,
   throttle,
-  drawArrow
+  drawArrow,
+  drawBall
 } from "./renderingFunctions"
 
 import Hud from "./hud";
@@ -67,10 +68,9 @@ function app() {
             y: state.cluster.data.character.y + (distanceY / distance) * 150
           }
           const { character } = state.cluster.data;
-          console.log(`${(evt.position[0].x - character.x) / 2}`, `${(evt.position[0].y - character.y) / 2}`);
           client.emit('hitBall', {
-             speedX: (evt.position[0].x - character.x) / 200,
-             speedY: (evt.position[0].y - character.y) / 200
+             speedX: (evt.position[0].x - character.x) / 100,
+             speedY: (evt.position[0].y - character.y) / 100
           });
         } else {
           dragPosition = evt.position[0];
@@ -109,6 +109,7 @@ function app() {
           characterSprite.y = character.y - characterSprite.height/2;
           characterSprite.render(ctx)
         }
+        //drawBall(ctx, character)
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
@@ -133,11 +134,11 @@ function app() {
     atlas.data = assetsManager.getInstance().getImageByAlias("character");
     atlas.createTexture( "texture_1", 0,0,136,130);
 
-    let texture = atlas.getTextureByName("texture_1"); 
+    let texture = atlas.getTextureByName("texture_1");
     let bmp = new Bitmap();
     bmp.texture = texture;
-    bmp.width = 136;
-    bmp.height = 130;
+    bmp.width = 136/2;
+    bmp.height = 130/2;
     bmp.x = 200;
     bmp.y = 200;
     characterSprite = bmp;

@@ -89,7 +89,7 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 50, y: 50, radius: 65, speedX: 0, speedY: 0 },
+      character: { x: 200, y: 200, radius: 35, speedX: 0, speedY: 0 },
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
