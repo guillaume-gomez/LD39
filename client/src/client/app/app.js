@@ -133,11 +133,11 @@ function app() {
     atlas.data = assetsManager.getInstance().getImageByAlias("character");
     atlas.createTexture( "texture_1", 0,0,136,130);
 
-    let texture = atlas.getTextureByName("texture_1"); // on retrouve notre texture
-    let bmp = new Bitmap(); // on créer un nouvel objet de type Bitmap
-    bmp.texture = texture; // on y associe la texture
-    bmp.width = 136; // on définie la largeur
-    bmp.height = 130;//... puis la hauteur
+    let texture = atlas.getTextureByName("texture_1"); 
+    let bmp = new Bitmap();
+    bmp.texture = texture;
+    bmp.width = 136;
+    bmp.height = 130;
     bmp.x = 200;
     bmp.y = 200;
     characterSprite = bmp;
