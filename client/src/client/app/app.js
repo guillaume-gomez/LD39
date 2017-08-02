@@ -72,7 +72,6 @@ function app() {
              speedX: (evt.position[0].x - character.x) / 100,
              speedY: (evt.position[0].y - character.y) / 100
           });
-        } else {
           dragPosition = evt.position[0];
         }
       }
