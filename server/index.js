@@ -43,25 +43,25 @@ swip(io, ee, {
             ((nextPosX - boundaryOffset) < client.transform.x) &&
             !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
             nextPosX = client.transform.x + boundaryOffset;
-            nextSpeedX = character.speedX * -1;
+            nextSpeedX = 0;
           } else if (((character.speedX > 0) &&
             ((nextPosX + boundaryOffset) > (client.transform.x + client.size.width)) &&
             !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
             nextPosX = client.transform.x + (client.size.width - boundaryOffset);
-            nextSpeedX = character.speedX * -1;
+            nextSpeedX = 0;
           }
 
           if (((character.speedY < 0) &&
             ((nextPosY - boundaryOffset) < client.transform.y &&
             !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
             nextPosY = client.transform.y + boundaryOffset;
-            nextSpeedY = character.speedY * -1;
+            nextSpeedY = 0;
           } else if (((character.speedY > 0) &&
             ((nextPosY + boundaryOffset) > (client.transform.y + client.size.height)) &&
             !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
           ) {
             nextPosY = client.transform.y + (client.size.height - boundaryOffset);
-            nextSpeedY = character.speedY * -1;
+            nextSpeedY = 0;
           }
         } else {
           const firstClient = clients[0];
