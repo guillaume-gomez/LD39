@@ -23,7 +23,7 @@ swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
-        const { character, maze } = cluster.data;
+        const { character, maze, particles } = cluster.data;
         const clients = cluster.clients;
         let downhillAccelerationX = 0;
         let downhillAccelerationY = 0;
@@ -42,6 +42,9 @@ swip(io, ee, {
         nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
         nextSpeedX = 0;
         nextSpeedY = 0;
+        const newParticles = particles.map(particle => {
+          return {x: particle.x + Math.random() * 5, y: particle.y + Math.random() * 5 }
+        });
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
@@ -55,7 +58,8 @@ swip(io, ee, {
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
           currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) },
-          maze: { $set: maze }
+          maze: { $set: maze },
+          particles: { $set: newParticles }
         };
       },
       merge: () => ({}),
@@ -67,7 +71,8 @@ swip(io, ee, {
       nbClients: 2,
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
-      maze: new MazeTools.Maze()
+      maze: new MazeTools.Maze(),
+      particles: [ { x: 500, y: 300}, { x: 300, y: 500}]
     }),
   },
 

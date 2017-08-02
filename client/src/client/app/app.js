@@ -21,6 +21,7 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
+  let particleSprite = [];
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
   window.addEventListener('resize', resizeHudCanvas, false);
@@ -28,6 +29,7 @@ function app() {
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
     assetsLoader.getInstance().addFile("character.png","character");
+    assetsLoader.getInstance().addFile("atari400.png","particle");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -43,7 +45,6 @@ function app() {
     });
 
     client.onDragStart(function (evt) {
-      console.log("onDragStart")
       if (state) {
         var distanceX = evt.position[0].x - state.cluster.data.character.x;
         var distanceY = evt.position[0].y - state.cluster.data.character.y;
@@ -57,7 +58,6 @@ function app() {
     });
 
     client.onDragMove(function (evt) {
-      console.log("onDragMove")
       var distanceX = evt.position[0].x - state.cluster.data.character.x;
       var distanceY = evt.position[0].y - state.cluster.data.character.y;
       var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
@@ -91,11 +91,11 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
+      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze, particles } = state.cluster.data;
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      if(hasStarted) {
+      //if(hasStarted) {
         drawWalls(ctx, client);
         if(characterSprite) {
           characterSprite.x = character.x - characterSprite.width/2;
@@ -105,7 +105,12 @@ function app() {
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
-      }
+        particles.forEach((particle, index) => {
+          particleSprite[index].x = particle.x
+          particleSprite[index].y = particle.y
+          particleSprite[index].render(ctx);
+        });
+      //}
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze);
     });
@@ -124,17 +129,28 @@ function app() {
     }
     let atlas = new TextureAtlas();
     atlas.data = assetsManager.getInstance().getImageByAlias("character");
-    atlas.createTexture( "texture_1", 0,0,136,130);
+    atlas.createTexture("character_tex", 0,0,136,130);
+    let texture = atlas.getTextureByName("character_tex");
+    let characterBmp = new Bitmap();
+    characterBmp.texture = texture;
+    characterBmp.width = 136;
+    characterBmp.height = 130;
+    characterBmp.x = 0;
+    characterBmp.y = 0;
+    characterSprite = characterBmp;
 
-    let texture = atlas.getTextureByName("texture_1"); // on retrouve notre texture
-    let bmp = new Bitmap(); // on créer un nouvel objet de type Bitmap
-    bmp.texture = texture; // on y associe la texture
-    bmp.width = 136; // on définie la largeur
-    bmp.height = 130;//... puis la hauteur
-    bmp.x = 200;
-    bmp.y = 200;
-    characterSprite = bmp;
-    //bmp.drawOnly(ctx)
+    atlas.data = assetsManager.getInstance().getImageByAlias("particle");
+    atlas.createTexture("particle_tex", 0,0,256,156);
+    texture = atlas.getTextureByName("particle_tex");
+    for(let i = 0; i < 2; ++i) {
+      let bmp = new Bitmap();
+      bmp.texture = texture;
+      bmp.width = 256/2;
+      bmp.height = 156/2;
+      bmp.x = 0;
+      bmp.y = 0;
+      particleSprite[i] = bmp;
+    }
   }
 
   function resizeHudCanvas() {
