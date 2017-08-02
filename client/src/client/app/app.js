@@ -40,7 +40,7 @@ function app() {
 
     client.onClick(function (evt) {
       //var hole = { x: evt.position.x, y: evt.position.y };
-      //client.emit('setHole', hole);
+      //client.emit('shoot', hole);
     });
 
     client.onDragStart(function (evt) {
@@ -68,7 +68,7 @@ function app() {
             y: state.cluster.data.character.y + (distanceY / distance) * 150
           }
           const { character } = state.cluster.data;
-          client.emit('hitBall', {
+          client.emit('move', {
              speedX: (evt.position[0].x - character.x) / 100,
              speedY: (evt.position[0].y - character.y) / 100
           });
@@ -80,7 +80,7 @@ function app() {
     client.onDragEnd(function (evt) {
       if (dragging) {
         dragging = false;
-        client.emit('hitBall', {
+        client.emit('move', {
           speedX: 0,
           speedY: 0
         });

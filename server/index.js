@@ -103,7 +103,7 @@ swip(io, ee, {
     init: () => ({ rotationX: 0, rotationY: 0 }),
     events: {
 
-      hitBall: ({ cluster, client }, { speedX, speedY }) => ({
+      move: ({ cluster, client }, { speedX, speedY }) => ({
         cluster: {
           data: {
             character: {
@@ -114,7 +114,7 @@ swip(io, ee, {
         },
       }),
 
-      setHole: ({ cluster, client }, { x, y }) => ({
+      shoot: ({ cluster, client }, { x, y }) => ({
         cluster: {
           data: {
             character: {
