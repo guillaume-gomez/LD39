@@ -43,7 +43,7 @@ swip(io, ee, {
         nextSpeedX = 0;
         nextSpeedY = 0;
         const newParticles = particles.map(particle => {
-          return {x: particle.x + Math.random() * 5, y: particle.y + Math.random() * 5 }
+          return updateParticle(particle, client);
         });
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
@@ -72,7 +72,7 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze(),
-      particles: [ { x: 500, y: 300}, { x: 300, y: 500}]
+      particles: [ { x: 500, y: 300, speedX: 5, speedY: 0, radius: 10 }, { x: 300, y: 500, speedX: -5, speedY: 0, radius: 10}]
     }),
   },
 
@@ -147,6 +147,44 @@ function removeFirstClient(cluster) {
     return { pendingSplit: true, currentScreenId: newClient.id };
   }
   return { pendingSplit: pendingSplit, currentScreenId: currentScreenId };
+}
+
+function updateParticle(particle, client) {
+  let nextPosX = particle.x + particle.speedX;
+  let nextPosY = particle.y + particle.speedY;
+  let nextSpeedX = particle.speedX;
+  let nextSpeedY = particle.speedY;
+  const boundaryOffset = particle.radius + WALL_SIZE;
+  // update speed and position if collision happens
+  if (((particle.speedX < 0) &&
+    ((nextPosX - boundaryOffset) < client.transform.x) &&
+    !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
+    nextPosX = client.transform.x + boundaryOffset;
+    nextSpeedX = ball.speedX * -1;
+    console.log("jkjkjk")
+  } else if (((particle.speedX > 0) &&
+    ((nextPosX + boundaryOffset) > (client.transform.x + client.size.width)) &&
+    !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
+    console.log("jkjkjk")
+    nextPosX = client.transform.x + (client.size.width - boundaryOffset);
+    nextSpeedX = ball.speedX * -1;
+  }
+
+  if (((particle.speedY < 0) &&
+    ((nextPosY - boundaryOffset) < client.transform.y &&
+    !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
+    nextPosY = client.transform.y + boundaryOffset;
+    nextSpeedY = ball.speedY * -1;
+    console.log("jkjkjk")
+  } else if (((particle.speedY > 0) &&
+    ((nextPosY + boundaryOffset) > (client.transform.y + client.size.height)) &&
+    !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
+  ) {
+    console.log("jkjkjk")
+    nextPosY = client.transform.y + (client.size.height - boundaryOffset);
+    nextSpeedY = ball.speedY * -1;
+  }
+  return { x: nextPosX, y: nextPosY, speedX: nextSpeedX, speedY: nextSpeedY };
 }
 
 server.listen(3000);

@@ -3,7 +3,8 @@ import {
   drawWalls,
   openingSort,
   throttle,
-  drawArrow
+  drawArrow,
+  drawBall
 } from "./renderingFunctions"
 
 import Hud from "./hud";
@@ -109,6 +110,7 @@ function app() {
           particleSprite[index].x = particle.x
           particleSprite[index].y = particle.y
           particleSprite[index].render(ctx);
+          //drawBall(ctx, particle);
         });
       //}
       ctx.restore();

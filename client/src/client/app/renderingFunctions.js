@@ -92,7 +92,7 @@ export function openingSort (openingA, openingB) {
 export function drawBall(ctx, character) {
     ctx.save();
 
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#ffaaaa';
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
 
