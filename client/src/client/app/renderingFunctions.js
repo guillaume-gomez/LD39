@@ -103,6 +103,20 @@ export function drawBall(ctx, character) {
     ctx.restore();
   }
 
+export function drawRect(ctx, character) {
+    const {x, y, width, height} = character;
+    ctx.save();
+
+    ctx.fillStyle = '#ffaaaa';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(x, y, width, height);
+    //ctx.fillRect(x, y, width, height);
+
+    ctx.restore();
+  }
+
+
 export function drawArrow(ctx, character, dragPosition) {
     var angle;
 
