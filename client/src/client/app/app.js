@@ -23,7 +23,7 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
-  let particleSprite = [];
+  let enemySprite = [];
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
   window.addEventListener('resize', resizeHudCanvas, false);
@@ -31,7 +31,7 @@ function app() {
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
     assetsLoader.getInstance().addFile("character.png","character");
-    assetsLoader.getInstance().addFile("atari400.png","particle");
+    assetsLoader.getInstance().addFile("atari400.png","enemy");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -93,13 +93,13 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       var client = state.client;
-      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze, particles } = state.cluster.data;
+      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze, enemies } = state.cluster.data;
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       //if(hasStarted) {
         drawWalls(ctx, client);
-        if(characterSprite) {
+        if(characterSprite && character.life > 0) {
           characterSprite.x = character.x - characterSprite.width/2;
           characterSprite.y = character.y - characterSprite.height/2;
           characterSprite.render(ctx)
@@ -107,11 +107,11 @@ function app() {
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
-        particles.forEach((particle, index) => {
-          particleSprite[index].x = particle.x;
-          particleSprite[index].y = particle.y;
-          particleSprite[index].render(ctx);
-          drawRect(ctx, particle);
+        enemies.forEach((enemy, index) => {
+          enemySprite[index].x = enemy.x;
+          enemySprite[index].y = enemy.y;
+          enemySprite[index].render(ctx);
+          drawRect(ctx, enemy);
         });
       //}
       ctx.restore();
@@ -142,7 +142,7 @@ function app() {
     characterBmp.y = 0;
     characterSprite = characterBmp;
 
-    atlas.data = assetsManager.getInstance().getImageByAlias("particle");
+    atlas.data = assetsManager.getInstance().getImageByAlias("enemy");
     atlas.createTexture("particle_tex", 0,0,256,156);
     texture = atlas.getTextureByName("particle_tex");
     for(let i = 0; i < 2; ++i) {
@@ -152,7 +152,7 @@ function app() {
       bmp.height = DefaultHeightEnemy;
       bmp.x = 0;
       bmp.y = 0;
-      particleSprite[i] = bmp;
+      enemySprite[i] = bmp;
     }
   }
 

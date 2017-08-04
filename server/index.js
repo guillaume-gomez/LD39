@@ -25,18 +25,20 @@ swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
-        const { character, maze, particles } = cluster.data;
+        const { character, maze, enemies } = cluster.data;
+        const { x, y, speedX, speedY, radius, life } = character;
         const clients = cluster.clients;
         let downhillAccelerationX = 0;
         let downhillAccelerationY = 0;
-        let nextPosX = character.x + character.speedX;
-        let nextPosY = character.y + character.speedY;
-        let nextSpeedX = character.speedX;
-        let nextSpeedY = character.speedY;
+        let nextPosX = x + speedX;
+        let nextPosY = y + speedY;
+        let nextSpeedX = speedX;
+        let nextSpeedY = speedY;
+        let newLife = life;
         removeFirstClient(cluster);
 
         const hasStarted = maze.getNbMove() > 0;
-        const boundaryOffset = character.radius + WALL_SIZE;
+        const boundaryOffset = radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(character, c));
 
         const firstClient = client || clients[0];
@@ -44,9 +46,16 @@ swip(io, ee, {
         nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
         nextSpeedX = 0;
         nextSpeedY = 0;
-        const newParticles = particles.map(particle => {
-          return updateParticle(particle, client);
+        const newEnemies = enemies.map(enemy => {
+          return updateParticle(enemy, character, client);
         });
+
+        newEnemies.map(enemy => {
+          if(rectCircleColliding(character, enemy))
+          {
+            newLife = newLife - 2;
+          }
+        })
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
@@ -55,27 +64,28 @@ swip(io, ee, {
             y: { $set: nextPosY },
             speedX: { $set: (nextSpeedX + downhillAccelerationX) * 0.97 },
             speedY: { $set: (nextSpeedY + downhillAccelerationY) * 0.97 },
+            life: { $set: newLife }
           },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
           currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) },
           maze: { $set: maze },
-          particles: { $set: newParticles }
+          enemies: { $set: newEnemies }
         };
       },
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
+      character: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0, life: 100 },
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze(),
-      particles: [ { x: 500, y: 300, speedX: 10, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-                   { x: 300, y: 500, speedX: -10, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      enemies: [ { x: 500, y: 500, speedX: 10, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+                   { x: 1200, y: 500, speedX: 0, speedY: -10,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
                   ]
     }),
   },
@@ -153,8 +163,24 @@ function removeFirstClient(cluster) {
   return { pendingSplit: pendingSplit, currentScreenId: currentScreenId };
 }
 
-function updateParticle(particle, client) {
-  const { radius, x, y, speedX, speedY, width, height } = particle;
+
+function rectCircleColliding(circle, rect){
+    const distX = Math.abs(circle.x - rect.x - rect.width / 2);
+    const distY = Math.abs(circle.y - rect.y - rect.height / 2);
+
+    if (distX > (rect.width / 2 + circle.radius)) { return false; }
+    if (distY > (rect.height / 2 + circle.radius)) { return false; }
+
+    if (distX <= (rect.width / 2)) { return true; }
+    if (distY <= (rect.height / 2)) { return true; }
+
+    var dx = distX - rect.width / 2;
+    var dy = distY - rect.height / 2;
+    return (dx * dx + dy * dy <= (circle.radius * circle.radius ));
+}
+
+function updateParticle(enemy, character, client) {
+  const { radius, x, y, speedX, speedY, width, height } = enemy;
   let nextPosX = x + speedX;
   let nextPosY = y + speedY;
   let nextSpeedX = speedX;
