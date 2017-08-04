@@ -43,7 +43,7 @@ function app() {
 
     client.onClick(function (evt) {
       //var hole = { x: evt.position.x, y: evt.position.y };
-      //client.emit('setHole', hole);
+      //client.emit('shoot', hole);
     });
 
     client.onDragStart(function (evt) {
@@ -52,7 +52,7 @@ function app() {
         var distanceY = evt.position[0].y - state.cluster.data.character.y;
         var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 
-        if (distance < (2 * state.cluster.data.character.radius)) {
+        if (distance < (3 * state.cluster.data.character.radius)) {
           dragging = true;
           dragPosition = evt.position[0];
         }
@@ -70,16 +70,23 @@ function app() {
             x: state.cluster.data.character.x + (distanceX / distance) * 150,
             y: state.cluster.data.character.y + (distanceY / distance) * 150
           }
-        } else {
+          const { character } = state.cluster.data;
+          client.emit('move', {
+             speedX: (evt.position[0].x - character.x) / 100,
+             speedY: (evt.position[0].y - character.y) / 100
+          });
           dragPosition = evt.position[0];
         }
       }
     });
 
     client.onDragEnd(function (evt) {
-      console.log("onDragEnd")
       if (dragging) {
         dragging = false;
+        client.emit('move', {
+          speedX: 0,
+          speedY: 0
+        });
       }
     });
 
@@ -103,9 +110,9 @@ function app() {
           characterSprite.x = character.x - characterSprite.width/2;
           characterSprite.y = character.y - characterSprite.height/2;
           characterSprite.render(ctx)
-        }
-        if (dragging) {
-          drawArrow(ctx, character, dragPosition);
+          if (dragging) {
+            drawArrow(ctx, character, dragPosition);
+          }
         }
         enemies.forEach((enemy, index) => {
           enemySprite[index].x = enemy.x;
