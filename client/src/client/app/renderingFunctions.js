@@ -89,7 +89,7 @@ export function openingSort (openingA, openingB) {
     return openingB.start - openingA.start;
   }
 
-export function drawBall(ctx, character) {
+export function drawCircle(ctx, character) {
     ctx.save();
 
     ctx.fillStyle = '#ffaaaa';
