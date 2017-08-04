@@ -73,7 +73,7 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze(),
-      particles: [ { x: 500, y: 300, speedX: 5, speedY: 0, width: 20, height: 20 }, { x: 300, y: 500, speedX: -5, speedY: 0,  width: 20, height: 20}]
+      particles: [ { x: 500, y: 300, speedX: 10, speedY: 0, width: 50, height: 40 }, { x: 300, y: 500, speedX: -10, speedY: 0,  width: 50, height: 40}]
     }),
   },
 
@@ -158,7 +158,6 @@ function updateParticle(particle, client) {
   let nextSpeedY = speedY;
   const boundaryX = width + WALL_SIZE;
   const boundaryY = height + WALL_SIZE;
-  const boundaryOffset = radius + WALL_SIZE;
   // update speed and position if collision happens
   if (((speedX < 0) &&
     ((nextPosX - boundaryX) < client.transform.x) &&
