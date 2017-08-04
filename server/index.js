@@ -8,6 +8,7 @@ const swip = require('../swip/server/index.js');
 app.use(express.static(`${__dirname}/../client`));
 
 const MazeTools = require("./maze.js");
+//const Enemy = require("./e.js");
 
 const EventEmitter = require("events").EventEmitter;
 const ee = new EventEmitter();
@@ -72,7 +73,7 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze(),
-      particles: [ { x: 500, y: 300, speedX: 5, speedY: 0, radius: 60 }, { x: 300, y: 500, speedX: -5, speedY: 0, radius: 60}]
+      particles: [ { x: 500, y: 300, speedX: 5, speedY: 0, width: 20, height: 20 }, { x: 300, y: 500, speedX: -5, speedY: 0,  width: 20, height: 20}]
     }),
   },
 
@@ -150,38 +151,40 @@ function removeFirstClient(cluster) {
 }
 
 function updateParticle(particle, client) {
-  const { radius, x, y, speedX, speedY } = particle;
+  const { radius, x, y, speedX, speedY, width, height } = particle;
   let nextPosX = x + speedX;
   let nextPosY = y + speedY;
   let nextSpeedX = speedX;
   let nextSpeedY = speedY;
+  const boundaryX = width + WALL_SIZE;
+  const boundaryY = height + WALL_SIZE;
   const boundaryOffset = radius + WALL_SIZE;
   // update speed and position if collision happens
   if (((speedX < 0) &&
-    ((nextPosX - boundaryOffset) < client.transform.x) &&
+    ((nextPosX - boundaryX) < client.transform.x) &&
     !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
-    nextPosX = client.transform.x + boundaryOffset;
+    nextPosX = client.transform.x + boundaryX;
     nextSpeedX = speedX * -1;
   } else if (((speedX > 0) &&
-    ((nextPosX + boundaryOffset) > (client.transform.x + client.size.width)) &&
+    ((nextPosX + boundaryX) > (client.transform.x + client.size.width)) &&
     !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
-    nextPosX = client.transform.x + (client.size.width - boundaryOffset);
+    nextPosX = client.transform.x + (client.size.width - boundaryX);
     nextSpeedX = speedX * -1;
   }
 
   if (((speedY < 0) &&
-    ((nextPosY - boundaryOffset) < client.transform.y &&
+    ((nextPosY - boundaryY) < client.transform.y &&
     !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
-    nextPosY = client.transform.y + boundaryOffset;
+    nextPosY = client.transform.y + boundaryY;
     nextSpeedY = speedY * -1;
   } else if (((speedY > 0) &&
-    ((nextPosY + boundaryOffset) > (client.transform.y + client.size.height)) &&
+    ((nextPosY + boundaryY) > (client.transform.y + client.size.height)) &&
     !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
   ) {
-    nextPosY = client.transform.y + (client.size.height - boundaryOffset);
+    nextPosY = client.transform.y + (client.size.height - boundaryY);
     nextSpeedY = speedY * -1;
   }
-  return { x: nextPosX, y: nextPosY, speedX: nextSpeedX, speedY: nextSpeedY, radius };
+  return { x: nextPosX, y: nextPosY, speedX: nextSpeedX, speedY: nextSpeedY, width, height };
 }
 
 server.listen(3000);
