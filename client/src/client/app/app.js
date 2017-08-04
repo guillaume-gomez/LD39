@@ -3,7 +3,8 @@ import {
   drawWalls,
   openingSort,
   throttle,
-  drawArrow
+  drawArrow,
+  drawBall
 } from "./renderingFunctions"
 
 import Hud from "./hud";
@@ -39,17 +40,16 @@ function app() {
 
     client.onClick(function (evt) {
       //var hole = { x: evt.position.x, y: evt.position.y };
-      //client.emit('setHole', hole);
+      //client.emit('shoot', hole);
     });
 
     client.onDragStart(function (evt) {
-      console.log("onDragStart")
       if (state) {
         var distanceX = evt.position[0].x - state.cluster.data.character.x;
         var distanceY = evt.position[0].y - state.cluster.data.character.y;
         var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 
-        if (distance < (2 * state.cluster.data.character.radius)) {
+        if (distance < (3 * state.cluster.data.character.radius)) {
           dragging = true;
           dragPosition = evt.position[0];
         }
@@ -57,7 +57,6 @@ function app() {
     });
 
     client.onDragMove(function (evt) {
-      console.log("onDragMove")
       var distanceX = evt.position[0].x - state.cluster.data.character.x;
       var distanceY = evt.position[0].y - state.cluster.data.character.y;
       var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
@@ -68,16 +67,23 @@ function app() {
             x: state.cluster.data.character.x + (distanceX / distance) * 150,
             y: state.cluster.data.character.y + (distanceY / distance) * 150
           }
-        } else {
+          const { character } = state.cluster.data;
+          client.emit('move', {
+             speedX: (evt.position[0].x - character.x) / 100,
+             speedY: (evt.position[0].y - character.y) / 100
+          });
           dragPosition = evt.position[0];
         }
       }
     });
 
     client.onDragEnd(function (evt) {
-      console.log("onDragEnd")
       if (dragging) {
         dragging = false;
+        client.emit('move', {
+          speedX: 0,
+          speedY: 0
+        });
       }
     });
 
@@ -95,17 +101,18 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      if(hasStarted) {
+      //if(hasStarted) {
         drawWalls(ctx, client);
         if(characterSprite) {
           characterSprite.x = character.x - characterSprite.width/2;
           characterSprite.y = character.y - characterSprite.height/2;
           characterSprite.render(ctx)
         }
+        //drawBall(ctx, character)
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
-      }
+      //}
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze);
     });
@@ -126,11 +133,11 @@ function app() {
     atlas.data = assetsManager.getInstance().getImageByAlias("character");
     atlas.createTexture( "texture_1", 0,0,136,130);
 
-    let texture = atlas.getTextureByName("texture_1"); // on retrouve notre texture
-    let bmp = new Bitmap(); // on créer un nouvel objet de type Bitmap
-    bmp.texture = texture; // on y associe la texture
-    bmp.width = 136; // on définie la largeur
-    bmp.height = 130;//... puis la hauteur
+    let texture = atlas.getTextureByName("texture_1");
+    let bmp = new Bitmap();
+    bmp.texture = texture;
+    bmp.width = 136/2;
+    bmp.height = 130/2;
     bmp.x = 200;
     bmp.y = 200;
     characterSprite = bmp;

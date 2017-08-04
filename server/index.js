@@ -37,19 +37,47 @@ swip(io, ee, {
         const boundaryOffset = character.radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(character, c));
 
-        const firstClient = client || clients[0];
-        nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
-        nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
-        nextSpeedX = 0;
-        nextSpeedY = 0;
+        if(client) {
+          // update speed and position if collision happens
+          if (((character.speedX < 0) &&
+            ((nextPosX - boundaryOffset) < client.transform.x) &&
+            !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
+            nextPosX = client.transform.x + boundaryOffset;
+            nextSpeedX = 0;
+          } else if (((character.speedX > 0) &&
+            ((nextPosX + boundaryOffset) > (client.transform.x + client.size.width)) &&
+            !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
+            nextPosX = client.transform.x + (client.size.width - boundaryOffset);
+            nextSpeedX = 0;
+          }
+
+          if (((character.speedY < 0) &&
+            ((nextPosY - boundaryOffset) < client.transform.y &&
+            !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
+            nextPosY = client.transform.y + boundaryOffset;
+            nextSpeedY = 0;
+          } else if (((character.speedY > 0) &&
+            ((nextPosY + boundaryOffset) > (client.transform.y + client.size.height)) &&
+            !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
+          ) {
+            nextPosY = client.transform.y + (client.size.height - boundaryOffset);
+            nextSpeedY = 0;
+          }
+        } else {
+          const firstClient = clients[0];
+          nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
+          nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
+          nextSpeedX = 0;
+          nextSpeedY = 0;
+        }
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
           character: {
             x: { $set: nextPosX },
             y: { $set: nextPosY },
-            speedX: { $set: (nextSpeedX + downhillAccelerationX) * 0.97 },
-            speedY: { $set: (nextSpeedY + downhillAccelerationY) * 0.97 },
+            speedX: { $set: (nextSpeedX + downhillAccelerationX) },
+            speedY: { $set: (nextSpeedY + downhillAccelerationY) },
           },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
@@ -61,7 +89,7 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 50, y: 50, radius: 10, speedX: 0, speedY: 0 },
+      character: { x: 200, y: 200, radius: 35, speedX: 0, speedY: 0 },
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
@@ -75,7 +103,7 @@ swip(io, ee, {
     init: () => ({ rotationX: 0, rotationY: 0 }),
     events: {
 
-      hitBall: ({ cluster, client }, { speedX, speedY }) => ({
+      move: ({ cluster, client }, { speedX, speedY }) => ({
         cluster: {
           data: {
             character: {
@@ -86,10 +114,10 @@ swip(io, ee, {
         },
       }),
 
-      setHole: ({ cluster, client }, { x, y }) => ({
+      shoot: ({ cluster, client }, { x, y }) => ({
         cluster: {
           data: {
-            ball: {
+            character: {
               x: { $set: x },
               y: { $set: y },
             },

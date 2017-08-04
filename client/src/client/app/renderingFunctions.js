@@ -92,7 +92,7 @@ export function openingSort (openingA, openingB) {
 export function drawBall(ctx, character) {
     ctx.save();
 
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#ff9999';
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
 
@@ -108,15 +108,15 @@ export function drawArrow(ctx, character, dragPosition) {
 
     ctx.save();
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.lineWidth = 3;
     ctx.shadowBlur = 5;
 
     angle = -Math.atan2(dragPosition.x - character.x, dragPosition.y - character.y) + Math.PI / 2;
 
     ctx.beginPath();
-    ctx.arc(character.x, character.y, character.radius * 2, angle + Math.PI / 2, angle - Math.PI / 2);
-    ctx.arc(dragPosition.x, dragPosition.y, character.radius, angle - Math.PI / 2, angle + Math.PI / 2);
+    ctx.arc(character.x, character.y, character.radius / 2, angle + Math.PI / 2, angle - Math.PI / 2);
+    ctx.arc(dragPosition.x, dragPosition.y, character.radius / 4, angle - Math.PI / 2 , angle + Math.PI / 2);
     ctx.fill();
 
     ctx.restore();
