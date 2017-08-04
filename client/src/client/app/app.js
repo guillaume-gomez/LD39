@@ -7,6 +7,7 @@ import {
   drawRect
 } from "./renderingFunctions"
 
+import {DefaultWidthEnemy, DefaultHeightEnemy} from "./constants";
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
@@ -147,8 +148,8 @@ function app() {
     for(let i = 0; i < 2; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
-      bmp.width = 256/2;
-      bmp.height = 156/2;
+      bmp.width = DefaultWidthEnemy;
+      bmp.height = DefaultHeightEnemy;
       bmp.x = 0;
       bmp.y = 0;
       particleSprite[i] = bmp;

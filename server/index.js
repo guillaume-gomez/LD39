@@ -8,6 +8,7 @@ const swip = require('../swip/server/index.js');
 app.use(express.static(`${__dirname}/../client`));
 
 const MazeTools = require("./maze.js");
+const Constants = require("./constants.js");
 //const Enemy = require("./e.js");
 
 const EventEmitter = require("events").EventEmitter;
@@ -73,7 +74,9 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze(),
-      particles: [ { x: 500, y: 300, speedX: 10, speedY: 0, width: 50, height: 40 }, { x: 300, y: 500, speedX: -10, speedY: 0,  width: 50, height: 40}]
+      particles: [ { x: 500, y: 300, speedX: 10, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+                   { x: 300, y: 500, speedX: -10, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+                  ]
     }),
   },
 
@@ -160,9 +163,9 @@ function updateParticle(particle, client) {
   const boundaryY = height + WALL_SIZE;
   // update speed and position if collision happens
   if (((speedX < 0) &&
-    ((nextPosX - boundaryX + width) < client.transform.x) &&
+    ((nextPosX - WALL_SIZE) < client.transform.x) &&
     !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
-    nextPosX = client.transform.x + boundaryX - width;
+    nextPosX = client.transform.x + WALL_SIZE;
     nextSpeedX = speedX * -1;
   } else if (((speedX > 0) &&
     ((nextPosX + boundaryX) > (client.transform.x + client.size.width)) &&
@@ -172,9 +175,9 @@ function updateParticle(particle, client) {
   }
 
   if (((speedY < 0) &&
-    ((nextPosY - boundaryY + height) < client.transform.y &&
+    ((nextPosY - WALL_SIZE) < client.transform.y &&
     !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
-    nextPosY = client.transform.y + boundaryY - height;
+    nextPosY = client.transform.y + WALL_SIZE;
     nextSpeedY = speedY * -1;
   } else if (((speedY > 0) &&
     ((nextPosY + boundaryY) > (client.transform.y + client.size.height)) &&
