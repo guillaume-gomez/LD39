@@ -160,9 +160,9 @@ function updateParticle(particle, client) {
   const boundaryY = height + WALL_SIZE;
   // update speed and position if collision happens
   if (((speedX < 0) &&
-    ((nextPosX - boundaryX) < client.transform.x) &&
+    ((nextPosX - boundaryX + width) < client.transform.x) &&
     !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
-    nextPosX = client.transform.x + boundaryX;
+    nextPosX = client.transform.x + boundaryX - width;
     nextSpeedX = speedX * -1;
   } else if (((speedX > 0) &&
     ((nextPosX + boundaryX) > (client.transform.x + client.size.width)) &&
@@ -172,9 +172,9 @@ function updateParticle(particle, client) {
   }
 
   if (((speedY < 0) &&
-    ((nextPosY - boundaryY) < client.transform.y &&
+    ((nextPosY - boundaryY + height) < client.transform.y &&
     !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
-    nextPosY = client.transform.y + boundaryY;
+    nextPosY = client.transform.y + boundaryY - height;
     nextSpeedY = speedY * -1;
   } else if (((speedY > 0) &&
     ((nextPosY + boundaryY) > (client.transform.y + client.size.height)) &&
