@@ -4,7 +4,7 @@ import {
   openingSort,
   throttle,
   drawArrow,
-  drawBall
+  drawRect
 } from "./renderingFunctions"
 
 import Hud from "./hud";
@@ -107,10 +107,10 @@ function app() {
           drawArrow(ctx, character, dragPosition);
         }
         particles.forEach((particle, index) => {
-          particleSprite[index].x = particle.x
-          particleSprite[index].y = particle.y
+          particleSprite[index].x = particle.x;
+          particleSprite[index].y = particle.y;
           particleSprite[index].render(ctx);
-          //drawBall(ctx, particle);
+          drawRect(ctx, particle);
         });
       //}
       ctx.restore();
