@@ -5,6 +5,7 @@ class Hud {
     this.context = canvas.getContext("2d");
     this.fillFontStyle = "white";
     this.fillBGStyle = "#24292e";
+    this.font = "Helvetica";
 	}
 
   resize(width, height) {
@@ -39,9 +40,9 @@ class Hud {
     this.context.fillRect(0, 0, 320, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = "18pt sans-serif";
+    this.context.font = `18pt ${this.font}`;
     this.context.fillText("Pinch to escape !!", 10, 40);
-    this.context.font = "8pt sans-serif";
+    this.context.font = `8pt ${this.font}`;
     this.context.fillText("LD 39: Pinch&scape", 10, 60);
   }
 
@@ -51,7 +52,7 @@ class Hud {
     this.context.fillRect(0, 0, 320, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = "18pt sans-serif";
+    this.context.font = `18pt ${this.font}`;
     this.context.fillText("You Won", 10, 40);
   }
 
@@ -61,7 +62,7 @@ class Hud {
     this.context.fillRect(0, 0, 320, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = "18pt sans-serif";
+    this.context.font = `18pt ${this.font}`;
     this.context.fillText("You Lose :( refresh the page", 10, 40);
   }
 
@@ -72,7 +73,7 @@ class Hud {
     this.context.fillRect(0, 0, 220, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = "13pt sans-serif";
+    this.context.font = `13pt ${this.font}`;
     this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 10, 40);
   }
 
