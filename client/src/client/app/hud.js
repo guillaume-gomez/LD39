@@ -7,12 +7,13 @@ class Hud {
     this.fillBGStyle = "#24292e";
     this.font = "Helvetica";
     this.widthPanel = 350;
+    this.heightPanel = 100;
 	}
 
   resize(width, height) {
     //this.canvas.height = height;
     //this.canvas.width = width;
-    this.canvas.height = 70;
+    this.canvas.height = this.heightPanel;
     this.canvas.width = this.widthPanel;
   }
 
@@ -22,15 +23,15 @@ class Hud {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
-      this.showEndGame();
-      this.drawMaze(maze.discoveredMatrix);
+       this.showEndGame();
+       this.drawMaze(maze.discoveredMatrix);
     } else if (maze.nbAttempts <= 0) {
-       this.showLoseGame();
+        this.showLoseGame();
     } else if (hasStarted) {
       this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
       this.drawMaze(maze.discoveredMatrix);
     } else {
-      this.showGameText();
+       this.showGameText();
     }
     this.context.restore();
   }
@@ -38,44 +39,44 @@ class Hud {
   showGameText() {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, this.widthPanel, 70);
+    this.context.fillRect(0, 0, this.widthPanel, this.heightPanel);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `20pt ${this.font}`;
-    this.context.fillText("Pinch to escape !!",5, 35);
-    this.context.font = `10pt ${this.font}`;
-    this.context.fillText("LD 39: Pinch&scape", 5, 60);
+    this.context.font = `22pt ${this.font}`;
+    this.context.fillText("Pinch to escape !!",5, 45);
+    this.context.font = `12pt ${this.font}`;
+    this.context.fillText("LD 39: Pinch&scape", 5, 70);
   }
 
   showEndGame() {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 230, 70);
+    this.context.fillRect(0, 0, 230, this.heightPanel);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `18pt ${this.font}`;
-    this.context.fillText("You Won", 5, 40);
+    this.context.font = `20pt ${this.font}`;
+    this.context.fillText("You Won", 5, 60);
   }
 
   showLoseGame() {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, this.widthPanel, 70);
+    this.context.fillRect(0, 0, this.widthPanel, this.heightPanel);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `20pt ${this.font}`;
-    this.context.fillText("You Lose :( refresh the page", 5, 45);
+    this.context.fillText("You Lose :( refresh the page", 5, 60);
   }
 
 
   displayNbAttempt(currentAttempt, maxAttempt) {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 230, 70);
+    this.context.fillRect(0, 0, 230, this.heightPanel);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `15pt ${this.font}`;
-    this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 5, 40);
+    this.context.font = `16pt ${this.font}`;
+    this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 5, 50);
   }
 
   drawMaze(matrix) {
@@ -83,7 +84,7 @@ class Hud {
     const sizeCells = 15;
     const width = 4 * sizeCells + 2;
     const boxes = 4;
-    this.context.translate(this.canvas.width/2 - width/2 + offset, 5);
+    this.context.translate(this.canvas.width/2 - width/2 + offset, offset);
     this.context.beginPath();
     this.context.lineWidth = 1;
     this.context.strokeStyle = this.fillBGStyle;
