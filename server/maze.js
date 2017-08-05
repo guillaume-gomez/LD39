@@ -8,7 +8,7 @@ const UNKNOWN = 0;
 const EXPLORED = 1;
 const BEGIN_EXPLORED = 2;
 const EXIT_EXPLORED = 3;
-
+const CURRENT_POSITION_EXPLORED = 4;
 
 const TYPES = {
   BEGIN: BEGIN,
@@ -17,7 +17,8 @@ const TYPES = {
   EXPLORED: EXPLORED,
   UNKNOWN: UNKNOWN,
   BEGIN_EXPLORED: BEGIN_EXPLORED,
-  EXIT_EXPLORED: EXIT_EXPLORED
+  EXIT_EXPLORED: EXIT_EXPLORED,
+  CURRENT_POSITION_EXPLORED: CURRENT_POSITION_EXPLORED
 };
 
 const SIZE = 4;
@@ -128,6 +129,7 @@ class Maze {
     }
     else {
       this.discoveredMatrix[newY][newX] = EXPLORED;
+      this.discoveredMatrix[newY][newX] = CURRENT_POSITION_EXPLORED;
     }
     //let the begin visible, don't need to erase it
     if(this.matrix[y][x] != BEGIN) {
@@ -169,6 +171,8 @@ function getRoomConstraint(type) {
       return { bgColor: "#b5b9bf", type: BEGIN };
     case EXIT:
       return { bgColor: "#ead1b3", type: EXIT };
+    case CURRENT_POSITION:
+      return { bgColor: "#efeded", type: CURRENT_POSITION };
     case OTHER:
       return { bgColor: "#efeded", type: OTHER };
   }
