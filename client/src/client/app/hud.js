@@ -6,13 +6,14 @@ class Hud {
     this.fillFontStyle = "white";
     this.fillBGStyle = "#24292e";
     this.font = "Helvetica";
+    this.widthPanel = 350;
 	}
 
   resize(width, height) {
     //this.canvas.height = height;
     //this.canvas.width = width;
     this.canvas.height = 70;
-    this.canvas.width = 320;
+    this.canvas.width = this.widthPanel;
   }
 
   //todo add abbraction in this function
@@ -24,7 +25,7 @@ class Hud {
       this.showEndGame();
       this.drawMaze(maze.discoveredMatrix);
     } else if (maze.nbAttempts <= 0) {
-      this.showLoseGame();
+       this.showLoseGame();
     } else if (hasStarted) {
       this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
       this.drawMaze(maze.discoveredMatrix);
@@ -37,44 +38,44 @@ class Hud {
   showGameText() {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 320, 70);
+    this.context.fillRect(0, 0, this.widthPanel, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `18pt ${this.font}`;
-    this.context.fillText("Pinch to escape !!", 10, 40);
-    this.context.font = `8pt ${this.font}`;
-    this.context.fillText("LD 39: Pinch&scape", 10, 60);
+    this.context.font = `20pt ${this.font}`;
+    this.context.fillText("Pinch to escape !!",5, 35);
+    this.context.font = `10pt ${this.font}`;
+    this.context.fillText("LD 39: Pinch&scape", 5, 60);
   }
 
   showEndGame() {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 320, 70);
+    this.context.fillRect(0, 0, 230, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `18pt ${this.font}`;
-    this.context.fillText("You Won", 10, 40);
+    this.context.fillText("You Won", 5, 40);
   }
 
   showLoseGame() {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 320, 70);
+    this.context.fillRect(0, 0, this.widthPanel, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `18pt ${this.font}`;
-    this.context.fillText("You Lose :( refresh the page", 10, 40);
+    this.context.font = `20pt ${this.font}`;
+    this.context.fillText("You Lose :( refresh the page", 5, 45);
   }
 
 
   displayNbAttempt(currentAttempt, maxAttempt) {
     this.context.beginPath();
     this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 220, 70);
+    this.context.fillRect(0, 0, 230, 70);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `13pt ${this.font}`;
-    this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 10, 40);
+    this.context.font = `15pt ${this.font}`;
+    this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 5, 40);
   }
 
   drawMaze(matrix) {
