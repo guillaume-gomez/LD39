@@ -105,7 +105,7 @@ function app() {
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       //if(hasStarted) {
-        drawWalls(ctx, client);
+        drawWalls(ctx, client); 
         if(characterSprite && character.life > 0) {
           characterSprite.x = character.x - characterSprite.width/2;
           characterSprite.y = character.y - characterSprite.height/2;
@@ -118,7 +118,7 @@ function app() {
           enemySprite[index].x = enemy.x;
           enemySprite[index].y = enemy.y;
           enemySprite[index].render(ctx);
-          drawRect(ctx, enemy);
+          //drawRect(ctx, enemy);
         });
       //}
       ctx.restore();
