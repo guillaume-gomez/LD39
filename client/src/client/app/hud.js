@@ -3,6 +3,8 @@ class Hud {
 	constructor(canvas, mainCanvas) {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
+    this.fillFontStyle = "white";
+    this.fillBGStyle = "#24292e";
 	}
 
   resize(width, height) {
@@ -33,10 +35,10 @@ class Hud {
 
   showGameText() {
     this.context.beginPath();
-    this.context.fillStyle = "black";
+    this.context.fillStyle = this.fillBGStyle;
     this.context.fillRect(0, 0, 320, 70);
     this.context.fill();
-    this.context.fillStyle = "white";
+    this.context.fillStyle = this.fillFontStyle;
     this.context.font = "18pt sans-serif";
     this.context.fillText("Pinch to escape !!", 10, 40);
     this.context.font = "8pt sans-serif";
@@ -45,20 +47,20 @@ class Hud {
 
   showEndGame() {
     this.context.beginPath();
-    this.context.fillStyle = "black";
+    this.context.fillStyle = this.fillBGStyle;
     this.context.fillRect(0, 0, 320, 70);
     this.context.fill();
-    this.context.fillStyle = "white";
+    this.context.fillStyle = this.fillFontStyle;
     this.context.font = "18pt sans-serif";
     this.context.fillText("You Won", 10, 40);
   }
 
   showLoseGame() {
     this.context.beginPath();
-    this.context.fillStyle = "black";
+    this.context.fillStyle = this.fillBGStyle;
     this.context.fillRect(0, 0, 320, 70);
     this.context.fill();
-    this.context.fillStyle = "white";
+    this.context.fillStyle = this.fillFontStyle;
     this.context.font = "18pt sans-serif";
     this.context.fillText("You Lose :( refresh the page", 10, 40);
   }
@@ -66,10 +68,10 @@ class Hud {
 
   displayNbAttempt(currentAttempt, maxAttempt) {
     this.context.beginPath();
-    this.context.fillStyle = "black";
+    this.context.fillStyle = this.fillBGStyle;
     this.context.fillRect(0, 0, 220, 70);
     this.context.fill();
-    this.context.fillStyle = "white";
+    this.context.fillStyle = this.fillFontStyle;
     this.context.font = "13pt sans-serif";
     this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 10, 40);
   }
@@ -82,8 +84,8 @@ class Hud {
     this.context.translate(this.canvas.width/2 - width/2 + offset, 5);
     this.context.beginPath();
     this.context.lineWidth = 1;
-    this.context.strokeStyle = 'black';
-    this.context.fillStyle = "white";
+    this.context.strokeStyle = this.fillBGStyle;
+    this.context.fillStyle = this.fillFontStyle;
     //draw grid
     for (var row = 0; row < boxes; row++) {
       for (var column = 0; column < boxes; column++) {
