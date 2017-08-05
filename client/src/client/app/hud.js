@@ -112,6 +112,8 @@ class Hud {
           return "#03A9F4";
         case 3:
           return "#8BC34A";
+        case 4:
+          return "#FFFFFF";
         default:
           return "#607D8B";
       }
