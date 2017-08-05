@@ -27,8 +27,6 @@ class Hud {
       this.drawMaze(maze.discoveredMatrix);
     } else {
       this.showGameText();
-       //this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
-      //this.drawMaze(maze.discoveredMatrix);
     }
     this.context.restore();
   }
