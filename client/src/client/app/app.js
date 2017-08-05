@@ -5,8 +5,8 @@ import {
   throttle,
   drawArrow,
   drawBall
-} from "./renderingFunctions"
-
+} from "./renderingFunctions";
+import {DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
@@ -104,9 +104,11 @@ function app() {
       //if(hasStarted) {
         drawWalls(ctx, client);
         if(characterSprite) {
-          characterSprite.x = character.x - characterSprite.width/2;
-          characterSprite.y = character.y - characterSprite.height/2;
-          characterSprite.render(ctx)
+          characterSprite.x = character.x - characterSprite.width / 2;
+          characterSprite.y = character.y - characterSprite.height / 2;
+          characterSprite.width = DefaultWidthCharacter * converter.scalingFactor;
+          characterSprite.height = DefaultHeightCharacter * converter.scalingFactor;
+          characterSprite.render(ctx);
         }
         //drawBall(ctx, character)
         if (dragging) {
@@ -136,8 +138,8 @@ function app() {
     let texture = atlas.getTextureByName("texture_1");
     let bmp = new Bitmap();
     bmp.texture = texture;
-    bmp.width = 136/2;
-    bmp.height = 130/2;
+    bmp.width = DefaultWidthCharacter;
+    bmp.height = DefaultHeightCharacter;
     bmp.x = 200;
     bmp.y = 200;
     characterSprite = bmp;
