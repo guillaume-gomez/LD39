@@ -52,7 +52,7 @@ class Hud {
     this.context.fill();
     this.context.fillStyle = "white";
     this.context.font = "18pt sans-serif";
-    this.context.fillText("You Win", 10, 40);
+    this.context.fillText("You Won", 10, 40);
   }
 
   showLoseGame() {
