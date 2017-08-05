@@ -22,7 +22,10 @@ improvements.
 All assets have been made during the event.
 
 ## Demo
-<a href="https://www.youtube.com/watch?v=j-0KVw4JqFs" target="_blank"><img src="./screenshots/preview-google.png"/></a>
+
+<a href="https://www.youtube.com/watch?v=j-0KVw4JqFs" target="_blank">
+<img src="./screenshots/preview-google.png"/>
+</a>
 
 ## Screenshots
 ![starting-game](screenshots/begin.gif)
