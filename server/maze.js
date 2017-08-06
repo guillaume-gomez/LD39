@@ -20,27 +20,17 @@ const TYPES = {
   EXIT_EXPLORED: EXIT_EXPLORED
 };
 
-const SIZE = 4;
+const SIZE_MIN = 4;
+const SIZE_MAX = 8;
 
 class Maze {
   constructor() {
-    this.matrix = [
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-    ];
-    this.discoveredMatrix = [
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-    ];
     this.nbMove = 0;
+    this.size = 0;
     this.currentRoomType = BEGIN;
+    this.createMaze();
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
-    this.createMaze();
   }
 
   createMaze() {
@@ -48,12 +38,21 @@ class Maze {
     let yEnter = 0;
     let xOut = 0;
     let yOut = 0;
+    this.size = _.random(SIZE_MIN, SIZE_MAX - 1);
     do {
-      xEnter = _.random(0, SIZE - 1);
-      yEnter = _.random(0, SIZE - 1);
-      xOut = _.random(0, SIZE - 1);
-      yOut = _.random(0, SIZE - 1);
+      xEnter = _.random(0, this.size - 1);
+      yEnter = _.random(0, this.size - 1);
+      xOut = _.random(0, this.size - 1);
+      yOut = _.random(0, this.size - 1);
     } while(xEnter === xOut && yEnter === yOut);
+
+    const createDefaultMatrix = (defaultValue, type) => {
+      return _.times(this.size, type).map(column => {
+        return _.times(this.size, _.constant(defaultValue));
+      });
+    }
+    this.matrix = createDefaultMatrix(OTHER, String);
+    this.discoveredMatrix = createDefaultMatrix(UNKNOWN, Number);
     this.matrix[xEnter][yEnter] = BEGIN;
     this.matrix[xOut][yOut] = EXIT;
 
@@ -115,10 +114,10 @@ class Maze {
         newY += 1;
       break;
     }
-    if(newX < 0 || newX > (SIZE - 1)) {
+    if(newX < 0 || newX > (SIZE_MIN - 1)) {
       return false;
     }
-    if(newY < 0 || newY > (SIZE - 1)) {
+    if(newY < 0 || newY > (SIZE_MIN - 1)) {
       return false;
     }
 
@@ -160,7 +159,7 @@ class Maze {
 };
 
 function initNbAttempt() {
-  return 7;
+  return 14;
 }
 
 function getRoomConstraint(type) {
