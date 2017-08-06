@@ -86,7 +86,7 @@ swip(io, ee, {
           nextSpeedX = 0;
           nextSpeedY = 0;
           newEnemies = enemies.map(enemy => {
-            return updateParticle(enemy, character, client);
+            return updateParticle(enemy, character, firstClient);
           });
 
           newEnemies.map(enemy => {
