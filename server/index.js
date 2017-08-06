@@ -14,9 +14,6 @@ const ee = new EventEmitter();
 
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
-const SPEED_THRESHOLD = 50;
-const DOWNHILL_ACCELERATION_SCALE = 1 / 20;
-const ANGLE_INACCURACY = 3;
 
 
 swip(io, ee, {
