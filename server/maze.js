@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Constants = require("./constants.js");
 
 const BEGIN = "b"
 const EXIT = "o";
@@ -41,6 +42,10 @@ class Maze {
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
     this.createMaze();
+    this.enemies = [
+      { x: 500, y: 500, speedX: 10, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+      { x: 1200, y: 500, speedX: 0, speedY: -10,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+    ];
   }
 
   createMaze() {
@@ -155,6 +160,10 @@ class Maze {
 
   hasWin(type) {
     return this.currentRoomType;
+  }
+
+  setEnemies(enemiesArray) {
+    this.enemies = enemiesArray.slice();
   }
 
 };

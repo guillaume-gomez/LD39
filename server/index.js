@@ -25,7 +25,9 @@ swip(io, ee, {
   cluster: {
     events: {
       update: (cluster) => {
-        const { character, maze, enemies } = cluster.data;
+        const { character } = cluster.data;
+        let { maze } = cluster.data
+        const { enemies } = maze;
         const { x, y, speedX, speedY, radius, life } = character;
         const clients = cluster.clients;
         let downhillAccelerationX = 0;
@@ -94,6 +96,7 @@ swip(io, ee, {
             }
           });
         }
+        maze.setEnemies(newEnemies);
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
@@ -109,7 +112,6 @@ swip(io, ee, {
           currentScreenId: { $set: currentScreenId},
           currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) },
           maze: { $set: maze },
-          enemies: { $set: newEnemies }
         };
       },
       merge: () => ({}),
@@ -122,9 +124,6 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
       maze: new MazeTools.Maze(),
-      enemies: [ { x: 500, y: 500, speedX: 10, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-                   { x: 1200, y: 500, speedX: 0, speedY: -10,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
-                  ]
     }),
   },
 
