@@ -81,9 +81,9 @@ class Hud {
 
   drawMaze(matrix) {
     const offset = 20;
-    const sizeCells = 15;
-    const width = 4 * sizeCells + 2;
-    const boxes = 4;
+    const boxes = matrix.length;
+    const sizeCells = 60 / boxes;
+    const width = boxes * sizeCells + 2;
     this.context.translate(this.canvas.width/2 - width/2 + offset, offset);
     this.context.beginPath();
     this.context.lineWidth = 1;
