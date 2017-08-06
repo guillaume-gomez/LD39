@@ -115,7 +115,7 @@ function app() {
         }
       }
       ctx.restore();
-      hud.draw(hasStarted, currentRoomConstraint, maze);
+      hud.draw(hasStarted, currentRoomConstraint, maze, character.life);
     });
   });
 

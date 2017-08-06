@@ -18,7 +18,7 @@ class Hud {
   }
 
   //todo add abbraction in this function
-  draw(hasStarted, currentRoomConstraint, maze) {
+  draw(hasStarted, currentRoomConstraint, maze, life) {
     //maybe remove this line
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
@@ -29,11 +29,36 @@ class Hud {
         this.showLoseGame();
     } else if (hasStarted) {
       this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
-      this.drawMaze(maze.discoveredMatrix);
+       this.renderLife(life);
+       this.drawMaze(maze.discoveredMatrix);
     } else {
        this.showGameText();
     }
     this.context.restore();
+  }
+
+  renderLife(life) {
+    this.context.fillStyle = this.fillBGStyle;
+    this.context.fillRect(0, 0, 230, this.heightPanel);
+    this.context.fill();
+    const width = 150;
+    const height = 15;
+    const transX = 5;
+    const transY = 40;
+    this.context.beginPath();
+    this.context.fillStyle = "#607D8B";
+    this.context.fillRect(transX,transY, width + 2, height + 2);
+    this.context.fill();
+
+    this.context.beginPath();
+    this.context.fillStyle = "#6EDD81";
+    this.context.fillRect(transX + 1, transY + 1, life * 1.5, height);
+    this.context.fill();
+
+    this.context.beginPath();
+    this.context.fillStyle = "#EE5042";
+    this.context.fillRect(transX + 1 + life * 1.5, transY + 1, width - (life * 1.5), height);
+    this.context.fill();
   }
 
   showGameText() {
