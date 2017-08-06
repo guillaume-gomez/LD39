@@ -89,7 +89,7 @@ swip(io, ee, {
             return updateParticle(enemy, character, firstClient);
           });
 
-          newEnemies.map(enemy => {
+          newEnemies.forEach(enemy => {
             if(rectCircleColliding(character, enemy))
             {
               newLife = newLife - 2;

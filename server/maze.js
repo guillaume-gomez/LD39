@@ -42,10 +42,7 @@ class Maze {
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
     this.createMaze();
-    this.enemies = [
-      { x: 500, y: 500, speedX: 10, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: 1200, y: 500, speedX: 0, speedY: -10,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
-    ];
+    this.enemies = [];
   }
 
   createMaze() {
@@ -63,6 +60,16 @@ class Maze {
     this.matrix[xOut][yOut] = EXIT;
 
     this.discoveredMatrix[xEnter][yEnter] = BEGIN_EXPLORED;
+  }
+
+  buildEnemies() {
+    const x = _.random(0, 500);
+    const y = _.random(0, 500);
+    const speed = _.random(0, 10);
+    return [
+      { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+      { x: x + 200, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+    ];
   }
 
   getCurrentPosition() {
@@ -143,6 +150,7 @@ class Maze {
     this.matrix[newY][newX] = CURRENT_POSITION;
     this.nbMove++;
     this.nbAttempts--;
+    this.enemies = this.buildEnemies();
     return true;
   }
 
