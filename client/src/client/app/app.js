@@ -101,7 +101,7 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      //if(hasStarted) {
+      if(hasStarted) {
         drawWalls(ctx, client);
         if(characterSprite) {
           characterSprite.x = character.x - characterSprite.width / 2;
@@ -110,11 +110,10 @@ function app() {
           characterSprite.height = DefaultHeightCharacter * converter.scalingFactor;
           characterSprite.render(ctx);
         }
-        //drawBall(ctx, character)
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
-      //}
+      }
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze);
     });
