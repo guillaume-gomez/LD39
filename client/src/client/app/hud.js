@@ -75,7 +75,7 @@ class Hud {
     this.context.fillRect(0, 0, 230, this.heightPanel);
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `16pt ${this.font}`;
+    this.context.font = `13pt ${this.font}`;
     this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 5, 50);
   }
 
