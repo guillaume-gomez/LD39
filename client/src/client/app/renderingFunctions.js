@@ -92,7 +92,7 @@ export function openingSort (openingA, openingB) {
 export function drawCircle(ctx, character) {
     ctx.save();
 
-    ctx.fillStyle = '#ffaaaa';
+    ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
 

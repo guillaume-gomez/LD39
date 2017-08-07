@@ -34,7 +34,7 @@ class Maze {
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
     this.createMaze();
-    this.enemies = this.buildEnemies();
+    this.enemies = [];
   }
 
   createMaze() {
