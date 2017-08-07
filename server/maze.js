@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Constants = require("./constants.js");
 
 const BEGIN = "b"
 const EXIT = "o";
@@ -32,6 +33,8 @@ class Maze {
     this.createMaze();
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
+    this.createMaze();
+    this.enemies = [];
   }
 
   createMaze() {
@@ -58,6 +61,16 @@ class Maze {
     this.matrix[xOut][yOut] = EXIT;
 
     this.discoveredMatrix[xEnter][yEnter] = BEGIN_EXPLORED;
+  }
+
+  buildEnemies() {
+    const x = _.random(0, 500);
+    const y = _.random(0, 500);
+    const speed = _.random(5, 10);
+    return [
+      { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+      { x: x + 200, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+    ];
   }
 
   getCurrentPosition() {
@@ -139,6 +152,7 @@ class Maze {
     this.matrix[newY][newX] = CURRENT_POSITION;
     this.nbMove++;
     this.nbAttempts--;
+    this.enemies = this.buildEnemies();
     return true;
   }
 
@@ -156,6 +170,10 @@ class Maze {
 
   hasWin(type) {
     return this.currentRoomType;
+  }
+
+  setEnemies(enemiesArray) {
+    this.enemies = enemiesArray.slice();
   }
 
 };

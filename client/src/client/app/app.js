@@ -4,9 +4,11 @@ import {
   openingSort,
   throttle,
   drawArrow,
-  drawBall
-} from "./renderingFunctions";
-import {DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
+  drawRect,
+  drawCircle
+} from "./renderingFunctions"
+
+import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
@@ -22,6 +24,7 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
+  let enemySprite = [];
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
   window.addEventListener('resize', resizeHudCanvas, false);
@@ -29,6 +32,7 @@ function app() {
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
     assetsLoader.getInstance().addFile("character.png","character");
+    assetsLoader.getInstance().addFile("atari400.png","enemy");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -98,21 +102,32 @@ function app() {
       state = evt;
       var client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
+      const {  enemies } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted) {
+
         drawWalls(ctx, client);
         if(characterSprite) {
           characterSprite.x = character.x - characterSprite.width / 2;
           characterSprite.y = character.y - characterSprite.height / 2;
+          //tweek code
           characterSprite.width = DefaultWidthCharacter * converter.scalingFactor;
           characterSprite.height = DefaultHeightCharacter * converter.scalingFactor;
           characterSprite.render(ctx);
+          //drawCircle(ctx, character)
         }
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
+        enemies.forEach((enemy, index) => {
+          enemySprite[index].x = enemy.x;
+          enemySprite[index].y = enemy.y;
+          enemySprite[index].width = DefaultWidthEnemy;
+          enemySprite[index].height = DefaultHeightEnemy;
+          enemySprite[index].render(ctx);
+        });
       }
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze);
@@ -132,17 +147,28 @@ function app() {
     }
     let atlas = new TextureAtlas();
     atlas.data = assetsManager.getInstance().getImageByAlias("character");
-    atlas.createTexture( "texture_1", 0,0,136,130);
+    atlas.createTexture("character_tex", 0,0,136,130);
+    let texture = atlas.getTextureByName("character_tex");
+    let characterBmp = new Bitmap();
+    characterBmp.texture = texture;
+    characterBmp.width = 136;
+    characterBmp.height = 130;
+    characterBmp.x = 0;
+    characterBmp.y = 0;
+    characterSprite = characterBmp;
 
-    let texture = atlas.getTextureByName("texture_1");
-    let bmp = new Bitmap();
-    bmp.texture = texture;
-    bmp.width = DefaultWidthCharacter;
-    bmp.height = DefaultHeightCharacter;
-    bmp.x = 200;
-    bmp.y = 200;
-    characterSprite = bmp;
-    //bmp.drawOnly(ctx)
+    atlas.data = assetsManager.getInstance().getImageByAlias("enemy");
+    atlas.createTexture("particle_tex", 0,0,256,156);
+    texture = atlas.getTextureByName("particle_tex");
+    for(let i = 0; i < 2; ++i) {
+      let bmp = new Bitmap();
+      bmp.texture = texture;
+      bmp.width = DefaultWidthEnemy;
+      bmp.height = DefaultHeightEnemy;
+      bmp.x = 0;
+      bmp.y = 0;
+      enemySprite[i] = bmp;
+    }
   }
 
   function resizeHudCanvas() {
