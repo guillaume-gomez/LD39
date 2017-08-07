@@ -129,8 +129,8 @@ export function drawArrow(ctx, character, dragPosition) {
     angle = -Math.atan2(dragPosition.x - character.x, dragPosition.y - character.y) + Math.PI / 2;
 
     ctx.beginPath();
-    ctx.arc(character.x, character.y, character.radius / 2, angle + Math.PI / 2, angle - Math.PI / 2);
-    ctx.arc(dragPosition.x, dragPosition.y, character.radius / 4, angle - Math.PI / 2 , angle + Math.PI / 2);
+    ctx.arc(character.x + character.width/2, character.y + character.height/2, character.width / 2, angle + Math.PI / 2, angle - Math.PI / 2);
+    ctx.arc(dragPosition.x, dragPosition.y, character.height / 4, angle - Math.PI / 2 , angle + Math.PI / 2);
     ctx.fill();
 
     ctx.restore();
