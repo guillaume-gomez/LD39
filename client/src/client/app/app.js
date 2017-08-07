@@ -4,10 +4,11 @@ import {
   openingSort,
   throttle,
   drawArrow,
-  drawRect
+  drawRect,
+  drawCircle
 } from "./renderingFunctions"
 
-import {DefaultWidthEnemy, DefaultHeightEnemy} from "./constants";
+import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
@@ -106,23 +107,29 @@ function app() {
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       //if(hasStarted) {
+
         drawWalls(ctx, client);
-        if(characterSprite && character.life > 0) {
-          characterSprite.x = character.x - characterSprite.width/2;
-          characterSprite.y = character.y - characterSprite.height/2;
-          characterSprite.render(ctx)
+        if(characterSprite) {
+          characterSprite.x = character.x - characterSprite.width / 2;
+          characterSprite.y = character.y - characterSprite.height / 2;
+          characterSprite.width = DefaultWidthCharacter * converter.scalingFactor;
+          characterSprite.height = DefaultHeightCharacter * converter.scalingFactor;
+          characterSprite.render(ctx);
+          //drawCircle(ctx, character)
+
           if (dragging) {
             drawArrow(ctx, character, dragPosition);
           }
+
         }
-        enemies.forEach((enemy, index) => {
-          enemySprite[index].x = enemy.x;
-          enemySprite[index].y = enemy.y;
-          //enemySprite[index].width = DefaultWidthEnemy * converter.scalingFactor;
-          //enemySprite[index].height = DefaultHeightEnemy * converter.scalingFactor;
-          enemySprite[index].render(ctx);
-          //drawRect(ctx, enemy);
-        });
+        // enemies.forEach((enemy, index) => {
+        //   enemySprite[index].x = enemy.x;
+        //   enemySprite[index].y = enemy.y;
+        //   enemySprite[index].width = DefaultWidthEnemy * converter.scalingFactor;
+        //   enemySprite[index].height = DefaultHeightEnemy * converter.scalingFactor;
+        //   enemySprite[index].render(ctx);
+        //   drawRect(ctx, enemy);
+        // });
       //}
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze);
@@ -158,8 +165,8 @@ function app() {
     for(let i = 0; i < 2; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
-      bmp.width = DefaultWidthEnemy;
-      bmp.height = DefaultHeightEnemy;
+      bmp.width = 256;
+      bmp.height = 156;
       bmp.x = 0;
       bmp.y = 0;
       enemySprite[i] = bmp;

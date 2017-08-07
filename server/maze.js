@@ -9,7 +9,7 @@ const UNKNOWN = 0;
 const EXPLORED = 1;
 const BEGIN_EXPLORED = 2;
 const EXIT_EXPLORED = 3;
-
+const CURRENT_POSITION_EXPLORED = 4;
 
 const TYPES = {
   BEGIN: BEGIN,
@@ -18,31 +18,23 @@ const TYPES = {
   EXPLORED: EXPLORED,
   UNKNOWN: UNKNOWN,
   BEGIN_EXPLORED: BEGIN_EXPLORED,
-  EXIT_EXPLORED: EXIT_EXPLORED
+  EXIT_EXPLORED: EXIT_EXPLORED,
+  CURRENT_POSITION_EXPLORED: CURRENT_POSITION_EXPLORED
 };
 
-const SIZE = 4;
+const SIZE_MIN = 4;
+const SIZE_MAX = 8;
 
 class Maze {
   constructor() {
-    this.matrix = [
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-      [OTHER, OTHER, OTHER, OTHER],
-    ];
-    this.discoveredMatrix = [
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-      [UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN],
-    ];
     this.nbMove = 0;
+    this.size = 0;
     this.currentRoomType = BEGIN;
+    this.createMaze();
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
     this.createMaze();
-    this.enemies = [];
+    this.enemies = this.buildEnemies();
   }
 
   createMaze() {
@@ -50,12 +42,21 @@ class Maze {
     let yEnter = 0;
     let xOut = 0;
     let yOut = 0;
+    this.size = _.random(SIZE_MIN, SIZE_MAX - 1);
     do {
-      xEnter = _.random(0, SIZE - 1);
-      yEnter = _.random(0, SIZE - 1);
-      xOut = _.random(0, SIZE - 1);
-      yOut = _.random(0, SIZE - 1);
+      xEnter = _.random(0, this.size - 1);
+      yEnter = _.random(0, this.size - 1);
+      xOut = _.random(0, this.size - 1);
+      yOut = _.random(0, this.size - 1);
     } while(xEnter === xOut && yEnter === yOut);
+
+    const createDefaultMatrix = (defaultValue, type) => {
+      return _.times(this.size, type).map(column => {
+        return _.times(this.size, _.constant(defaultValue));
+      });
+    }
+    this.matrix = createDefaultMatrix(OTHER, String);
+    this.discoveredMatrix = createDefaultMatrix(UNKNOWN, Number);
     this.matrix[xEnter][yEnter] = BEGIN;
     this.matrix[xOut][yOut] = EXIT;
 
@@ -65,7 +66,7 @@ class Maze {
   buildEnemies() {
     const x = _.random(0, 500);
     const y = _.random(0, 500);
-    const speed = _.random(0, 10);
+    const speed = _.random(5, 10);
     return [
       { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
       { x: x + 200, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
@@ -127,10 +128,10 @@ class Maze {
         newY += 1;
       break;
     }
-    if(newX < 0 || newX > (SIZE - 1)) {
+    if(newX < 0 || newX > (SIZE_MIN - 1)) {
       return false;
     }
-    if(newY < 0 || newY > (SIZE - 1)) {
+    if(newY < 0 || newY > (SIZE_MIN - 1)) {
       return false;
     }
 
@@ -140,6 +141,7 @@ class Maze {
     }
     else {
       this.discoveredMatrix[newY][newX] = EXPLORED;
+      this.discoveredMatrix[newY][newX] = CURRENT_POSITION_EXPLORED;
     }
     //let the begin visible, don't need to erase it
     if(this.matrix[y][x] != BEGIN) {
@@ -177,7 +179,7 @@ class Maze {
 };
 
 function initNbAttempt() {
-  return 7;
+  return 14;
 }
 
 function getRoomConstraint(type) {
@@ -186,6 +188,8 @@ function getRoomConstraint(type) {
       return { bgColor: "#b5b9bf", type: BEGIN };
     case EXIT:
       return { bgColor: "#ead1b3", type: EXIT };
+    case CURRENT_POSITION:
+      return { bgColor: "#efeded", type: CURRENT_POSITION };
     case OTHER:
       return { bgColor: "#efeded", type: OTHER };
   }
