@@ -32,6 +32,7 @@ class Hud {
        this.renderLife(life);
        this.drawMaze(maze.discoveredMatrix);
     } else {
+       //this.renderLife(life);
        this.showGameText();
     }
     this.context.restore();
@@ -45,6 +46,7 @@ class Hud {
     const height = 15;
     const transX = 5;
     const transY = 40;
+    const lifeRendered = life >0 ? life * width/100 : 0;
     this.context.beginPath();
     this.context.fillStyle = "#607D8B";
     this.context.fillRect(transX,transY, width + 2, height + 2);
@@ -52,12 +54,12 @@ class Hud {
 
     this.context.beginPath();
     this.context.fillStyle = "#6EDD81";
-    this.context.fillRect(transX + 1, transY + 1, life * 1.5, height);
+    this.context.fillRect(transX + 1, transY + 1, lifeRendered, height);
     this.context.fill();
 
     this.context.beginPath();
     this.context.fillStyle = "#EE5042";
-    this.context.fillRect(transX + 1 + life * 1.5, transY + 1, width - (life * 1.5), height);
+    this.context.fillRect(transX + 1 + life * 1.5, transY + 1, width - lifeRendered, height);
     this.context.fill();
   }
 
