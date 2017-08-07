@@ -106,17 +106,14 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      if(hasStarted) {
+      //if(hasStarted) {
 
         drawWalls(ctx, client);
         if(characterSprite) {
-          characterSprite.x = character.x - characterSprite.width / 2;
-          characterSprite.y = character.y - characterSprite.height / 2;
-          //tweek code
-          characterSprite.width = DefaultWidthCharacter * converter.scalingFactor;
-          characterSprite.height = DefaultHeightCharacter * converter.scalingFactor;
+          characterSprite.x = character.x;
+          characterSprite.y = character.y;
           characterSprite.render(ctx);
-          //drawCircle(ctx, character)
+          drawRect(ctx, character);
         }
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
@@ -124,11 +121,10 @@ function app() {
         enemies.forEach((enemy, index) => {
           enemySprite[index].x = enemy.x;
           enemySprite[index].y = enemy.y;
-          enemySprite[index].width = DefaultWidthEnemy;
-          enemySprite[index].height = DefaultHeightEnemy;
           enemySprite[index].render(ctx);
+          drawRect(ctx, enemy);
         });
-      }
+     // }
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze, character.life);
     });
@@ -151,8 +147,8 @@ function app() {
     let texture = atlas.getTextureByName("character_tex");
     let characterBmp = new Bitmap();
     characterBmp.texture = texture;
-    characterBmp.width = 136;
-    characterBmp.height = 130;
+    characterBmp.width = DefaultWidthCharacter;
+    characterBmp.height = DefaultHeightCharacter;
     characterBmp.x = 0;
     characterBmp.y = 0;
     characterSprite = characterBmp;
