@@ -9,13 +9,13 @@ app.use(express.static(`${__dirname}/../client`));
 
 const MazeTools = require("./maze.js");
 const Constants = require("./constants.js");
-//const Enemy = require("./e.js");
 
 const EventEmitter = require("events").EventEmitter;
 const ee = new EventEmitter();
 
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
+
 
 
 swip(io, ee, {
@@ -25,14 +25,12 @@ swip(io, ee, {
         const { character } = cluster.data;
         let { maze } = cluster.data
         const { enemies } = maze;
-        const { x, y, speedX, speedY, radius, life } = character;
+        const { radius, x, y, speedX, speedY, life } = character;
         const clients = cluster.clients;
-        let downhillAccelerationX = 0;
-        let downhillAccelerationY = 0;
-        let nextPosX = x + speedX;
-        let nextPosY = y + speedY;
-        let nextSpeedX = speedX;
-        let nextSpeedY = speedY;
+        let nextPosX = x;
+        let nextPosY = y;
+        let nextSpeedX = 0;
+        let nextSpeedY = 0;
         let newLife = life;
         removeFirstClient(cluster);
 
@@ -42,40 +40,21 @@ swip(io, ee, {
         let newEnemies = [];
         if(client) {
           newEnemies = enemies.map(enemy => {
-            return updateParticle(enemy, character, client);
+            return updateParticle(enemy, client, true);
           });
 
           newEnemies.map(enemy => {
-            if(rectCircleColliding(character, enemy))
-            {
-              newLife = newLife - 2;
-            }
+          if(intersectRect(character, enemy))
+          {
+            newLife = newLife - 2;
+          }
           });
-          // update speed and position if collision happens
-          if (((character.speedX < 0) &&
-            ((nextPosX - boundaryOffset) < client.transform.x) &&
-            !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
-            nextPosX = client.transform.x + boundaryOffset;
-            nextSpeedX = 0;
-          } else if (((character.speedX > 0) &&
-            ((nextPosX + boundaryOffset) > (client.transform.x + client.size.width)) &&
-            !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
-            nextPosX = client.transform.x + (client.size.width - boundaryOffset);
-            nextSpeedX = 0;
-          }
+         const {x,y, speedX, speedY } = updateParticle(character, client);
+          nextPosX = x;
+          nextPosY = y;
+          nextSpeedX = speedX;
+          nextSpeedY = speedY;
 
-          if (((character.speedY < 0) &&
-            ((nextPosY - boundaryOffset) < client.transform.y &&
-            !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
-            nextPosY = client.transform.y + boundaryOffset;
-            nextSpeedY = 0;
-          } else if (((character.speedY > 0) &&
-            ((nextPosY + boundaryOffset) > (client.transform.y + client.size.height)) &&
-            !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
-          ) {
-            nextPosY = client.transform.y + (client.size.height - boundaryOffset);
-            nextSpeedY = 0;
-          }
         } else {
           const firstClient = clients[0];
           nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
@@ -100,8 +79,8 @@ swip(io, ee, {
           character: {
             x: { $set: nextPosX },
             y: { $set: nextPosY },
-            speedX: { $set: (nextSpeedX + downhillAccelerationX) * 0.97 },
-            speedY: { $set: (nextSpeedY + downhillAccelerationY) * 0.97 },
+            speedX: { $set: nextSpeedX * 0.97 },
+            speedY: { $set: nextSpeedY * 0.97 },
             life: { $set: newLife }
           },
           hasStarted: { $set: hasStarted },
@@ -114,7 +93,7 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 200, y: 200, radius: 35, speedX: 0, speedY: 0, life: 100 },
+      character: { x: 200, y: 200, width: Constants.DefaultWidthCharacter, height: Constants.DefaultHeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
@@ -213,8 +192,16 @@ function rectCircleColliding(circle, rect){
     return (dx * dx + dy * dy <= (circle.radius * circle.radius ));
 }
 
-function updateParticle(enemy, character, client) {
-  const { radius, x, y, speedX, speedY, width, height } = enemy;
+function intersectRect(r1, r2) {
+
+  return !(r2.x > (r1.x + r1.width) ||
+           (r2.x + r2.width) < r1.x ||
+           r2.y  > (r1.y + r1.height) ||
+           (r2.y + r2.height) < r1.y);
+}
+
+function updateParticle(enemy, client, hasRebound = false) {
+  const { x, y, speedX, speedY, width, height } = enemy;
   let nextPosX = x + speedX;
   let nextPosY = y + speedY;
   let nextSpeedX = speedX;
@@ -226,25 +213,25 @@ function updateParticle(enemy, character, client) {
     ((nextPosX - WALL_SIZE) < client.transform.x) &&
     !isWallOpenAtPosition(client.transform.y, client.openings.left, nextPosY))) {
     nextPosX = client.transform.x + WALL_SIZE;
-    nextSpeedX = speedX * -1;
+    nextSpeedX = hasRebound ? speedX * -1 : 0;
   } else if (((speedX > 0) &&
     ((nextPosX + boundaryX) > (client.transform.x + client.size.width)) &&
     !isWallOpenAtPosition(client.transform.y, client.openings.right, nextPosY))) {
     nextPosX = client.transform.x + (client.size.width - boundaryX);
-    nextSpeedX = speedX * -1;
+    nextSpeedX = hasRebound ? speedX * -1 : 0;
   }
 
   if (((speedY < 0) &&
     ((nextPosY - WALL_SIZE) < client.transform.y &&
     !isWallOpenAtPosition(client.transform.x, client.openings.top, nextPosX)))) {
     nextPosY = client.transform.y + WALL_SIZE;
-    nextSpeedY = speedY * -1;
+    nextSpeedY = hasRebound ? speedY * -1 : 0;
   } else if (((speedY > 0) &&
     ((nextPosY + boundaryY) > (client.transform.y + client.size.height)) &&
     !isWallOpenAtPosition(client.transform.x, client.openings.bottom, nextPosX))
   ) {
     nextPosY = client.transform.y + (client.size.height - boundaryY);
-    nextSpeedY = speedY * -1;
+    nextSpeedY = hasRebound ? speedY * -1 : 0;
   }
   return { x: nextPosX, y: nextPosY, speedX: nextSpeedX, speedY: nextSpeedY, width, height };
 }
