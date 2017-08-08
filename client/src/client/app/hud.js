@@ -23,17 +23,16 @@ class Hud {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
-       this.showEndGame();
-       this.drawMaze(maze.discoveredMatrix);
-    } else if (maze.nbAttempts <= 0) {
+      this.showEndGame();
+      this.drawMaze(maze.discoveredMatrix);
+    } else if (maze.nbAttempts <= 0 || life <= 0) {
         this.showLoseGame();
     } else if (hasStarted) {
       this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
-       this.renderLife(life);
-       this.drawMaze(maze.discoveredMatrix);
+      this.renderLife(life);
+      this.drawMaze(maze.discoveredMatrix);
     } else {
-       //this.renderLife(life);
-       this.showGameText();
+      this.showGameText();
     }
     this.context.restore();
   }

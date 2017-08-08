@@ -106,8 +106,7 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      //if(hasStarted) {
-
+      if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
         if(characterSprite) {
           characterSprite.x = character.x;
@@ -124,7 +123,7 @@ function app() {
           enemySprite[index].render(ctx);
           drawRect(ctx, enemy);
         });
-     // }
+      }
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze, character.life);
     });
