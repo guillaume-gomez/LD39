@@ -28,8 +28,8 @@ class Hud {
     } else if (maze.nbAttempts <= 0 || life <= 0) {
         this.showLoseGame();
     } else if (hasStarted) {
-      this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
-      this.renderLife(life);
+      this.renderLife(life, 5, 25);
+      this.displayMinMoves(maze.minMoves, 5, 65);
       this.drawMaze(maze.discoveredMatrix);
     } else {
       this.showGameText();
@@ -37,14 +37,14 @@ class Hud {
     this.context.restore();
   }
 
-  renderLife(life) {
+  renderLife(life, offsetx = 5, offsety = 40) {
     this.context.fillStyle = this.fillBGStyle;
     this.context.fillRect(0, 0, 230, this.heightPanel);
     this.context.fill();
     const width = 150;
     const height = 15;
-    const transX = 5;
-    const transY = 40;
+    const transX = offsetx;
+    const transY = offsety;
     const lifeRendered = life >0 ? life * width/100 : 0;
     this.context.beginPath();
     this.context.fillStyle = "#607D8B";
@@ -103,6 +103,14 @@ class Hud {
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `13pt ${this.font}`;
     this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 5, 50);
+  }
+
+  displayMinMoves(minMoves, x = 5, y = 80) {
+    this.context.beginPath();
+    this.context.fill();
+    this.context.fillStyle = this.fillFontStyle;
+    this.context.font = `13pt ${this.font}`;
+    this.context.fillText(`Min moves: ${minMoves}`, x, y);
   }
 
   drawMaze(matrix) {
