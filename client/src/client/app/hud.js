@@ -128,15 +128,12 @@ class Hud {
     this.context.translate(this.canvas.width/2 - width/2 + offset, offset);
     this.context.beginPath();
     this.context.lineWidth = 1;
-    this.context.strokeStyle = this.fillBGStyle;
-    this.context.fillStyle = this.fillFontStyle;
     //draw grid
     for (var row = 0; row < boxes; row++) {
       for (var column = 0; column < boxes; column++) {
         var x = column * sizeCells;
         var y = row * sizeCells;
         this.context.rect(x, y, sizeCells, sizeCells);
-        this.context.fill();
         this.context.stroke();
       }
     }
