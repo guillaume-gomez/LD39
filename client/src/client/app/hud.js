@@ -3,8 +3,9 @@ class Hud {
 	constructor(canvas, mainCanvas) {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
-    this.fillFontStyle = "white";
-    this.fillBGStyle = "#24292e";
+    this.opacity = 1;
+    this.fillFontStyle = `rgba(255, 255, 255, ${this.opacity})`;
+    this.fillBGStyle = `rgba(36, 41, 46, ${this.opacity})`;
     this.font = "Helvetica";
     this.widthPanel = 350;
     this.heightPanel = 100;
@@ -17,19 +18,33 @@ class Hud {
     this.canvas.width = this.widthPanel;
   }
 
+  updateOpacity(character, converter) {
+    if( character.x + character.width < (this.widthPanel * converter.scalingFactor) &&
+        character.y < (this.heightPanel * converter.scalingFactor) ) {
+      this.opacity = 0.5;
+      this.fillFontStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      this.fillBGStyle = `rgba(36, 41, 46, ${this.opacity})`;
+    } else {
+      this.opacity = 1;
+      this.fillFontStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      this.fillBGStyle = `rgba(36, 41, 46, ${this.opacity})`;
+    }
+  }
+
   //todo add abbraction in this function
-  draw(hasStarted, currentRoomConstraint, maze, life) {
+  draw(hasStarted, currentRoomConstraint, maze, character, converter) {
     //maybe remove this line
+    this.updateOpacity(character, converter);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
       this.showEndGame();
       this.drawMaze(maze.discoveredMatrix);
-    } else if (maze.nbAttempts <= 0 || life <= 0) {
+    } else if (maze.nbAttempts <= 0 || character.life <= 0) {
         this.showLoseGame();
     } else if (hasStarted) {
       this.displayNbAttempt(maze.nbAttempts, maze.maxAttempt);
-      this.renderLife(life);
+      this.renderLife(character.life);
       this.drawMaze(maze.discoveredMatrix);
     } else {
       this.showGameText();
@@ -47,17 +62,17 @@ class Hud {
     const transY = 40;
     const lifeRendered = life >0 ? life * width/100 : 0;
     this.context.beginPath();
-    this.context.fillStyle = "#607D8B";
+    this.context.fillStyle = `rgba(96, 125, 139, ${this.opacity})`;
     this.context.fillRect(transX,transY, width + 2, height + 2);
     this.context.fill();
 
     this.context.beginPath();
-    this.context.fillStyle = "#6EDD81";
+    this.context.fillStyle = `rgba(110, 221, 129, ${this.opacity})`;
     this.context.fillRect(transX + 1, transY + 1, lifeRendered, height);
     this.context.fill();
 
     this.context.beginPath();
-    this.context.fillStyle = "#EE5042";
+    this.context.fillStyle = `rgba(238, 80, 66, ${this.opacity})`;
     this.context.fillRect(transX + 1 + life * 1.5, transY + 1, width - lifeRendered, height);
     this.context.fill();
   }
@@ -131,17 +146,17 @@ class Hud {
     const getColor = (val) => {
       switch (val) {
         case 0:
-          return "#607D8B";
+          return `rgba(96, 125, 139, ${this.opacity})`;
         case 1:
-          return "#FF5722";
+          return `rgba(255, 87, 34, ${this.opacity})`;
         case 2:
-          return "#03A9F4";
+          return `rgba(3, 169, 244, ${this.opacity})`;
         case 3:
-          return "#8BC34A";
+          return `rgba(139, 195, 74, ${this.opacity})`;
         case 4:
-          return "#FFFFFF";
+          return `rgba(255, 255, 255, ${this.opacity})`;
         default:
-          return "#607D8B";
+          return `rgba(96, 125, 139, ${this.opacity})`;
       }
     };
     //fill case
