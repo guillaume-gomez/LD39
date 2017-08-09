@@ -34,6 +34,7 @@ class Maze {
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
     this.createMaze();
+    this.minMoves = this.computeMinMoves();
     this.enemies = [];
   }
 
@@ -90,28 +91,30 @@ class Maze {
     return currentPosition;
   }
 
-  getPosition() {
+  getPositionByType(type) {
     let x = -1;
     let y = -1;
-    const fn = (type) => {
-      this.matrix.forEach((row, _y) => {
-        const _x = row.indexOf(type);
-        if(_x !== -1) {
-          x = _x;
-          y = _y;
-        }
-      });
-    };
-    fn(CURRENT_POSITION);
+   this.matrix.forEach((row, _y) => {
+      const _x = row.indexOf(type);
+      if(_x !== -1) {
+        x = _x;
+        y = _y;
+      }
+    });
+   return {x, y};
+  }
+
+  getCurrentPosition() {
+    const {x, y } = this.getPositionByType(CURRENT_POSITION);
     if(x === -1 || y === -1) {
-      fn(BEGIN);
+      this.getPositionByType(BEGIN);
       return {x, y};
     }
     return {x, y};
   }
 
   movePosition(direction) {
-    const {x, y} = this.getPosition();
+    const {x, y} = this.getCurrentPosition();
     let newX = x;
     let newY = y;
     switch(direction) {
@@ -153,6 +156,7 @@ class Maze {
     this.nbMove++;
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
+    this.minMoves = this.computeMinMoves();
     return true;
   }
 
@@ -174,6 +178,12 @@ class Maze {
 
   setEnemies(enemiesArray) {
     this.enemies = enemiesArray.slice();
+  }
+
+  computeMinMoves() {
+    const currentPosition = this.getCurrentPosition();
+    const exitPosition = this.getPositionByType(EXIT);
+    return (Math.abs(exitPosition.x - currentPosition.x)) + (Math.abs(exitPosition.y - currentPosition.y)); 
   }
 
 };
