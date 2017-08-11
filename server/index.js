@@ -128,15 +128,6 @@ swip(io, ee, {
           },
         },
       }),
-
-      updateOrientation: ({ cluster, client }, { rotationX, rotationY }) => ({
-        client: {
-          data: {
-            rotationX: { $set: rotationX },
-            rotationY: { $set: rotationY },
-          },
-        },
-      }),
     },
   },
 });
