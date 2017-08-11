@@ -126,6 +126,7 @@ Enjoy !
 
 _the server can be still buggy :| , but I will work on it_
 
+[link to ludum dare page](https://ldjam.com/events/ludum-dare/39/pinchscape)
 
 ## Team
 - Maxime Lambert: Concept / Game Design
