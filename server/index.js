@@ -40,7 +40,7 @@ swip(io, ee, {
         let newEnemies = [];
         if(client) {
           newEnemies = enemies.map(enemy => {
-            return updateParticle(enemy, client, true);
+            return updatePerson(enemy, client, true);
           });
 
           newEnemies.map(enemy => {
@@ -49,7 +49,7 @@ swip(io, ee, {
             newLife = newLife - 2;
           }
           });
-         const {x,y, speedX, speedY } = updateParticle(character, client);
+         const {x,y, speedX, speedY } = updatePerson(character, client);
           nextPosX = x;
           nextPosY = y;
           nextSpeedX = speedX;
@@ -62,7 +62,7 @@ swip(io, ee, {
           nextSpeedX = 0;
           nextSpeedY = 0;
           newEnemies = enemies.map(enemy => {
-            return updateParticle(enemy, firstClient);
+            return updatePerson(enemy, firstClient);
           });
 
           newEnemies.forEach(enemy => {
@@ -200,7 +200,7 @@ function intersectRect(r1, r2) {
            (r2.y + r2.height) < r1.y);
 }
 
-function updateParticle(person, client, hasRebound = false) {
+function updatePerson(person, client, hasRebound = false) {
   const { x, y, speedX, speedY, width, height } = person;
   let nextPosX = x + speedX;
   let nextPosY = y + speedY;
