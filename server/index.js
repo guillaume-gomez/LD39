@@ -37,27 +37,9 @@ swip(io, ee, {
         const hasStarted = maze.getNbMove() > 0;
         const boundaryOffset = radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(character, c));
-        let newEnemies = [];
-        let newKillEnemiesItem = killEnemiesItems.slice();
+        let newState = null;
         if(client) {
-          newEnemies = enemies.map(enemy => {
-            return updatePerson(enemy, client, true);
-          });
-
-          newEnemies.map(enemy => {
-            if(intersectRect(character, enemy))
-            {
-              newLife = newLife - 2;
-            }
-          });
-
-          const hasColission = newKillEnemiesItem.some(item => {
-            return intersectRect(character, item);
-          });
-          if(hasColission) {
-            newEnemies = [];
-            newKillEnemiesItem = [];
-          }
+          newState = updateGame(client, character, maze, life);
          const {x,y, speedX, speedY } = updatePerson(character, client);
           nextPosX = x;
           nextPosY = y;
@@ -70,19 +52,10 @@ swip(io, ee, {
           nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
           nextSpeedX = 0;
           nextSpeedY = 0;
-          newEnemies = enemies.map(enemy => {
-            return updatePerson(enemy, firstClient);
-          });
-
-          newEnemies.forEach(enemy => {
-            if(rectCircleColliding(character, enemy))
-            {
-              newLife = newLife - 2;
-            }
-          });
+          newState = updateGame(client, character, maze, life);
         }
-        maze.setEnemies(newEnemies);
-        maze.setKillNewEnemiesItem(newKillEnemiesItem);
+        maze.setEnemies(newState.enemies);
+        maze.setKillNewEnemiesItem(newState.killEnemiesItems);
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
@@ -91,7 +64,7 @@ swip(io, ee, {
             y: { $set: nextPosY },
             speedX: { $set: nextSpeedX * 0.97 },
             speedY: { $set: nextSpeedY * 0.97 },
-            life: { $set: newLife }
+            life: { $set: newState.life }
           },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
@@ -235,6 +208,31 @@ function updatePerson(person, client, hasRebound = false) {
     nextSpeedY = hasRebound ? speedY * -1 : 0;
   }
   return { x: nextPosX, y: nextPosY, speedX: nextSpeedX, speedY: nextSpeedY, width, height };
+}
+
+function updateGame(client, character, maze, life ) {
+  const { enemies, killEnemiesItems } = maze;
+  let newLife = life;
+  let newKillEnemiesItems = killEnemiesItems;
+  let newEnemies = enemies.map(enemy => {
+    return updatePerson(enemy, client, true);
+  });
+
+  newEnemies.map(enemy => {
+    if(intersectRect(character, enemy))
+    {
+      newLife = newLife - 2;
+    }
+  });
+
+  const hasColission = newKillEnemiesItems.some(item => {
+    return intersectRect(character, item);
+  });
+  if(hasColission) {
+    newEnemies = [];
+    newKillEnemiesItems = [];
+  }
+  return { enemies: newEnemies, life: newLife, killEnemiesItems: newKillEnemiesItems };
 }
 
 server.listen(3000);
