@@ -97,7 +97,7 @@ function app() {
       state = evt;
       var client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
-      const {  enemies, killEnemiesItems } = maze
+      const {  enemies, killEnemiesItems, medipackItems } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
@@ -105,6 +105,9 @@ function app() {
         drawWalls(ctx, client);
         killEnemiesItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,0,255,0.5");
+        });
+        medipackItems.forEach(item => {
+          drawRect(ctx, item, "rgba(0,255,0,0.5");
         });
         if(characterSprite) {
           characterSprite.x = character.x;
