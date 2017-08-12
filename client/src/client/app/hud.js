@@ -43,7 +43,7 @@ class Hud {
     } else if (maze.nbAttempts <= 0 || character.life <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
-      this.renderLife(life, 5, 25);
+      this.renderLife(character.life, 5, 25);
       this.displayMinMoves(maze.minMoves, 5, 65);
       this.drawMaze(maze.discoveredMatrix);
     } else {
