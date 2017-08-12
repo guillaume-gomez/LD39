@@ -107,8 +107,7 @@ class Maze {
   getCurrentPosition() {
     const {x, y } = this.getPositionByType(CURRENT_POSITION);
     if(x === -1 || y === -1) {
-      this.getPositionByType(BEGIN);
-      return {x, y};
+      return this.getPositionByType(BEGIN);
     }
     return {x, y};
   }
