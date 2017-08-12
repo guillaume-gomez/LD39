@@ -55,7 +55,8 @@ swip(io, ee, {
           newState = updateGame(client, character, maze, life);
         }
         maze.setEnemies(newState.enemies);
-        maze.setKillNewEnemiesItem(newState.killEnemiesItems);
+        maze.setKillEnemiesItems(newState.killEnemiesItems);
+        maze.setMedipackItems(newState.medipackItems);
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
@@ -211,9 +212,10 @@ function updatePerson(person, client, hasRebound = false) {
 }
 
 function updateGame(client, character, maze, life ) {
-  const { enemies, killEnemiesItems } = maze;
+  const { enemies, killEnemiesItems, medipackItems } = maze;
   let newLife = life;
-  let newKillEnemiesItems = killEnemiesItems;
+  let newKillEnemiesItems = killEnemiesItems.slice();
+  let newMedipackItems = medipackItems.slice();
   let newEnemies = enemies.map(enemy => {
     return updatePerson(enemy, client, true);
   });
@@ -225,14 +227,27 @@ function updateGame(client, character, maze, life ) {
     }
   });
 
-  const hasColission = newKillEnemiesItems.some(item => {
+  const hasColissionWithMedipack = medipackItems.some(item => {
     return intersectRect(character, item);
   });
-  if(hasColission) {
+  if(hasColissionWithMedipack && newLife < 100) {
+    newLife = newLife + 10;
+    newMedipackItems = [];
+  }
+
+  const hasColissionWithKillEnemiesItem = newKillEnemiesItems.some(item => {
+    return intersectRect(character, item);
+  });
+  if(hasColissionWithKillEnemiesItem) {
     newEnemies = [];
     newKillEnemiesItems = [];
   }
-  return { enemies: newEnemies, life: newLife, killEnemiesItems: newKillEnemiesItems };
+  return {
+    enemies: newEnemies,
+    life: newLife,
+    killEnemiesItems: newKillEnemiesItems,
+    medipackItems: newMedipackItems
+  };
 }
 
 server.listen(3000);
