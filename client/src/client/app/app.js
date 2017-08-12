@@ -16,6 +16,8 @@ import Texture from "./texture";
 import TextureAtlas from "./textureAtlas";
 import Bitmap from "./bitmap";
 
+const PathToAssets = "src/client/assets";
+
 /* eslint-disable */
 function app() {
   'use strict';
@@ -31,8 +33,8 @@ function app() {
 
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
-    assetsLoader.getInstance().addFile("character.png","character");
-    assetsLoader.getInstance().addFile("atari400.png","enemy");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/character.png`,"character");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/atari400.png`,"enemy");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
