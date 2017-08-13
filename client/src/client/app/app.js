@@ -27,6 +27,7 @@ function app() {
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
   let enemySprite = [];
+  let hasDied = false;
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
   window.addEventListener('resize', resizeHudCanvas, false);
@@ -166,6 +167,18 @@ function app() {
       hud.resize(
        rootCanvas.width,
        rootCanvas.height);
+  }
+
+  function dieAnimation(originalX, originalY) {
+    if(!hasDied) {
+      createjs.Tween.get(characterSprite).to({
+        width:0,
+        height: 0,
+        x: originalX + DefaultWidthCharacter / 2,
+        y: originalY + DefaultHeightCharacter / 2,
+      }, 500);
+      hasDied = true;
+    }
   }
 
   window.onload = resizeHudCanvas();
