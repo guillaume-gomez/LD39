@@ -45,12 +45,10 @@ function app() {
     let dragPosition = null;
     let dragging = false;
 
-    client.onClick(function (evt) {
-      //var hole = { x: evt.position.x, y: evt.position.y };
-      //client.emit('shoot', hole);
-    });
-
     client.onDragStart(function (evt) {
+      if(hasDied) {
+        return;
+      }
       if (state) {
         var distanceX = evt.position[0].x - state.cluster.data.character.x;
         var distanceY = evt.position[0].y - state.cluster.data.character.y;
