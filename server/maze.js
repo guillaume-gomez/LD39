@@ -38,6 +38,7 @@ class Maze {
     this.enemies = [];
     this.killEnemiesItems = [];
     this.medipackItems =  [];
+    this.holes = [];
   }
 
   createMaze() {
@@ -93,6 +94,15 @@ class Maze {
     const height = 100;
     return [
       { x, y, width, height }
+    ];
+  }
+
+  buildHoles() {
+    const x = 500;
+    const y = 500;
+    const radius = 100;
+    return [
+      { x, y, radius }
     ];
   }
 
@@ -178,6 +188,7 @@ class Maze {
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
     this.killEnemiesItems = this.killEnemiesItems();
+    this.holes = this.buildHoles();
     this.minMoves = this.computeMinMoves();
     return true;
   }

@@ -15,6 +15,7 @@ const ee = new EventEmitter();
 
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
+const SPEED_THRESHOLD = 50;
 
 
 
@@ -25,7 +26,7 @@ swip(io, ee, {
         const { character } = cluster.data;
         let { maze } = cluster.data
         const { enemies, killEnemiesItems } = maze;
-        const { radius, x, y, speedX, speedY, life } = character;
+        const { radius, x, y, speedX, speedY, life, width, height } = character;
         const clients = cluster.clients;
         let nextPosX = x;
         let nextPosY = y;
@@ -125,6 +126,15 @@ function isParticleInClient (character, client) {
   return character.x < rightSide && character.x > leftSide && character.y > topSide && character.y < bottomSide;
 }
 
+function isInsideHole(hole, character) {
+  const distanceX = hole.x - (character.x + character.width / 2);
+  const distanceY = hole.y - (character.y + character.height / 2);
+  const distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+  const speed = Math.sqrt(Math.pow(character.speedX, 2) + Math.pow(character.speedY, 2));
+
+  return distance <= hole.radius && speed < SPEED_THRESHOLD;
+}
+
 function isWallOpenAtPosition (transform, openings, particlePos) {
   return openings.some((opening) => (
     particlePos >= (opening.start + transform) && particlePos <= (opening.end + transform)
@@ -212,7 +222,7 @@ function updatePerson(person, client, hasRebound = false) {
 }
 
 function updateGame(client, character, maze, life ) {
-  const { enemies, killEnemiesItems, medipackItems } = maze;
+  const { enemies, killEnemiesItems, medipackItems, holes } = maze;
   let newLife = life;
   let newKillEnemiesItems = killEnemiesItems.slice();
   let newMedipackItems = medipackItems.slice();
@@ -242,6 +252,17 @@ function updateGame(client, character, maze, life ) {
     newEnemies = [];
     newKillEnemiesItems = [];
   }
+  holes.some(hole => {
+    if (isInsideHole(hole, character)) {
+      //nextSpeedX = 0;
+      //nextSpeedY = 0;
+      //if(newWidth > 2) newWidth = newWidth - 2;
+      //if(newHeight > 2) newHeight = newHeight - 2;
+      newLife = 0;
+      //exit the loop
+      return true;
+    }
+  });
   return {
     enemies: newEnemies,
     life: newLife,

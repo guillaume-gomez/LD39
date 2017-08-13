@@ -5,7 +5,8 @@ import {
   throttle,
   drawArrow,
   drawRect,
-  drawCircle
+  drawCircle,
+  drawHole
 } from "./renderingFunctions"
 
 import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
@@ -97,7 +98,7 @@ function app() {
       state = evt;
       var client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
-      const {  enemies, killEnemiesItems, medipackItems } = maze
+      const {  enemies, killEnemiesItems, medipackItems, holes } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
@@ -108,6 +109,9 @@ function app() {
         });
         medipackItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,255,0,0.5");
+        });
+        holes.forEach(hole => {
+          drawHole(ctx, hole);
         });
         if(characterSprite) {
           characterSprite.x = character.x;
