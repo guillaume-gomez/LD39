@@ -62,6 +62,9 @@ function app() {
     });
 
     client.onDragMove(function (evt) {
+      if(hasDied) {
+        return;
+      }
       var distanceX = evt.position[0].x - state.cluster.data.character.x;
       var distanceY = evt.position[0].y - state.cluster.data.character.y;
       var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
@@ -102,12 +105,6 @@ function app() {
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
-        if(characterSprite) {
-          characterSprite.x = character.x;
-          characterSprite.y = character.y;
-          characterSprite.render(ctx);
-          drawRect(ctx, character);
-        }
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
@@ -117,6 +114,15 @@ function app() {
           enemySprite[index].render(ctx);
           drawRect(ctx, enemy);
         });
+         if(characterSprite) {
+          characterSprite.x = character.x;
+          characterSprite.y = character.y;
+          characterSprite.render(ctx);
+          drawRect(ctx, character);
+        }
+      }
+      if(character.life <= 0) {
+        dieAnimation(character.x, character.y);
       }
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze, character, converter);
