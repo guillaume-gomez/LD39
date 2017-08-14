@@ -103,18 +103,16 @@ export function drawCircle(ctx, character) {
     ctx.restore();
   }
 
-export function drawRect(ctx, character) {
-    const {x, y, width, height} = character;
-    ctx.save();
+export function drawRect(ctx, rect, fillStyle = 'rgba(255, 0, 0, 0.6)', shadowColor = 'rgba(0, 0, 0, 0.2)') {
+  const {x, y, width, height} = rect;
+  ctx.save();
 
-    ctx.fillStyle = 'rgba(255, 0, 0, 0.6)';
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
-    ctx.fillRect(x, y, width, height);
-    //ctx.fillRect(x, y, width, height);
-
-    ctx.restore();
-  }
+  ctx.fillStyle = fillStyle;
+  ctx.shadowBlur = 10;
+  ctx.shadowColor = shadowColor;
+  ctx.fillRect(x, y, width, height);
+  ctx.restore();
+}
 
 
 export function drawArrow(ctx, character, dragPosition) {
@@ -135,6 +133,7 @@ export function drawArrow(ctx, character, dragPosition) {
 
     ctx.restore();
   }
+
 
 export function drawHole (ctx, hole) {
     console.log(hole)

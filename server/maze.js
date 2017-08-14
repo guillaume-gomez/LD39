@@ -36,6 +36,7 @@ class Maze {
     this.createMaze();
     this.minMoves = this.computeMinMoves();
     this.enemies = [];
+    this.killEnemiesItems = [];
   }
 
   createMaze() {
@@ -71,6 +72,16 @@ class Maze {
     return [
       { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
       { x: x + 200, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+    ];
+  }
+
+  buildKillEnemiesItem() {
+    const x = 300;
+    const y = 50;
+    const width = 200;
+    const height = 200;
+    return [
+      { x, y, width, height }
     ];
   }
 
@@ -155,6 +166,7 @@ class Maze {
     this.nbMove++;
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
+    this.killEnemiesItems = this.killEnemiesItems();
     this.minMoves = this.computeMinMoves();
     return true;
   }
@@ -177,6 +189,10 @@ class Maze {
 
   setEnemies(enemiesArray) {
     this.enemies = enemiesArray.slice();
+  }
+
+  setKillNewEnemiesItem(killEnemiesItemsArray) {
+    this.killEnemiesItems = killEnemiesItemsArray.slice();
   }
 
   computeMinMoves() {

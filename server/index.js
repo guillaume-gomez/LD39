@@ -24,7 +24,7 @@ swip(io, ee, {
       update: (cluster) => {
         const { character } = cluster.data;
         let { maze } = cluster.data
-        const { enemies } = maze;
+        const { enemies, killEnemiesItems } = maze;
         const { radius, x, y, speedX, speedY, life } = character;
         const clients = cluster.clients;
         let nextPosX = x;
@@ -38,17 +38,26 @@ swip(io, ee, {
         const boundaryOffset = radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(character, c));
         let newEnemies = [];
+        let newKillEnemiesItem = killEnemiesItems.slice();
         if(client) {
           newEnemies = enemies.map(enemy => {
             return updatePerson(enemy, client, true);
           });
 
           newEnemies.map(enemy => {
-          if(intersectRect(character, enemy))
-          {
-            newLife = newLife - 2;
-          }
+            if(intersectRect(character, enemy))
+            {
+              newLife = newLife - 2;
+            }
           });
+
+          const hasColission = newKillEnemiesItem.some(item => {
+            return intersectRect(character, item);
+          });
+          if(hasColission) {
+            newEnemies = [];
+            newKillEnemiesItem = [];
+          }
          const {x,y, speedX, speedY } = updatePerson(character, client);
           nextPosX = x;
           nextPosY = y;
@@ -73,6 +82,7 @@ swip(io, ee, {
           });
         }
         maze.setEnemies(newEnemies);
+        maze.setKillNewEnemiesItem(newKillEnemiesItem);
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {

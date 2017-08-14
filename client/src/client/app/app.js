@@ -99,12 +99,15 @@ function app() {
       state = evt;
       var client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
-      const {  enemies } = maze
+      const {  enemies, killEnemiesItems } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
+        killEnemiesItems.forEach(item => {
+          drawRect(ctx, item, "rgba(0,0,255,0.5");
+        });
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
@@ -112,7 +115,6 @@ function app() {
           enemySprite[index].x = enemy.x;
           enemySprite[index].y = enemy.y;
           enemySprite[index].render(ctx);
-          drawRect(ctx, enemy);
         });
          if(characterSprite) {
           characterSprite.x = character.x;
