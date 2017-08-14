@@ -97,7 +97,7 @@ function app() {
 
     client.onUpdate(function (evt) {
       state = evt;
-      var client = state.client;
+      let client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
       const {  enemies, killEnemiesItems, medipackItems } = maze
       ctx.save();
