@@ -27,6 +27,7 @@ function app() {
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
   let enemySprite = [];
+  let hasDied = false;
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
   window.addEventListener('resize', resizeHudCanvas, false);
@@ -44,12 +45,10 @@ function app() {
     let dragPosition = null;
     let dragging = false;
 
-    client.onClick(function (evt) {
-      //var hole = { x: evt.position.x, y: evt.position.y };
-      //client.emit('shoot', hole);
-    });
-
     client.onDragStart(function (evt) {
+      if(hasDied) {
+        return;
+      }
       if (state) {
         var distanceX = evt.position[0].x - state.cluster.data.character.x;
         var distanceY = evt.position[0].y - state.cluster.data.character.y;
@@ -63,6 +62,9 @@ function app() {
     });
 
     client.onDragMove(function (evt) {
+      if(hasDied) {
+        return;
+      }
       var distanceX = evt.position[0].x - state.cluster.data.character.x;
       var distanceY = evt.position[0].y - state.cluster.data.character.y;
       var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
@@ -109,11 +111,6 @@ function app() {
         medipackItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,255,0,0.5");
         });
-        if(characterSprite) {
-          characterSprite.x = character.x;
-          characterSprite.y = character.y;
-          characterSprite.render(ctx);
-        }
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
@@ -122,6 +119,15 @@ function app() {
           enemySprite[index].y = enemy.y;
           enemySprite[index].render(ctx);
         });
+         if(characterSprite) {
+          characterSprite.x = character.x;
+          characterSprite.y = character.y;
+          characterSprite.render(ctx);
+          drawRect(ctx, character);
+        }
+      }
+      if(character.life <= 0) {
+        dieAnimation(character.x, character.y);
       }
       ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze, character, converter);
@@ -170,6 +176,18 @@ function app() {
       hud.resize(
        rootCanvas.width,
        rootCanvas.height);
+  }
+
+  function dieAnimation(originalX, originalY) {
+    if(!hasDied) {
+      createjs.Tween.get(characterSprite).to({
+        width:0,
+        height: 0,
+        x: originalX + DefaultWidthCharacter / 2,
+        y: originalY + DefaultHeightCharacter / 2,
+      }, 500);
+      hasDied = true;
+    }
   }
 
   window.onload = resizeHudCanvas();
