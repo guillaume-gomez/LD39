@@ -37,9 +37,9 @@ swip(io, ee, {
         const hasStarted = maze.getNbMove() > 0;
         const boundaryOffset = radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(character, c));
-        let newState = null;
+        let nextState = null;
         if(client) {
-          newState = updateGame(client, character, maze, life);
+          nextState = updateGame(client, character, maze, life);
          const {x,y, speedX, speedY } = updatePerson(client, character);
           nextPosX = x;
           nextPosY = y;
@@ -52,11 +52,11 @@ swip(io, ee, {
           nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
           nextSpeedX = 0;
           nextSpeedY = 0;
-          newState = updateGame(firstClient, character, maze, life);
+          nextState = updateGame(firstClient, character, maze, life);
         }
-        maze.setEnemies(newState.enemies);
-        maze.setKillEnemiesItems(newState.killEnemiesItems);
-        maze.setMedipackItems(newState.medipackItems);
+        maze.setEnemies(nextState.enemies);
+        maze.setKillEnemiesItems(nextState.killEnemiesItems);
+        maze.setMedipackItems(nextState.medipackItems);
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
@@ -65,7 +65,7 @@ swip(io, ee, {
             y: { $set: nextPosY },
             speedX: { $set: nextSpeedX * 0.97 },
             speedY: { $set: nextSpeedY * 0.97 },
-            life: { $set: newState.life }
+            life: { $set: nextState.life }
           },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
