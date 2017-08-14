@@ -40,7 +40,7 @@ swip(io, ee, {
         let newState = null;
         if(client) {
           newState = updateGame(client, character, maze, life);
-         const {x,y, speedX, speedY } = updatePerson(character, client);
+         const {x,y, speedX, speedY } = updatePerson(client, character);
           nextPosX = x;
           nextPosY = y;
           nextSpeedX = speedX;
@@ -52,7 +52,7 @@ swip(io, ee, {
           nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
           nextSpeedX = 0;
           nextSpeedY = 0;
-          newState = updateGame(client, character, maze, life);
+          newState = updateGame(firstClient, character, maze, life);
         }
         maze.setEnemies(newState.enemies);
         maze.setKillEnemiesItems(newState.killEnemiesItems);
@@ -175,7 +175,7 @@ function intersectRect(r1, r2) {
            (r2.y + r2.height) < r1.y);
 }
 
-function updatePerson(person, client, hasRebound = false) {
+function updatePerson(client, person, hasRebound = false) {
   const { x, y, speedX, speedY, width, height } = person;
   let nextPosX = x + speedX;
   let nextPosY = y + speedY;
@@ -217,13 +217,13 @@ function updateGame(client, character, maze, life ) {
   let newKillEnemiesItems = killEnemiesItems.slice();
   let newMedipackItems = medipackItems.slice();
   let newEnemies = enemies.map(enemy => {
-    return updatePerson(enemy, client, true);
+    return updatePerson(client, enemy, true);
   });
 
   newEnemies.map(enemy => {
     if(intersectRect(character, enemy))
     {
-      newLife = newLife - 2;
+      //newLife = newLife - 2;
     }
   });
 
