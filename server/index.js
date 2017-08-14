@@ -25,13 +25,8 @@ swip(io, ee, {
         const { character } = cluster.data;
         let { maze } = cluster.data
         const { enemies, killEnemiesItems } = maze;
-        const { radius, x, y, speedX, speedY, life } = character;
+        const { radius } = character;
         const clients = cluster.clients;
-        let nextPosX = x;
-        let nextPosY = y;
-        let nextSpeedX = 0;
-        let nextSpeedY = 0;
-        let newLife = life;
         removeFirstClient(cluster);
 
         const hasStarted = maze.getNbMove() > 0;
@@ -39,20 +34,16 @@ swip(io, ee, {
         const client = clients.find((c) => isParticleInClient(character, c));
         let nextState = null;
         if(client) {
-          nextState = updateGame(client, character, maze, life);
-         const {x,y, speedX, speedY } = updatePerson(client, character);
-          nextPosX = x;
-          nextPosY = y;
-          nextSpeedX = speedX;
-          nextSpeedY = speedY;
-
+          nextState = updateGame(client, character, maze);
         } else {
           const firstClient = clients[0];
-          nextPosX = firstClient.transform.x + (firstClient.size.width / 2);
-          nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
-          nextSpeedX = 0;
-          nextSpeedY = 0;
-          nextState = updateGame(firstClient, character, maze, life);
+          nextState = updateGame(firstClient, character, maze);
+          nextState = Object.assign({}, nextState,
+            { x: firstClient.transform.x + (firstClient.size.width / 2),
+              y: firstClient.transform.y + (firstClient.size.height / 2),
+              speedX: 0,
+              speedY: 0
+            });
         }
         maze.setEnemies(nextState.enemies);
         maze.setKillEnemiesItems(nextState.killEnemiesItems);
@@ -61,10 +52,10 @@ swip(io, ee, {
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         return {
           character: {
-            x: { $set: nextPosX },
-            y: { $set: nextPosY },
-            speedX: { $set: nextSpeedX * 0.97 },
-            speedY: { $set: nextSpeedY * 0.97 },
+            x: { $set: nextState.x },
+            y: { $set: nextState.y },
+            speedX: { $set: nextState.speedX * 0.97 },
+            speedY: { $set: nextState.speedY * 0.97 },
             life: { $set: nextState.life }
           },
           hasStarted: { $set: hasStarted },
@@ -211,11 +202,15 @@ function updatePerson(client, person, hasRebound = false) {
   return { x: nextPosX, y: nextPosY, speedX: nextSpeedX, speedY: nextSpeedY, width, height };
 }
 
-function updateGame(client, character, maze, life ) {
+function updateGame(client, character, maze ) {
   const { enemies, killEnemiesItems, medipackItems } = maze;
+  const { life } = character;
   let newLife = life;
   let newKillEnemiesItems = killEnemiesItems.slice();
   let newMedipackItems = medipackItems.slice();
+
+  const { x, y, speedX, speedY } = updatePerson(client, character);
+
   let newEnemies = enemies.map(enemy => {
     return updatePerson(client, enemy, true);
   });
@@ -243,8 +238,12 @@ function updateGame(client, character, maze, life ) {
     newKillEnemiesItems = [];
   }
   return {
-    enemies: newEnemies,
+    x,
+    y,
+    speedX,
+    speedY,
     life: newLife,
+    enemies: newEnemies,
     killEnemiesItems: newKillEnemiesItems,
     medipackItems: newMedipackItems
   };
