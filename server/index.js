@@ -218,7 +218,7 @@ function updateGame(client, character, maze ) {
   newEnemies.map(enemy => {
     if(intersectRect(character, enemy))
     {
-      //newLife = newLife - 2;
+      newLife = newLife - 2;
     }
   });
 
