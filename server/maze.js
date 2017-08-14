@@ -177,8 +177,9 @@ class Maze {
     this.nbMove++;
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
-    this.killEnemiesItems = this.killEnemiesItems();
+    this.killEnemiesItems = this.buildKillEnemiesItems();
     this.minMoves = this.computeMinMoves();
+    this.medipackItems = this.buildMedipackItems()
     return true;
   }
 
