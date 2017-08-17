@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Constants = require("./constants.js");
+const Room = require('./room.js');
 
 const BEGIN = "b"
 const EXIT = "o";
@@ -30,7 +31,6 @@ class Maze {
     this.nbMove = 0;
     this.size = 0;
     this.currentRoomType = BEGIN;
-    this.createMaze();
     this.nbAttempts = initNbAttempt();
     this.maxAttempt = initNbAttempt();
     this.createMaze();
@@ -57,7 +57,7 @@ class Maze {
         return _.times(this.size, _.constant(defaultValue));
       });
     }
-    this.matrix = createDefaultMatrix(OTHER, String);
+    this.matrix = createDefaultMatrix(new Room(OTHER), Object);
     this.discoveredMatrix = createDefaultMatrix(UNKNOWN, Number);
     this.matrix[xEnter][yEnter] = BEGIN;
     this.matrix[xOut][yOut] = EXIT;
@@ -106,8 +106,8 @@ class Maze {
     let x = -1;
     let y = -1;
    this.matrix.forEach((row, _y) => {
-      const _x = row.indexOf(type);
-      if(_x !== -1) {
+      const _x = row.find(r => r.getType() === type);
+      if(!_x) {
         x = _x;
         y = _y;
       }
@@ -149,7 +149,7 @@ class Maze {
     }
 
     //update the discovered matrix
-    if(this.matrix[newY][newX] === EXIT) {
+    if(this.matrix[newY][newX].getType() === EXIT) {
       this.discoveredMatrix[newY][newX] = EXIT_EXPLORED;
     }
     else {
@@ -157,12 +157,12 @@ class Maze {
       this.discoveredMatrix[newY][newX] = CURRENT_POSITION_EXPLORED;
     }
     //let the begin visible, don't need to erase it
-    if(this.matrix[y][x] != BEGIN) {
-      this.matrix[y][x] = OTHER;
+    if(this.matrix[y][x].getType() != BEGIN) {
+      this.matrix[y][x].setType(OTHER);
       this.discoveredMatrix[y][x] = EXPLORED;
     }
-    this.currentRoomType = this.matrix[newY][newX];
-    this.matrix[newY][newX] = CURRENT_POSITION;
+    this.currentRoomType = this.matrix[newY][newX].getType();
+    this.matrix[newY][newX].setType(CURRENT_POSITION);
     this.nbMove++;
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
