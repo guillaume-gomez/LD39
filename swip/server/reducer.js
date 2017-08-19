@@ -162,8 +162,11 @@ function createReducer (config) {
         originCluster = clientBCluster;
         targetCluster = clientACluster;
       }
+      console.log("beginMovePosition")
       const originMaze = originCluster.data.maze;
       //move and check if out of map
+      console.log("endMovePosition")
+
       if(!originMaze.movePosition(direction)) {
         return clearSwipes(state);
       }
