@@ -37,6 +37,7 @@ class Maze {
     this.minMoves = this.computeMinMoves();
     this.enemies = [];
     this.killEnemiesItems = [];
+    this.medipackItems =  [];
   }
 
   createMaze() {
@@ -75,11 +76,21 @@ class Maze {
     ];
   }
 
-  buildKillEnemiesItem() {
+  buildKillEnemiesItems() {
     const x = 300;
     const y = 50;
     const width = 200;
     const height = 200;
+    return [
+      { x, y, width, height }
+    ];
+  }
+
+  buildMedipackItems() {
+    const x = 400;
+    const y = 400;
+    const width = 100;
+    const height = 100;
     return [
       { x, y, width, height }
     ];
@@ -166,8 +177,9 @@ class Maze {
     this.nbMove++;
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
-    this.killEnemiesItems = this.buildKillEnemiesItem();
+    this.killEnemiesItems = this.buildKillEnemiesItems();
     this.minMoves = this.computeMinMoves();
+    this.medipackItems = this.buildMedipackItems()
     return true;
   }
 
@@ -191,8 +203,12 @@ class Maze {
     this.enemies = enemiesArray.slice();
   }
 
-  setKillNewEnemiesItem(killEnemiesItemsArray) {
+  setKillEnemiesItems(killEnemiesItemsArray) {
     this.killEnemiesItems = killEnemiesItemsArray.slice();
+  }
+
+  setMedipackItems(medipackItemsArray) {
+    this.medipackItems = medipackItemsArray.slice();
   }
 
   computeMinMoves() {
