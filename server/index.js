@@ -53,7 +53,7 @@ swip(io, ee, {
           nextPosY = firstClient.transform.y + (firstClient.size.height / 2);
           nextSpeedX = 0;
           nextSpeedY = 0;
-          newState = updateGame(client, character, maze, life);
+          newState = updateGame(firstClient, character, maze, life);
         }
         maze.setEnemies(newState.enemies);
         maze.setKillEnemiesItems(newState.killEnemiesItems);
@@ -254,10 +254,6 @@ function updateGame(client, character, maze, life ) {
   }
   holes.some(hole => {
     if (isInsideHole(hole, character)) {
-      //nextSpeedX = 0;
-      //nextSpeedY = 0;
-      //if(newWidth > 2) newWidth = newWidth - 2;
-      //if(newHeight > 2) newHeight = newHeight - 2;
       newLife = 0;
       //exit the loop
       return true;

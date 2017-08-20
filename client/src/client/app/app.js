@@ -109,6 +109,9 @@ function app() {
         holes.forEach(hole => {
           drawHole(ctx, hole);
         });
+        killEnemiesItems.forEach(item => {
+          drawRect(ctx, item, "rgba(0,0,255,0.5");
+        });
         if(characterSprite) {
           characterSprite.x = character.x;
           characterSprite.y = character.y;
