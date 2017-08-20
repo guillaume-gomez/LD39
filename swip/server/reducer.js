@@ -168,7 +168,7 @@ function createReducer (config) {
       if(!originMaze.movePosition(direction)) {
         return clearSwipes(state);
       }
-      updatedState = copyMaze(state, originCluster, targetCluster);
+      updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
       console.log(direction)
       console.log(updatedState.clusters[targetCluster.id].data.maze)
     }
@@ -396,8 +396,8 @@ function createReducer (config) {
     return result;
   }
 
-  function copyMaze(state, originCluster, targetCluster ) {
-    const updatedData = Object.assign({}, targetCluster.data, { maze: originCluster.data.maze });
+  function copyMazeAndCharacter(state, originCluster, targetCluster ) {
+    const updatedData = Object.assign({}, targetCluster.data, { maze: originCluster.data.maze, character: originCluster.data.character });
     const updatedTargetCluster = { [targetCluster.id] : Object.assign({}, targetCluster, { data: updatedData} ) };
     const { clusters } = state;
     const updatedClusters = Object.assign({}, clusters, updatedTargetCluster);
