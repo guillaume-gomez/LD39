@@ -24,7 +24,7 @@ const TYPES = {
 };
 
 const SIZE_MIN = 4;
-const SIZE_MAX = 8;
+const SIZE_MAX = 5;
 
 class Maze {
   constructor() {
@@ -146,11 +146,11 @@ class Maze {
       this.discoveredMatrix[y][x] = EXPLORED;
     }
     this.currentRoomType = this.matrix[newY][newX].getType();
-    this.matrix[newY][newX].type = CURRENT_POSITION;
+    this.matrix[newY][newX].setType(CURRENT_POSITION);
     this.nbMove++;
     this.nbAttempts--;
-    this.enemies = this.buildEnemies();
-    this.killEnemiesItems = this.buildKillEnemiesItem();
+    this.enemies = this.matrix[newY][newX].getEnemies();
+    this.killEnemiesItems = this.matrix[newY][newX].getMedics();
     this.minMoves = this.computeMinMoves();
     return true;
   }
