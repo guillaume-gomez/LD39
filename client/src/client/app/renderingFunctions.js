@@ -136,7 +136,6 @@ export function drawArrow(ctx, character, dragPosition) {
 
 
 export function drawHole (ctx, hole) {
-    console.log(hole)
     ctx.save();
 
     ctx.fillStyle = 'black';

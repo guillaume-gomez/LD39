@@ -164,6 +164,7 @@ function createReducer (config) {
       }
       const originMaze = originCluster.data.maze;
       //move and check if out of map
+      console.log("swipe")
       if(!originMaze.movePosition(direction)) {
         return clearSwipes(state);
       }

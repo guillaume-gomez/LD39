@@ -38,6 +38,7 @@ class Maze {
     this.enemies = [];
     this.killEnemiesItems = [];
     this.medipackItems =  [];
+    this.holes = [];
   }
 
   createMaze() {
@@ -93,6 +94,15 @@ class Maze {
     const height = 100;
     return [
       { x, y, width, height }
+    ];
+  }
+
+  buildHoles() {
+    const x = 500;
+    const y = 500;
+    const radius = 100;
+    return [
+      { x, y, radius }
     ];
   }
 
@@ -152,10 +162,10 @@ class Maze {
         newY += 1;
       break;
     }
-    if(newX < 0 || newX > (SIZE_MIN - 1)) {
+    if(newX < 0 || newX > (this.matrix.length - 1)) {
       return false;
     }
-    if(newY < 0 || newY > (SIZE_MIN - 1)) {
+    if(newY < 0 || newY > (this.matrix.length - 1)) {
       return false;
     }
 
@@ -178,6 +188,7 @@ class Maze {
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
     this.killEnemiesItems = this.buildKillEnemiesItems();
+    this.holes = this.buildHoles();
     this.minMoves = this.computeMinMoves();
     this.medipackItems = this.buildMedipackItems()
     return true;
@@ -214,7 +225,7 @@ class Maze {
   computeMinMoves() {
     const currentPosition = this.getCurrentPosition();
     const exitPosition = this.getPositionByType(EXIT);
-    return (Math.abs(exitPosition.x - currentPosition.x)) + (Math.abs(exitPosition.y - currentPosition.y)); 
+    return (Math.abs(exitPosition.x - currentPosition.x)) + (Math.abs(exitPosition.y - currentPosition.y));
   }
 
 };

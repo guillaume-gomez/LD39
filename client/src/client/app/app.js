@@ -5,7 +5,8 @@ import {
   throttle,
   drawArrow,
   drawRect,
-  drawCircle
+  drawCircle,
+  drawHole
 } from "./renderingFunctions"
 
 import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
@@ -99,18 +100,26 @@ function app() {
       state = evt;
       let client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
-      const {  enemies, killEnemiesItems, medipackItems } = maze
+      const {  enemies, killEnemiesItems, medipackItems, holes } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
+        holes.forEach(hole => {
+          drawHole(ctx, hole);
+        });
         killEnemiesItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,0,255,0.5");
         });
         medipackItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,255,0,0.5");
         });
+        if(characterSprite) {
+          characterSprite.x = character.x;
+          characterSprite.y = character.y;
+          characterSprite.render(ctx);
+        }
         if (dragging) {
           drawArrow(ctx, character, dragPosition);
         }
@@ -119,12 +128,6 @@ function app() {
           enemySprite[index].y = enemy.y;
           enemySprite[index].render(ctx);
         });
-         if(characterSprite) {
-          characterSprite.x = character.x;
-          characterSprite.y = character.y;
-          characterSprite.render(ctx);
-          drawRect(ctx, character);
-        }
       }
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);

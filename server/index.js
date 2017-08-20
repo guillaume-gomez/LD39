@@ -15,6 +15,7 @@ const ee = new EventEmitter();
 
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
+const SPEED_THRESHOLD = 50;
 
 
 
@@ -26,6 +27,7 @@ swip(io, ee, {
         let { maze } = cluster.data
         const { enemies, killEnemiesItems } = maze;
         const { radius } = character;
+
         const clients = cluster.clients;
         removeFirstClient(cluster);
 
@@ -116,6 +118,15 @@ function isParticleInClient (character, client) {
   return character.x < rightSide && character.x > leftSide && character.y > topSide && character.y < bottomSide;
 }
 
+function isInsideHole(hole, character) {
+  const distanceX = hole.x - (character.x + character.width / 2);
+  const distanceY = hole.y - (character.y + character.height / 2);
+  const distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+  const speed = Math.sqrt(Math.pow(character.speedX, 2) + Math.pow(character.speedY, 2));
+
+  return distance <= hole.radius && speed < SPEED_THRESHOLD;
+}
+
 function isWallOpenAtPosition (transform, openings, particlePos) {
   return openings.some((opening) => (
     particlePos >= (opening.start + transform) && particlePos <= (opening.end + transform)
@@ -203,8 +214,9 @@ function updatePerson(client, person, hasRebound = false) {
 }
 
 function updateGame(client, character, maze ) {
-  const { enemies, killEnemiesItems, medipackItems } = maze;
+  const { enemies, killEnemiesItems, medipackItems, holes } = maze;
   const { life } = character;
+
   let newLife = life;
   let newKillEnemiesItems = killEnemiesItems.slice();
   let newMedipackItems = medipackItems.slice();
@@ -237,6 +249,13 @@ function updateGame(client, character, maze ) {
     newEnemies = [];
     newKillEnemiesItems = [];
   }
+  holes.some(hole => {
+    if (isInsideHole(hole, character)) {
+      newLife = 0;
+      //exit the loop
+      return true;
+    }
+  });
   return {
     x,
     y,
