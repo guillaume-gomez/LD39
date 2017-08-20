@@ -98,7 +98,7 @@ function app() {
 
     client.onUpdate(function (evt) {
       state = evt;
-      var client = state.client;
+      let client = state.client;
       const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
       const {  enemies, killEnemiesItems, medipackItems, holes } = maze
       ctx.save();
@@ -111,6 +111,9 @@ function app() {
         });
         killEnemiesItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,0,255,0.5");
+        });
+        medipackItems.forEach(item => {
+          drawRect(ctx, item, "rgba(0,255,0,0.5");
         });
         if(characterSprite) {
           characterSprite.x = character.x;

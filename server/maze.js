@@ -190,6 +190,7 @@ class Maze {
     this.killEnemiesItems = this.buildKillEnemiesItems();
     this.holes = this.buildHoles();
     this.minMoves = this.computeMinMoves();
+    this.medipackItems = this.buildMedipackItems()
     return true;
   }
 
