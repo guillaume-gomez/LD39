@@ -54,14 +54,15 @@ class Maze {
 
     const createDefaultMatrix = (defaultValue, type) => {
       return _.times(this.size, type).map(column => {
-        return _.times(this.size, _.constant(defaultValue));
+        return _.times(this.size, () => {
+          return type === Object ? new Room.Room(defaultValue) : defaultValue;
+        });
       });
     }
-    this.matrix = createDefaultMatrix(new Room(OTHER), Object);
+    this.matrix = createDefaultMatrix(OTHER, Object);
     this.discoveredMatrix = createDefaultMatrix(UNKNOWN, Number);
-    this.matrix[xEnter][yEnter] = BEGIN;
-    this.matrix[xOut][yOut] = EXIT;
-
+    this.matrix[xEnter][yEnter] = new Room.Room(BEGIN);
+    this.matrix[xOut][yOut] = new Room.Room(EXIT);
     this.discoveredMatrix[xEnter][yEnter] = BEGIN_EXPLORED;
   }
 
@@ -85,29 +86,12 @@ class Maze {
     ];
   }
 
-  getCurrentPosition() {
-    const fn = (type) => {
-      return this.matrix.find(row => {
-        if(row.includes(type)) {
-          return true;
-        }
-        return false;
-      });
-    };
-
-    const currentPosition = fn(CURRENT_POSITION);
-    if(!currentPosition) {
-      return fn(BEGIN);
-    }
-    return currentPosition;
-  }
-
   getPositionByType(type) {
     let x = -1;
     let y = -1;
    this.matrix.forEach((row, _y) => {
-      const _x = row.find(r => r.getType() === type);
-      if(!_x) {
+      const _x = _.findIndex(row,(cell => cell.getType() === type));
+      if(_x !== -1) {
         x = _x;
         y = _y;
       }
@@ -141,10 +125,10 @@ class Maze {
         newY += 1;
       break;
     }
-    if(newX < 0 || newX > (SIZE_MIN - 1)) {
+    if(newX < 0 || newX > (this.matrix.length - 1)) {
       return false;
     }
-    if(newY < 0 || newY > (SIZE_MIN - 1)) {
+    if(newY < 0 || newY > (this.matrix.length - 1)) {
       return false;
     }
 
@@ -162,7 +146,7 @@ class Maze {
       this.discoveredMatrix[y][x] = EXPLORED;
     }
     this.currentRoomType = this.matrix[newY][newX].getType();
-    this.matrix[newY][newX].setType(CURRENT_POSITION);
+    this.matrix[newY][newX].type = CURRENT_POSITION;
     this.nbMove++;
     this.nbAttempts--;
     this.enemies = this.buildEnemies();
@@ -193,6 +177,14 @@ class Maze {
 
   setKillNewEnemiesItem(killEnemiesItemsArray) {
     this.killEnemiesItems = killEnemiesItemsArray.slice();
+  }
+
+  debug() {
+    return this.matrix.map( row => {
+      return row.map( cell => {
+        return cell.getType();
+      });
+    });
   }
 
   computeMinMoves() {

@@ -22,11 +22,8 @@ class Room {
   }
 
   setType(type) {
-    this.type = type
+    this.type = type;
   }
-
-
-  
 
 };
 
