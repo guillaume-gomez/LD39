@@ -37,6 +37,7 @@ swip(io, ee, {
           nextState = updateGame(client, character, maze);
         } else {
           const firstClient = clients[0];
+          maze.initElements(null, null, firstClient);
           nextState = updateGame(firstClient, character, maze);
           nextState = Object.assign({}, nextState,
             { x: firstClient.transform.x + (firstClient.size.width / 2),
@@ -44,10 +45,12 @@ swip(io, ee, {
               speedX: 0,
               speedY: 0
             });
+          //console.log(maze.enemies)
         }
         maze.setEnemies(nextState.enemies);
         maze.setKillEnemiesItems(nextState.killEnemiesItems);
         maze.setMedipackItems(nextState.medipackItems);
+
 
         const { pendingSplit, currentScreenId, loseAfterSwipe } = removeFirstClient(cluster);
         return {
@@ -68,7 +71,7 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 200, y: 200, width: Constants.DefaultWidthCharacter, height: Constants.DefaultHeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
+      character: { x: 250, y: 250, width: Constants.DefaultWidthCharacter, height: Constants.DefaultHeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
@@ -228,7 +231,7 @@ function updateGame(client, character, maze ) {
   newEnemies.map(enemy => {
     if(intersectRect(character, enemy))
     {
-      newLife = newLife - 2;
+      //newLife = newLife - 2;
     }
   });
 
