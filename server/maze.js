@@ -23,8 +23,8 @@ const TYPES = {
   CURRENT_POSITION_EXPLORED: CURRENT_POSITION_EXPLORED
 };
 
-const SIZE_MIN = 4;
-const SIZE_MAX = 5;
+const SIZE_MIN = 3;
+const SIZE_MAX = 4;
 
 class Maze {
   constructor() {
@@ -35,8 +35,16 @@ class Maze {
     this.maxAttempt = initNbAttempt();
     this.createMaze();
     this.minMoves = this.computeMinMoves();
-    this.enemies = [];
+      const x = 40;
+    const y = 80;
+    const speed = 8;
+    this.enemies = [
+      { x, y, speedX: 0, speedY: speed, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+      { x: x + 50, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+    ];
     this.killEnemiesItems = [];
+    this.medipackItems =  [];
+    this.holes = [];
   }
 
   createMaze() {
@@ -62,28 +70,34 @@ class Maze {
     this.matrix = createDefaultMatrix(OTHER, Object);
     this.discoveredMatrix = createDefaultMatrix(UNKNOWN, Number);
     this.matrix[xEnter][yEnter] = new Room.Room(BEGIN);
-    this.matrix[xOut][yOut] = new Room.Room(EXIT);
+    //this.matrix[xOut][yOut] = new Room.Room(EXIT);
     this.discoveredMatrix[xEnter][yEnter] = BEGIN_EXPLORED;
   }
 
-  buildEnemies() {
-    const x = _.random(0, 500);
-    const y = _.random(0, 500);
-    const speed = _.random(5, 10);
+  buildHoles() {
+    const x = 500;
+    const y = 500;
+    const radius = 100;
     return [
-      { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x + 200, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      { x, y, radius }
     ];
   }
 
-  buildKillEnemiesItem() {
-    const x = 300;
-    const y = 50;
-    const width = 200;
-    const height = 200;
-    return [
-      { x, y, width, height }
-    ];
+  getCurrentPosition() {
+    const fn = (type) => {
+      return this.matrix.find(row => {
+        if(row.includes(type)) {
+          return true;
+        }
+        return false;
+      });
+    };
+
+    const currentPosition = fn(CURRENT_POSITION);
+    if(!currentPosition) {
+      return fn(BEGIN);
+    }
+    return currentPosition;
   }
 
   getPositionByType(type) {
@@ -149,10 +163,23 @@ class Maze {
     this.matrix[newY][newX].setType(CURRENT_POSITION);
     this.nbMove++;
     this.nbAttempts--;
-    this.enemies = this.matrix[newY][newX].getEnemies();
-    this.killEnemiesItems = this.matrix[newY][newX].getMedics();
+    //this.initElements(newX, newY);
     this.minMoves = this.computeMinMoves();
     return true;
+  }
+
+  initElements(newX = null, newY = null, client = null) {
+    let x = newX;
+    let y = newY;
+    if(!x || !y) {
+      ({x, y} = this.getCurrentPosition());
+    }
+    this.medipackItems = this.matrix[y][x].getMedics();
+    this.enemies = this.matrix[y][x].getEnemies().map(enemy => {
+      const test = { x: client.transform.x + (client.size.width / 2) + 30 , y: client.transform.y + (client.size.height / 2) + 40 }
+      return Object.assign({}, enemy, test);
+    });
+    //this.holes = this.buildHoles();
   }
 
   getNbMove() {
@@ -175,7 +202,7 @@ class Maze {
     this.enemies = enemiesArray.slice();
   }
 
-  setKillNewEnemiesItem(killEnemiesItemsArray) {
+  setKillEnemiesItems(killEnemiesItemsArray) {
     this.killEnemiesItems = killEnemiesItemsArray.slice();
   }
 
@@ -187,10 +214,14 @@ class Maze {
     });
   }
 
+  setMedipackItems(medipackItemsArray) {
+    this.medipackItems = medipackItemsArray.slice();
+  }
+
   computeMinMoves() {
     const currentPosition = this.getCurrentPosition();
     const exitPosition = this.getPositionByType(EXIT);
-    return (Math.abs(exitPosition.x - currentPosition.x)) + (Math.abs(exitPosition.y - currentPosition.y)); 
+    return (Math.abs(exitPosition.x - currentPosition.x)) + (Math.abs(exitPosition.y - currentPosition.y));
   }
 
 };
