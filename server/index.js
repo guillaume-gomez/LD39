@@ -45,7 +45,6 @@ swip(io, ee, {
               speedX: 0,
               speedY: 0
             });
-          //console.log(maze.enemies)
         }
         maze.setEnemies(nextState.enemies);
         maze.setKillEnemiesItems(nextState.killEnemiesItems);
