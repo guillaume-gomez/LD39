@@ -21,14 +21,14 @@ class Room {
   buildRoom1() {
     const x = 40;
     const y = 80;
-    const speed = 8;
+    const speed = 12;
     const enemies = [
       { x, y, speedX: 0, speedY: speed, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
       { x: x + 50, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
     ];
 
     const medics = [
-      { x, y, width: 20, height: 20 }
+      { x, y, width: 40, height: 40 }
     ];
     this.enemies = enemies;
     this.medics = medics;
@@ -37,14 +37,14 @@ class Room {
   buildRoom2() {
     const x = 40;
     const y = 80;
-    const speed = 8;
+    const speed = 12;
     const enemies = [
       { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
       { x: x , y: y + 100, speedX: speed, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
     ];
 
     const medics = [
-      { x, y, width: 20, height: 20 }
+      { x, y, width: 40, height: 40 }
     ];
 
     this.enemies = enemies;

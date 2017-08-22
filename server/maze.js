@@ -23,8 +23,8 @@ const TYPES = {
   CURRENT_POSITION_EXPLORED: CURRENT_POSITION_EXPLORED
 };
 
-const SIZE_MIN = 3;
-const SIZE_MAX = 4;
+const SIZE_MIN = 4;
+const SIZE_MAX = 8;
 
 class Maze {
   constructor() {
@@ -64,7 +64,7 @@ class Maze {
     this.matrix = createDefaultMatrix(OTHER, Object);
     this.discoveredMatrix = createDefaultMatrix(UNKNOWN, Number);
     this.matrix[xEnter][yEnter] = new Room.Room(BEGIN);
-    //this.matrix[xOut][yOut] = new Room.Room(EXIT);
+    this.matrix[xOut][yOut] = new Room.Room(EXIT);
     this.discoveredMatrix[xEnter][yEnter] = BEGIN_EXPLORED;
   }
 
@@ -168,11 +168,16 @@ class Maze {
     if(!x || !y) {
       ({x, y} = this.getCurrentPosition());
     }
-    this.medipackItems = this.matrix[y][x].getMedics();
-    this.enemies = this.matrix[y][x].getEnemies().map(enemy => {
-      const updatedPosition = { x: client.transform.x + (client.size.width / 2) + enemy.x , y: client.transform.y + (client.size.height / 2) + enemy.y }
-      return Object.assign({}, enemy, updatedPosition);
-    });
+
+    const addTransformOffset = (array) => {
+      return array.map(value => {
+        const updatedPosition = { x: client.transform.x + (client.size.width / 2) + value.x , y: client.transform.y + (client.size.height / 2) + value.y };
+        return Object.assign({}, value, updatedPosition);
+      });
+    }
+
+    this.medipackItems = addTransformOffset(this.matrix[y][x].getMedics());
+    this.enemies = addTransformOffset(this.matrix[y][x].getEnemies());
     //this.holes = this.buildHoles();
   }
 
