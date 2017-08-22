@@ -228,6 +228,10 @@ class Maze {
     return (Math.abs(exitPosition.x - currentPosition.x)) + (Math.abs(exitPosition.y - currentPosition.y));
   }
 
+  loseLifeAfterPinch() {
+    return 20 * (this.matrix.length / SIZE_MAX);
+  }
+
 };
 
 function initNbAttempt() {
