@@ -35,13 +35,7 @@ class Maze {
     this.maxAttempt = initNbAttempt();
     this.createMaze();
     this.minMoves = this.computeMinMoves();
-      const x = 40;
-    const y = 80;
-    const speed = 8;
-    this.enemies = [
-      { x, y, speedX: 0, speedY: speed, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x + 50, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
-    ];
+    this.enemies = [];
     this.killEnemiesItems = [];
     this.medipackItems =  [];
     this.holes = [];
@@ -114,7 +108,7 @@ class Maze {
   }
 
   getCurrentPosition() {
-    const {x, y } = this.getPositionByType(CURRENT_POSITION);
+    const { x, y } = this.getPositionByType(CURRENT_POSITION);
     if(x === -1 || y === -1) {
       return this.getPositionByType(BEGIN);
     }
@@ -176,8 +170,8 @@ class Maze {
     }
     this.medipackItems = this.matrix[y][x].getMedics();
     this.enemies = this.matrix[y][x].getEnemies().map(enemy => {
-      const test = { x: client.transform.x + (client.size.width / 2) + 30 , y: client.transform.y + (client.size.height / 2) + 40 }
-      return Object.assign({}, enemy, test);
+      const updatedPosition = { x: client.transform.x + (client.size.width / 2) + enemy.x , y: client.transform.y + (client.size.height / 2) + enemy.y }
+      return Object.assign({}, enemy, updatedPosition);
     });
     //this.holes = this.buildHoles();
   }
