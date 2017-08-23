@@ -178,7 +178,7 @@ class Maze {
 
     this.medipackItems = addTransformOffset(this.matrix[y][x].getMedics());
     this.enemies = addTransformOffset(this.matrix[y][x].getEnemies());
-    //this.holes = this.buildHoles();
+    this.holes = addTransformOffset(this.matrix[y][x].getHoles());
   }
 
   getNbMove() {

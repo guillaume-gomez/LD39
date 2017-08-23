@@ -6,7 +6,8 @@ class Room {
     this.type = type;
     this.enemies = [];
     this.medics = [];
-    const roomNumber = _.random(1,2);
+    this.holes = [];
+    const roomNumber = _.random(1, 3);
     this[`buildRoom${roomNumber}`]();
   }
 
@@ -51,12 +52,25 @@ class Room {
     this.medics = medics;
   }
 
+  buildRoom3() {
+   const x = -200;
+    const y = 50;
+    const radius = 100;
+    this.holes = [
+      { x, y, radius }
+    ];
+  }
+
   getEnemies() {
     return this.enemies;
   }
 
   getMedics() {
     return this.medics;
+  }
+
+  getHoles() {
+    return this.holes;
   }
 
 };
