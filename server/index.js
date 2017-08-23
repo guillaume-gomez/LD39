@@ -50,15 +50,16 @@ swip(io, ee, {
         maze.setKillEnemiesItems(nextState.killEnemiesItems);
         maze.setMedipackItems(nextState.medipackItems);
 
+        const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
+        const lifeLostAfterPinch = loseLifeAfterPinch(cluster, maze);
 
-        const { pendingSplit, currentScreenId, loseAfterSwipe } = removeFirstClient(cluster);
         return {
           character: {
             x: { $set: nextState.x },
             y: { $set: nextState.y },
             speedX: { $set: nextState.speedX * 0.97 },
             speedY: { $set: nextState.speedY * 0.97 },
-            life: { $set: nextState.life + loseAfterSwipe }
+            life: { $set: nextState.life - lifeLostAfterPinch }
           },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
@@ -148,9 +149,18 @@ function removeFirstClient(cluster) {
       ee.emit(LEAVE_CLUSTER, newClient.id);
     };
     setTimeout(fn, 1000);
-    return { pendingSplit: true, currentScreenId: newClient.id, loseAfterSwipe: -10 };
+    return { pendingSplit: true, currentScreenId: newClient.id };
   }
-  return { pendingSplit: pendingSplit, currentScreenId: currentScreenId, loseAfterSwipe: 0 };
+  return { pendingSplit: pendingSplit, currentScreenId: currentScreenId};
+}
+
+function loseLifeAfterPinch(cluster, maze) {
+  const { clients, data } = cluster;
+  let { currentScreenId, pendingSplit } = data;
+  if(shouldIPassedProperty(cluster) && !pendingSplit) {
+    return maze.loseLifeAfterPinch();
+  }
+  return 0;
 }
 
 
