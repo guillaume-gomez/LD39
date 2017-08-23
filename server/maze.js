@@ -187,6 +187,9 @@ class Maze {
   }
 
   loseLifeAfterPinch() {
+    if(this.nbMove === 0) {
+      return 0;
+    }
     return 20 * (this.matrix.length / SIZE_MAX);
   }
 
