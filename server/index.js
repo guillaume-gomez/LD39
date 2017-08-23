@@ -57,8 +57,8 @@ swip(io, ee, {
           character: {
             x: { $set: nextState.x },
             y: { $set: nextState.y },
-            speedX: { $set: nextState.speedX * 0.97 },
-            speedY: { $set: nextState.speedY * 0.97 },
+            speedX: { $set: nextState.speedX },
+            speedY: { $set: nextState.speedY },
             life: { $set: nextState.life - lifeLostAfterPinch }
           },
           hasStarted: { $set: hasStarted },
