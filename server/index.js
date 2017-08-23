@@ -37,6 +37,7 @@ swip(io, ee, {
           nextState = updateGame(client, character, maze);
         } else {
           const firstClient = clients[0];
+          maze.initElements(null, null, firstClient);
           nextState = updateGame(firstClient, character, maze);
           nextState = Object.assign({}, nextState,
             { x: firstClient.transform.x + (firstClient.size.width / 2),
@@ -51,14 +52,14 @@ swip(io, ee, {
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         const lifeLostAfterPinch = loseLifeAfterPinch(cluster, maze);
-        shouldIPassedProperty(cluster) && !pendingSplit
+
         return {
           character: {
             x: { $set: nextState.x },
             y: { $set: nextState.y },
             speedX: { $set: nextState.speedX * 0.97 },
             speedY: { $set: nextState.speedY * 0.97 },
-            life: { $set: nextState.life + lifeLostAfterPinch }
+            life: { $set: nextState.life - lifeLostAfterPinch }
           },
           hasStarted: { $set: hasStarted },
           pendingSplit: { $set : pendingSplit },
@@ -70,12 +71,12 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 200, y: 200, width: Constants.DefaultWidthCharacter, height: Constants.DefaultHeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
+      character: { x: 250, y: 250, width: Constants.DefaultWidthCharacter, height: Constants.DefaultHeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
       hasStarted: false,
-      currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
+      currentRoomConstraint: MazeTools.getRoomConstraint(Constants.BEGIN),
       maze: new MazeTools.Maze(),
     }),
   },

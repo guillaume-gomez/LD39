@@ -170,7 +170,7 @@ function createReducer (config) {
       }
       updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
       console.log(direction)
-      console.log(updatedState.clusters[targetCluster.id].data.maze)
+      console.log(updatedState.clusters[targetCluster.id].data.maze.debug())
     }
     //////////////////////////////////////////////////// end of the the function
 
