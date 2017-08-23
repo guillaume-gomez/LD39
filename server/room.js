@@ -7,8 +7,10 @@ class Room {
     this.enemies = [];
     this.medics = [];
     this.holes = [];
-    const roomNumber = _.random(1, 3);
-    this[`buildRoom${roomNumber}`]();
+    if(this.type !== Constants.EXIT) {
+      const roomNumber = _.random(1, 3);
+      this[`buildRoom${roomNumber}`]();
+    }
   }
 
   getType() {
