@@ -75,7 +75,7 @@ swip(io, ee, {
       pendingSplit: null,
       nbClients: 2,
       hasStarted: false,
-      currentRoomConstraint: MazeTools.getRoomConstraint(MazeTools.TYPES.BEGIN),
+      currentRoomConstraint: MazeTools.getRoomConstraint(Constants.BEGIN),
       maze: new MazeTools.Maze(),
     }),
   },
