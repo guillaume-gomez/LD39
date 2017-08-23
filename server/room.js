@@ -22,12 +22,12 @@ class Room {
   }
 
   buildRoom1() {
-    const x = 40;
+    const x = -150;
     const y = 80;
-    const speed = 12;
+    const speed = 8;
     const enemies = [
       { x, y, speedX: 0, speedY: speed, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x + 50, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      { x: x + 250, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
     ];
 
     const medics = [
@@ -39,11 +39,11 @@ class Room {
 
   buildRoom2() {
     const x = 40;
-    const y = 80;
-    const speed = 12;
+    const y = -150;
+    const speed = 8;
     const enemies = [
       { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x , y: y + 100, speedX: speed, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      { x: x , y: y + 250, speedX: speed, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
     ];
 
     const medics = [
