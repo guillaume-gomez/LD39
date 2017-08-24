@@ -139,7 +139,7 @@ export function drawHole (ctx, hole) {
     ctx.save();
 
     ctx.fillStyle = 'black';
-    ctx.strokeStyle = '#4b7f1f';
+    ctx.strokeStyle = '#4e5154';
     ctx.lineWidth = 2;
 
     ctx.beginPath();
