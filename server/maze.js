@@ -132,16 +132,48 @@ class Maze {
     if(!x || !y) {
       ({x, y} = this.getCurrentPosition());
     }
-    const addTransformOffset = (array) => {
-      return array.map(value => {
-        const updatedPosition = { x: client.transform.x + (client.size.width / 2) + value.x , y: client.transform.y + (client.size.height / 2) + value.y };
-        return Object.assign({}, value, updatedPosition);
-      });
-    }
 
-    this.medipackItems = addTransformOffset(this.matrix[y][x].getMedics());
-    this.enemies = addTransformOffset(this.matrix[y][x].getEnemies());
-    this.holes = addTransformOffset(this.matrix[y][x].getHoles());
+    this.medipackItems = this.offsetFromCenterOfRoom(client, this.matrix[y][x].getMedics());
+    this.enemies = this.offsetFromCenterOfRoom(client, this.matrix[y][x].getEnemies());
+    this.holes = this.offsetFromCenterOfRoom(client, this.matrix[y][x].getHoles());
+    this.killEnemiesItems = this.moveInCorner(client, this.matrix[y][x].getKillEnemiesItems());
+  }
+
+  offsetFromCenterOfRoom(client, array) {
+    return array.map(value => {
+      const updatedPosition = { x: client.transform.x + (client.size.width / 2) + value.x , y: client.transform.y + (client.size.height / 2) + value.y };
+      return Object.assign({}, value, updatedPosition);
+    });
+   }
+
+  moveInCorner(client, array) {
+    const direction = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+    return array.map(value => {
+      const directionChoosed = direction[_.random(0, 3)];
+      let offsetX = 0;
+      let offsetY = 0;
+      switch(directionChoosed) {
+        case 'top-left':
+          offsetX = 20 + value.width;
+          offsetY = 20 + value.height;
+        break;
+        case 'top-right':
+          offsetX = client.size.width - 20 - value.width;
+          offsetY = 20 + value.height;
+        break;
+        case 'bottom-left':
+          offsetX = value.width;
+          offsetY = client.size.height - 20 - value.height;
+        break;
+        case 'bottom-right':
+          offsetX = client.size.width - 20 - value.width;
+          offsetY = client.size.height - 20 - value.height;
+        break
+      }
+
+      const updatedPosition = { x: client.transform.x + offsetX, y: client.transform.y + offsetY };
+      return Object.assign({}, value, updatedPosition);
+    });
   }
 
   getNbMove() {
