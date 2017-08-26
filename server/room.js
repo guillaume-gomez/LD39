@@ -9,7 +9,7 @@ class Room {
     this.holes = [];
     this.killEnemiesItems = [];
     if(this.type !== Constants.EXIT) {
-      const roomNumber = _.random(0, 4);
+      const roomNumber = _.random(1, 4);
       this[`buildRoom${roomNumber}`]();
     }
   }
@@ -69,7 +69,7 @@ class Room {
     ];
 
     const removeEnemyItems = [
-      { x: 50, y: 20 , width: 50, height: 50 }
+      { x: 0, y: 0, width: 50, height: 50 }
     ]
 
     this.enemies = enemies;
