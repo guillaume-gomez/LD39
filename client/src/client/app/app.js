@@ -36,7 +36,7 @@ function app() {
   swip.init({ socket: socket, container: document.getElementById('root') }, function (client) {
     assetsLoader.getInstance().onComplete = onComplete;
     assetsLoader.getInstance().addFile(`${PathToAssets}/character.png`,"character");
-    assetsLoader.getInstance().addFile(`${PathToAssets}/atari400.png`,"enemy");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/enemy1.png`,"enemy");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -161,7 +161,7 @@ function app() {
     characterSprite = characterBmp;
 
     atlas.data = assetsManager.getInstance().getImageByAlias("enemy");
-    atlas.createTexture("particle_tex", 0,0,256,156);
+    atlas.createTexture("particle_tex", 0,0,136,132);
     texture = atlas.getTextureByName("particle_tex");
     for(let i = 0; i < 2; ++i) {
       let bmp = new Bitmap();
