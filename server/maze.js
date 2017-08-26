@@ -5,6 +5,7 @@ const Room = require('./room.js');
 const SIZE_MIN = 4;
 //stay size_max cause server latency if the maze become too large
 const SIZE_MAX = 5;
+const WALL_SIZE = 20;
 
 class Maze {
   constructor() {
@@ -149,25 +150,25 @@ class Maze {
   moveInCorner(client, array) {
     const direction = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
     return array.map(value => {
-      const directionChoosed = direction[_.random(0, 3)];
+      const directionChoosed = direction[_.random(0, direction.length - 1)];
       let offsetX = 0;
       let offsetY = 0;
       switch(directionChoosed) {
         case 'top-left':
-          offsetX = 20 + value.width;
-          offsetY = 20 + value.height;
+          offsetX = WALL_SIZE + value.x;
+          offsetY = WALL_SIZE + value.y;
         break;
         case 'top-right':
-          offsetX = client.size.width - 20 - value.width;
-          offsetY = 20 + value.height;
+          offsetX = client.size.width - WALL_SIZE - value.width - value.x;
+          offsetY = WALL_SIZE + value.y;
         break;
         case 'bottom-left':
-          offsetX = value.width;
-          offsetY = client.size.height - 20 - value.height;
+          offsetX = WALL_SIZE + value.x;
+          offsetY = client.size.height - WALL_SIZE - value.height - value.y;
         break;
         case 'bottom-right':
-          offsetX = client.size.width - 20 - value.width;
-          offsetY = client.size.height - 20 - value.height;
+          offsetX = client.size.width - WALL_SIZE - value.width - value.x;
+          offsetY = client.size.height - WALL_SIZE - value.height - value.y;
         break
       }
 
