@@ -40,7 +40,7 @@ class Hud {
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
       this.showEndGame();
       this.drawMaze(maze.discoveredMatrix);
-    } else if (maze.nbAttempts <= 0 || character.life <= 0) {
+    } else if (character.life <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
       this.renderLife(character.life, 5, 25);
@@ -107,17 +107,6 @@ class Hud {
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `20pt ${this.font}`;
     this.context.fillText("You Lose :( refresh the page", 5, 60);
-  }
-
-
-  displayNbAttempt(currentAttempt, maxAttempt) {
-    this.context.beginPath();
-    this.context.fillStyle = this.fillBGStyle;
-    this.context.fillRect(0, 0, 230, this.heightPanel);
-    this.context.fill();
-    this.context.fillStyle = this.fillFontStyle;
-    this.context.font = `13pt ${this.font}`;
-    this.context.fillText(`Attempts: ${currentAttempt} / ${maxAttempt}`, 5, 50);
   }
 
   displayMinMoves(minMoves, x = 5, y = 80) {

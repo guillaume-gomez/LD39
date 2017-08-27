@@ -12,8 +12,6 @@ class Maze {
     this.nbMove = 0;
     this.size = 0;
     this.currentRoomType = Constants.BEGIN;
-    this.nbAttempts = initNbAttempt();
-    this.maxAttempt = initNbAttempt();
     this.createMaze();
     this.minMoves = this.computeMinMoves();
     this.enemies = [];
@@ -121,7 +119,6 @@ class Maze {
     this.currentRoomType = this.matrix[newY][newX].getType();
     this.matrix[newY][newX].setType(Constants.CURRENT_POSITION);
     this.nbMove++;
-    this.nbAttempts--;
     //this.initElements(newX, newY);
     this.minMoves = this.computeMinMoves();
     return true;
@@ -185,10 +182,6 @@ class Maze {
     return this.currentRoomType;
   }
 
-  getNbAttempt() {
-    return this.nbAttempts;
-  }
-
   hasWin(type) {
     return this.currentRoomType;
   }
@@ -228,10 +221,6 @@ class Maze {
 
 };
 
-function initNbAttempt() {
-  return 14;
-}
-
 function getRoomConstraint(type) {
   switch(type) {
     case Constants.BEGIN:
@@ -252,6 +241,5 @@ function getDiscoveredMatrix() {
 
 module.exports = {
   Maze,
-  getRoomConstraint,
-  initNbAttempt
+  getRoomConstraint
 };
