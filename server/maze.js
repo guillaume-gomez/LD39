@@ -3,7 +3,7 @@ const Constants = require("./constants.js");
 const Room = require('./room.js');
 
 const SIZE_MIN = 4;
-//stay size_max cause server latency if the maze become too large
+//size_max value too high cause server latency if the maze become too large
 const SIZE_MAX = 5;
 const WALL_SIZE = 20;
 
