@@ -7,8 +7,9 @@ class Room {
     this.enemies = [];
     this.medics = [];
     this.holes = [];
+    this.killEnemiesItems = [];
     if(this.type !== Constants.EXIT) {
-      const roomNumber = _.random(1, 3);
+      const roomNumber = _.random(1, 4);
       this[`buildRoom${roomNumber}`]();
     }
   }
@@ -54,6 +55,28 @@ class Room {
     this.medics = medics;
   }
 
+  buildRoom4() {
+    const x = 40;
+    const y = -150;
+    const speed = 8;
+    const enemies = [
+      { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
+      { x: x , y: y + 250, speedX: speed, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+    ];
+
+    const medics = [
+      { x, y, width: 40, height: 40 }
+    ];
+
+    const removeEnemyItems = [
+      { x: 10, y: 10, width: 50, height: 50 }
+    ]
+
+    this.enemies = enemies;
+    this.medics = medics;
+    this.killEnemiesItems = removeEnemyItems;
+  }
+
   buildRoom3() {
    const x = -200;
     const y = 50;
@@ -73,6 +96,10 @@ class Room {
 
   getHoles() {
     return this.holes;
+  }
+
+  getKillEnemiesItems() {
+    return this.killEnemiesItems;
   }
 
 };
