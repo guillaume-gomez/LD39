@@ -163,9 +163,11 @@ function createReducer (config) {
         targetCluster = clientACluster;
       }
       const originMaze = originCluster.data.maze;
+      const character = originCluster.data.character;
       //move and check if out of map
       console.log("swipe")
-      if(!originMaze.movePosition(direction)) {
+      //console.log(validSwipe(character, originMaze, direction, clientA))
+      if(!validSwipe(character, originMaze, direction, clientA)) {
         return clearSwipes(state);
       }
       updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
@@ -404,6 +406,43 @@ function createReducer (config) {
     return update(state, {
       clusters: { $set: updatedClusters },
     });
+  }
+
+  function validSwipe(character, maze, direction, client) {
+    const { swipeZone } = client.data;
+    const { width, height } = client.size;
+    const transformX = client.transform.x;
+    const transformY = client.transform.y;
+    console.log("x",  + character.x)
+    console.log("y",  + character.y)
+    console.log("wdth", width)
+    console.log("height", height)
+    console.log(direction)
+    console.log('------------------')
+
+    if(maze.nbMove === 0) {
+      return true;
+    }
+    //left
+    if((character.x < width * swipeZone) && direction === "LEFT") {
+      return true;
+    }
+    // right
+    if((character.x + character.width > width * (1 - swipeZone)) && direction === "RIGHT") {
+      return true;
+    }
+
+    // up
+    if((character.y < height * swipeZone) && direction === "UP") {
+      return true;
+    }
+
+    // down
+    if((character.y + character.height > height * (1 - swipeZone)) && direction === "DOWN") {
+      return true
+    }
+
+    return !maze.movePosition(direction);
   }
 
   // function changePendingCluster(state, { id }) {
