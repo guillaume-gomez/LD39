@@ -6,7 +6,8 @@ import {
   drawArrow,
   drawRect,
   drawCircle,
-  drawHole
+  drawHole,
+  drawSwipZone
 } from "./renderingFunctions"
 
 import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
@@ -106,6 +107,7 @@ function app() {
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
+        drawSwipZone(ctx, client, character);
         holes.forEach(hole => {
           drawHole(ctx, hole);
         });
