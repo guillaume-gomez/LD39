@@ -2,6 +2,13 @@ const DefaultWidthEnemy = 136/2;
 const DefaultHeightEnemy = 132/2;
 const DefaultWidthCharacter = 136/2;
 const DefaultHeightCharacter = 130/2;
+const DefaultWidthMedikit = 136/4;
+const DefaultHeightMedikit = 135/4;
+
+const MaxEnemies = 2;
+const MaxMedic = 1;
+const MaxkillEnemiesItems = 1;
+const MaxHoles = 2;
 
 
 //MAZE
@@ -32,6 +39,12 @@ module.exports = {
   DefaultWidthEnemy,
   DefaultWidthCharacter,
   DefaultHeightCharacter,
+  DefaultWidthMedikit,
+  DefaultHeightMedikit,
+  MaxEnemies,
+  MaxMedic,
+  MaxkillEnemiesItems,
+  MaxHoles,
   BEGIN,
   EXIT,
   OTHER,

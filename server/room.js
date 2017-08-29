@@ -32,7 +32,7 @@ class Room {
     ];
 
     const medics = [
-      { x, y, width: 40, height: 40 }
+      { x, y, width: Constants.DefaultWidthMedikit, height: Constants.DefaultHeightMedikit }
     ];
     this.enemies = enemies;
     this.medics = medics;
@@ -48,7 +48,7 @@ class Room {
     ];
 
     const medics = [
-      { x, y, width: 40, height: 40 }
+      { x, y, width: Constants.DefaultWidthMedikit, height: Constants.DefaultHeightMedikit }
     ];
 
     this.enemies = enemies;
@@ -65,7 +65,7 @@ class Room {
     ];
 
     const medics = [
-      { x, y, width: 40, height: 40 }
+      { x, y, width: Constants.DefaultWidthMedikit, height: Constants.DefaultHeightMedikit }
     ];
 
     const removeEnemyItems = [

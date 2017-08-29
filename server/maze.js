@@ -47,16 +47,6 @@ class Maze {
     this.discoveredMatrix[xEnter][yEnter] = Constants.BEGIN_EXPLORED;
   }
 
-  buildHoles() {
-    const x = 500;
-    const y = 500;
-    const radius = 100;
-    return [
-      { x, y, radius }
-    ];
-  }
-
-
   getPositionByType(type) {
     let x = -1;
     let y = -1;
