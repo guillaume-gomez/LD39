@@ -16,6 +16,7 @@ const ee = new EventEmitter();
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
 const SPEED_THRESHOLD = 50;
+const SWIPE_ZONE_PERCENTAGE_OF_SCREEN = 0.15
 
 
 
@@ -52,7 +53,6 @@ swip(io, ee, {
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         const lifeLostAfterPinch = loseLifeAfterPinch(cluster, maze);
-
         return {
           character: {
             x: { $set: nextState.x },
@@ -82,7 +82,7 @@ swip(io, ee, {
   },
 
   client: {
-    init: () => ({ rotationX: 0, rotationY: 0 }),
+    init: () => ({ rotationX: 0, rotationY: 0, swipeZone: SWIPE_ZONE_PERCENTAGE_OF_SCREEN }),
     events: {
 
       move: ({ cluster, client }, { speedX, speedY }) => ({
