@@ -9,7 +9,18 @@ import {
   drawHole
 } from "./renderingFunctions"
 
-import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
+import {
+  DefaultWidthEnemy,
+  DefaultHeightEnemy,
+  DefaultWidthCharacter,
+  DefaultHeightCharacter,
+  DefaultWidthMedikit,
+  DefaultHeightMedikit,
+  MaxEnemies,
+  MaxMedic,
+  MaxkillEnemiesItems,
+  MaxHoles
+} from "./constants";
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
@@ -28,6 +39,7 @@ function app() {
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
   let enemySprite = [];
+  let medikitSprite = [];
   let hasDied = false;
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
@@ -37,6 +49,7 @@ function app() {
     assetsLoader.getInstance().onComplete = onComplete;
     assetsLoader.getInstance().addFile(`${PathToAssets}/character.png`,"character");
     assetsLoader.getInstance().addFile(`${PathToAssets}/enemy1.png`,"enemy");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/heal.png`,"medikit");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -112,8 +125,10 @@ function app() {
         killEnemiesItems.forEach(item => {
           drawRect(ctx, item, "rgba(0,0,255,0.5");
         });
-        medipackItems.forEach(item => {
-          drawRect(ctx, item, "rgba(0,255,0,0.5");
+        medipackItems.forEach((item, index) => {
+          medikitSprite[index].x = item.x;
+          medikitSprite[index].y = item.y;
+          medikitSprite[index].render(ctx);
         });
         if(characterSprite) {
           characterSprite.x = character.x;
@@ -161,9 +176,9 @@ function app() {
     characterSprite = characterBmp;
 
     atlas.data = assetsManager.getInstance().getImageByAlias("enemy");
-    atlas.createTexture("particle_tex", 0,0,136,132);
-    texture = atlas.getTextureByName("particle_tex");
-    for(let i = 0; i < 2; ++i) {
+    atlas.createTexture("enemy_tex", 0,0,136,132);
+    texture = atlas.getTextureByName("enemy_tex");
+    for(let i = 0; i < MaxEnemies; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
       bmp.width = DefaultWidthEnemy;
@@ -171,6 +186,19 @@ function app() {
       bmp.x = 0;
       bmp.y = 0;
       enemySprite[i] = bmp;
+    }
+
+    atlas.data = assetsManager.getInstance().getImageByAlias("medikit");
+    atlas.createTexture("medikit_tex", 0,0,136,135);
+    texture = atlas.getTextureByName("medikit_tex");
+    for(let i = 0; i < MaxMedic; ++i) {
+      let bmp = new Bitmap();
+      bmp.texture = texture;
+      bmp.width = DefaultWidthMedikit;
+      bmp.height = DefaultHeightMedikit;
+      bmp.x = 0;
+      bmp.y = 0;
+      medikitSprite[i] = bmp;
     }
   }
 
