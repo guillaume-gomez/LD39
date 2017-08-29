@@ -95,10 +95,11 @@ export function drawSwipZone(ctx, client, character) {
 
   ctx.save();
   ctx.lineWidth = width * swipeZone;
+  swipeZone =  swipeZone / 2;
 
   ctx.shadowColor = '#a3a1a1';
   ctx.shadowBlur = 10;
-  ctx.strokeStyle = "rgba(255,0,125, 0.5)";
+  ctx.strokeStyle = "rgba(144,12,63, 0.5)";
 
   const characterX = character.x;
   const characterY = character.y;
@@ -109,21 +110,23 @@ export function drawSwipZone(ctx, client, character) {
   ctx.beginPath();
   ctx.moveTo(transformX, transformY);
 
-  if(transformX + characterX < transformX + width * swipeZone) {
+  if(characterX < transformX + width * swipeZone) {
     ctx.lineTo(transformX, height + transformY);
     ctx.stroke();
   }
 
   // right
-  if(transformX + characterX + characterWidth > transformX + width * (1 - swipeZone)) {
+  if(characterX + characterWidth > transformX + width * (1 - swipeZone)) {
     ctx.beginPath();
     ctx.moveTo(width + transformX, transformY);
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
   }
 
+  ctx.lineWidth = height * swipeZone;
+  swipeZone =  swipeZone / 2;
   // top
-  if(transformY + characterY < transformY + height * swipeZone) {
+  if(characterY < transformY + height * swipeZone) {
     ctx.beginPath();
     ctx.moveTo(transformX, transformY);
     ctx.lineTo(width + transformX, transformY);
@@ -131,7 +134,7 @@ export function drawSwipZone(ctx, client, character) {
   }
 
   // bottom
-  if(transformY + characterY + characterHeight > transformY + height * (1 - swipeZone)) {
+  if(characterY + characterHeight > transformY + height * (1 - swipeZone)) {
     ctx.beginPath();
     ctx.moveTo(transformX, height + transformY);
     ctx.lineTo(width + transformX, height + transformY);
