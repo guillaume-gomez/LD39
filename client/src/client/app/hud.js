@@ -11,6 +11,11 @@ class Hud {
     this.heightPanel = 100;
 	}
 
+  showPosition(item) {
+    this.context.font = `22pt ${this.font}`;
+    this.context.fillText(`{${Math.trunc(item.x)}, ${Math.trunc(item.y)}}`,5, 45);
+  }
+
   resize(width, height) {
     //this.canvas.height = height;
     //this.canvas.width = width;
@@ -43,8 +48,9 @@ class Hud {
     } else if (character.life <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
-      this.renderLife(character.life, 5, 25);
-      this.displayMinMoves(maze.minMoves, 5, 65);
+      //this.renderLife(character.life, 5, 25);
+      //this.displayMinMoves(maze.minMoves, 5, 65);
+      this.showPosition(character);
       this.drawMaze(maze.discoveredMatrix);
     } else {
       this.showGameText();
