@@ -107,7 +107,6 @@ function app() {
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
       if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
-        drawSwipZone(ctx, client, character);
         holes.forEach(hole => {
           drawHole(ctx, hole);
         });
@@ -130,6 +129,7 @@ function app() {
           enemySprite[index].y = enemy.y;
           enemySprite[index].render(ctx);
         });
+        drawSwipZone(ctx, client, character);
       }
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
