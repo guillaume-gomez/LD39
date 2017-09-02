@@ -166,8 +166,9 @@ function createReducer (config) {
       const character = originCluster.data.character;
       //move and check if out of map
       console.log("swipe")
-      //console.log(validSwipe(character, originMaze, direction, clientA))
-      if(!validSwipe(character, originMaze, direction, clientA)) {
+      const isValid = validSwipe(character, originMaze, direction, clientA, clientB);
+      console.log(isValid)
+      if(!isValid) {
         return clearSwipes(state);
       }
       updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
@@ -408,41 +409,59 @@ function createReducer (config) {
     });
   }
 
-  function validSwipe(character, maze, direction, client) {
+  function validSwipe(character, maze, direction, client, clientB) {
     const { swipeZone } = client.data;
     const { width, height } = client.size;
     const transformX = client.transform.x;
     const transformY = client.transform.y;
-    console.log("x",  + character.x)
-    console.log("y",  + character.y)
-    console.log("wdth", width)
-    console.log("height", height)
-    console.log(direction)
-    console.log('------------------')
+    console.log("clientA: ", client.size)
+    console.log("clientB: ", clientB.size)
+    console.log("-------------------------");
 
     if(maze.nbMove === 0) {
-      return true;
+      return maze.movePosition(direction);
     }
     //left
-    if((character.x < width * swipeZone) && direction === "LEFT") {
-      return true;
+    if((character.x < transformX + width * swipeZone) && direction === "LEFT") {
+      console.log(client.size)
+      console.log("left", character.x)
+      console.log("right", width * swipeZone)
+      console.log("trans",transformX )
+      console.log("valid by ", direction)
+      return maze.movePosition(direction);
     }
+
     // right
-    if((character.x + character.width > width * (1 - swipeZone)) && direction === "RIGHT") {
-      return true;
+    if((character.x + character.width > transformX + width * (1 - swipeZone)) && direction === "RIGHT") {
+      console.log(client.size)
+      console.log("left", character.x + character.width)
+      console.log("right", width * (1 - swipeZone))
+      console.log("trans",transformX )
+      console.log("valid by ", direction)
+      return maze.movePosition(direction);
     }
 
     // up
-    if((character.y < height * swipeZone) && direction === "UP") {
-      return true;
+    if((character.y < transformY + height * swipeZone) && direction === "UP") {
+      console.log(client.size)
+      console.log("left", character.y)
+      console.log("right", transformY + height * swipeZone)
+      console.log("trans",transformY )
+      console.log("valid by ", direction)
+      return maze.movePosition(direction);
     }
 
     // down
-    if((character.y + character.height > height * (1 - swipeZone)) && direction === "DOWN") {
-      return true
+    if((character.y + character.height > transformY + height * (1 - swipeZone)) && direction === "DOWN") {
+      console.log(client.size)
+      console.log("left", character.y + character.height)
+      console.log("right", height * (1 - swipeZone))
+      console.log("trans",transformY )
+      console.log("valid by ", direction)
+      return maze.movePosition(direction)
     }
 
-    return !maze.movePosition(direction);
+    return false;
   }
 
   // function changePendingCluster(state, { id }) {
