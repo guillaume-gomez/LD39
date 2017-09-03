@@ -10,7 +10,20 @@ import {
   drawSwipZone
 } from "./renderingFunctions"
 
-import {DefaultWidthEnemy, DefaultHeightEnemy, DefaultWidthCharacter, DefaultHeightCharacter} from "./constants";
+import {
+  DefaultWidthEnemy,
+  DefaultHeightEnemy,
+  DefaultWidthCharacter,
+  DefaultHeightCharacter,
+  DefaultWidthMedikit,
+  DefaultHeightMedikit,
+  DefaultWidthRemoveEnemiesItem,
+  DefaultHeightRemoveEnemiesItem,
+  MaxEnemies,
+  MaxMedic,
+  MaxRemoveEnemiesItem,
+  MaxHoles
+} from "./constants";
 import Hud from "./hud";
 import AssetsLoader from "./assetsLoader";
 import AssetsManager from "./assetsManager";
@@ -28,7 +41,9 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
-  let enemySprite = [];
+  let enemiesSprites = [];
+  let medikitSprites = [];
+  let removeEnemiesSprites = [];
   let hasDied = false;
   const hudCanvas = document.getElementById("hud");
   let hud = new Hud(hudCanvas);
@@ -38,6 +53,8 @@ function app() {
     assetsLoader.getInstance().onComplete = onComplete;
     assetsLoader.getInstance().addFile(`${PathToAssets}/character.png`,"character");
     assetsLoader.getInstance().addFile(`${PathToAssets}/enemy1.png`,"enemy");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/heal.png`,"medikit");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/clean.png`,"removeEnemies");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -110,11 +127,16 @@ function app() {
         holes.forEach(hole => {
           drawHole(ctx, hole);
         });
-        killEnemiesItems.forEach(item => {
+        killEnemiesItems.forEach((item, index) => {
+          removeEnemiesSprites[index].x = item.x;
+          removeEnemiesSprites[index].y = item.y;
+          removeEnemiesSprites[index].render(ctx);
           drawRect(ctx, item, "rgba(0,0,255,0.5");
         });
-        medipackItems.forEach(item => {
-          drawRect(ctx, item, "rgba(0,255,0,0.5");
+        medipackItems.forEach((item, index) => {
+          medikitSprites[index].x = item.x;
+          medikitSprites[index].y = item.y;
+          medikitSprites[index].render(ctx);
         });
         if(characterSprite) {
           characterSprite.x = character.x;
@@ -125,9 +147,9 @@ function app() {
           drawArrow(ctx, character, dragPosition);
         }
         enemies.forEach((enemy, index) => {
-          enemySprite[index].x = enemy.x;
-          enemySprite[index].y = enemy.y;
-          enemySprite[index].render(ctx);
+          enemiesSprites[index].x = enemy.x;
+          enemiesSprites[index].y = enemy.y;
+          enemiesSprites[index].render(ctx);
         });
         drawSwipZone(ctx, client, character);
       }
@@ -163,16 +185,42 @@ function app() {
     characterSprite = characterBmp;
 
     atlas.data = assetsManager.getInstance().getImageByAlias("enemy");
-    atlas.createTexture("particle_tex", 0,0,136,132);
-    texture = atlas.getTextureByName("particle_tex");
-    for(let i = 0; i < 2; ++i) {
+    atlas.createTexture("enemy_tex", 0,0,136,132);
+    texture = atlas.getTextureByName("enemy_tex");
+    for(let i = 0; i < MaxEnemies; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
       bmp.width = DefaultWidthEnemy;
       bmp.height = DefaultHeightEnemy;
       bmp.x = 0;
       bmp.y = 0;
-      enemySprite[i] = bmp;
+      enemiesSprites[i] = bmp;
+    }
+
+    atlas.data = assetsManager.getInstance().getImageByAlias("medikit");
+    atlas.createTexture("medikit_tex", 0,0,136,135);
+    texture = atlas.getTextureByName("medikit_tex");
+    for(let i = 0; i < MaxMedic; ++i) {
+      let bmp = new Bitmap();
+      bmp.texture = texture;
+      bmp.width = DefaultWidthMedikit;
+      bmp.height = DefaultHeightMedikit;
+      bmp.x = 0;
+      bmp.y = 0;
+      medikitSprites[i] = bmp;
+    }
+
+    atlas.data = assetsManager.getInstance().getImageByAlias("removeEnemies");
+    atlas.createTexture("remove_enemies_tex", 0,0,136,136);
+    texture = atlas.getTextureByName("remove_enemies_tex");
+    for(let i = 0; i < MaxRemoveEnemiesItem ; ++i) {
+      let bmp = new Bitmap();
+      bmp.texture = texture;
+      bmp.width = DefaultWidthMedikit;
+      bmp.height = DefaultHeightMedikit;
+      bmp.x = 0;
+      bmp.y = 0;
+      removeEnemiesSprites[i] = bmp;
     }
   }
 
