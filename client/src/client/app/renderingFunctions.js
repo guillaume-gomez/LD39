@@ -1,3 +1,8 @@
+import {
+  DefaultWidthPinch,
+  DefaultHeightPinch,
+} from "./constants";
+
 export function drawBackground (ctx, client, color = null) {
     ctx.save();
     ctx.fillStyle = color || '#80d735';
@@ -86,7 +91,7 @@ export function drawWalls (ctx, client) {
 }
 
 
-export function drawSwipZone(ctx, client, character) {
+export function drawSwipZone(ctx, client, character, pinchSprite) {
   const transformX = client.transform.x;
   const transformY = client.transform.y;
   const width = client.size.width;
@@ -94,12 +99,13 @@ export function drawSwipZone(ctx, client, character) {
   let swipeZone = client.data.swipeZone;
 
   ctx.save();
-  ctx.lineWidth = width * swipeZone;
+  let lineWidth = width * swipeZone;
+  ctx.lineWidth = lineWidth;
   swipeZone =  swipeZone / 2;
 
   ctx.shadowColor = '#a3a1a1';
   ctx.shadowBlur = 10;
-  ctx.strokeStyle = "rgba(144,12,63, 0.5)";
+  ctx.strokeStyle = "rgba(255, 153, 12, 0.5)";
 
   const characterX = character.x;
   const characterY = character.y;
@@ -113,6 +119,12 @@ export function drawSwipZone(ctx, client, character) {
   if(characterX < transformX + width * swipeZone) {
     ctx.lineTo(transformX, height + transformY);
     ctx.stroke();
+    if(pinchSprite) {
+      console.log(lineWidth)
+      pinchSprite.x = (width * swipeZone) / 2 - DefaultWidthPinch / 2;
+      pinchSprite.y = height / 2 - DefaultHeightPinch / 2;
+      pinchSprite.render(ctx);
+    }
   }
 
   // right
@@ -121,16 +133,26 @@ export function drawSwipZone(ctx, client, character) {
     ctx.moveTo(width + transformX, transformY);
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
+    if(pinchSprite) {
+      pinchSprite.x = width - (width * swipeZone) / 2 - DefaultWidthPinch / 2;
+      pinchSprite.y = height / 2 - DefaultHeightPinch / 2;
+      pinchSprite.render(ctx);
+    }
   }
-
-  ctx.lineWidth = height * swipeZone;
-  swipeZone =  swipeZone / 2;
+  lineWidth = height * swipeZone;
+  ctx.lineWidth = lineWidth
+  swipeZone = swipeZone / 2;
   // top
   if(characterY < transformY + height * swipeZone) {
     ctx.beginPath();
     ctx.moveTo(transformX, transformY);
     ctx.lineTo(width + transformX, transformY);
     ctx.stroke();
+    if(pinchSprite) {
+      pinchSprite.x = width / 2 - DefaultWidthPinch / 2;
+      pinchSprite.y = (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      pinchSprite.render(ctx);
+    }
   }
 
   // bottom
@@ -139,6 +161,11 @@ export function drawSwipZone(ctx, client, character) {
     ctx.moveTo(transformX, height + transformY);
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
+    if(pinchSprite) {
+      pinchSprite.x = width / 2 - DefaultWidthPinch / 2;
+      pinchSprite.y = height - (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      pinchSprite.render(ctx);
+    }
   }
 
   ctx.restore();
