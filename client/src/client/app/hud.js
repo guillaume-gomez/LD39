@@ -48,9 +48,8 @@ class Hud {
     } else if (character.life <= 0) {
       this.showLoseGame();
     } else if (hasStarted) {
-      //this.renderLife(character.life, 5, 25);
-      //this.displayMinMoves(maze.minMoves, 5, 65);
-      this.showPosition(character);
+      this.renderLife(character.life, 5, 25);
+      this.displayMinMoves(maze.minMoves, 5, 65);
       this.drawMaze(maze.discoveredMatrix);
     } else {
       this.showGameText();
