@@ -4,10 +4,12 @@ const DefaultWidthCharacter = 136/2;
 const DefaultHeightCharacter = 130/2;
 const DefaultWidthMedikit = 136/4;
 const DefaultHeightMedikit = 135/4;
+const DefaultWidthRemoveEnemiesItem = 136/4;
+const DefaultHeightRemoveEnemiesItem = 136/4;
 
 const MaxEnemies = 2;
 const MaxMedic = 1;
-const MaxkillEnemiesItems = 1;
+const MaxRemoveEnemiesItem = 1;
 const MaxHoles = 2;
 
 
@@ -41,9 +43,11 @@ module.exports = {
   DefaultHeightCharacter,
   DefaultWidthMedikit,
   DefaultHeightMedikit,
+  DefaultWidthRemoveEnemiesItem,
+  DefaultHeightRemoveEnemiesItem,
   MaxEnemies,
   MaxMedic,
-  MaxkillEnemiesItems,
+  MaxRemoveEnemiesItem,
   MaxHoles,
   BEGIN,
   EXIT,
