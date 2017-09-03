@@ -69,7 +69,7 @@ class Room {
     ];
 
     const removeEnemyItems = [
-      { x: 10, y: 10, width: 50, height: 50 }
+      { x: 10, y: 10, width: Constants.DefaultWidthRemoveEnemiesItem, height: Constants.DefaultHeightRemoveEnemiesItem }
     ]
 
     this.enemies = enemies;
