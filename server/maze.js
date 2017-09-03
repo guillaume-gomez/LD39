@@ -214,13 +214,13 @@ class Maze {
 function getRoomConstraint(type) {
   switch(type) {
     case Constants.BEGIN:
-      return { bgColor: "#b5b9bf", type: Constants.BEGIN };
+      return { bgColor: "#bcbcbc", type: Constants.BEGIN };
     case Constants.EXIT:
       return { bgColor: "#ead1b3", type: Constants.EXIT };
     case Constants.CURRENT_POSITION:
-      return { bgColor: "#efeded", type: Constants.CURRENT_POSITION };
+      return { bgColor: "#a7a7b1", type: Constants.CURRENT_POSITION };
     case Constants.OTHER:
-      return { bgColor: "#efeded", type: Constants.OTHER };
+      return { bgColor: "#a7a7b1", type: Constants.OTHER };
   }
 }
 

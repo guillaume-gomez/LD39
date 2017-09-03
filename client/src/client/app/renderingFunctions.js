@@ -1,6 +1,6 @@
 export function drawBackground (ctx, client, color = null) {
     ctx.save();
-    ctx.fillStyle = color || '#80d735';
+    ctx.fillStyle = color || '#bcbcbc';
     ctx.fillRect(client.transform.x, client.transform.y, client.size.width, client.size.height);
     ctx.restore();
   }
@@ -25,7 +25,7 @@ export function drawWalls (ctx, client) {
     ctx.lineWidth = 40;
     ctx.shadowColor = '#a3a1a1';
     ctx.shadowBlur = 10;
-    ctx.strokeStyle = '#dddddd';
+    ctx.strokeStyle = '#e9e9e9';
 
     // left
     ctx.beginPath();
