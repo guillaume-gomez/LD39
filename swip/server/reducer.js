@@ -155,18 +155,22 @@ function createReducer (config) {
       const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeA.direction : swipeB.direction;
       let originCluster = null;
       let targetCluster = null;
+      let originClient = null;
+
       if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
         originCluster = clientACluster;
         targetCluster = clientBCluster;
+        originClient = clientA;
       } else {
         originCluster = clientBCluster;
         targetCluster = clientACluster;
+        originClient = clientB;
       }
       const originMaze = originCluster.data.maze;
       const character = originCluster.data.character;
       //move and check if out of map
       console.log("swipe")
-      const isValid = validSwipe(character, originMaze, direction, clientA, clientB);
+      const isValid = validSwipe(character, originMaze, direction, originClient);
       console.log(isValid)
       if(!isValid) {
         return clearSwipes(state);
@@ -409,55 +413,31 @@ function createReducer (config) {
     });
   }
 
-  function validSwipe(character, maze, direction, client, clientB) {
+  function validSwipe(character, maze, direction, client) {
     const { swipeZone } = client.data;
     const { width, height } = client.size;
     const transformX = client.transform.x;
     const transformY = client.transform.y;
-    console.log("clientA: ", client.size)
-    console.log("clientB: ", clientB.size)
-    console.log("-------------------------");
-
     if(maze.nbMove === 0) {
       return maze.movePosition(direction);
     }
     //left
     if((character.x < transformX + width * swipeZone) && direction === "LEFT") {
-      console.log(client.size)
-      console.log("left", character.x)
-      console.log("right", width * swipeZone)
-      console.log("trans",transformX )
-      console.log("valid by ", direction)
       return maze.movePosition(direction);
     }
 
     // right
     if((character.x + character.width > transformX + width * (1 - swipeZone)) && direction === "RIGHT") {
-      console.log(client.size)
-      console.log("left", character.x + character.width)
-      console.log("right", width * (1 - swipeZone))
-      console.log("trans",transformX )
-      console.log("valid by ", direction)
       return maze.movePosition(direction);
     }
 
     // up
     if((character.y < transformY + height * swipeZone) && direction === "UP") {
-      console.log(client.size)
-      console.log("left", character.y)
-      console.log("right", transformY + height * swipeZone)
-      console.log("trans",transformY )
-      console.log("valid by ", direction)
       return maze.movePosition(direction);
     }
 
     // down
     if((character.y + character.height > transformY + height * (1 - swipeZone)) && direction === "DOWN") {
-      console.log(client.size)
-      console.log("left", character.y + character.height)
-      console.log("right", height * (1 - swipeZone))
-      console.log("trans",transformY )
-      console.log("valid by ", direction)
       return maze.movePosition(direction)
     }
 
