@@ -131,7 +131,6 @@ function app() {
           removeEnemiesSprites[index].x = item.x;
           removeEnemiesSprites[index].y = item.y;
           removeEnemiesSprites[index].render(ctx);
-          drawRect(ctx, item, "rgba(0,0,255,0.5");
         });
         medipackItems.forEach((item, index) => {
           medikitSprites[index].x = item.x;
