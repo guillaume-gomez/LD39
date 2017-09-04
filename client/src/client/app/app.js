@@ -154,7 +154,7 @@ function app() {
           enemiesSprites[index].y = enemy.y;
           enemiesSprites[index].render(ctx);
         });
-        drawSwipZone(ctx, client, character, pinchSprite);
+        drawSwipZone(ctx, client, maze, character, pinchSprite);
       }
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
