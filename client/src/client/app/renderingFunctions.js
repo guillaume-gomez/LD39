@@ -90,8 +90,41 @@ export function drawWalls (ctx, client) {
   ctx.restore();
 }
 
+function hasValidDirection(maze) {
+  const { discoveredMatrix } = maze;
+  const size = discoveredMatrix.length;
+  //change 2 by 4
+  const currentPosition = 2;
+  let y = 0;
+  let x = 0;
+  console.log(discoveredMatrix)
+  discoveredMatrix.forEach((row, _y) => {
+    const _x = row.indexOf(currentPosition);
+    if(_x !== -1) {
+      y = _y;
+      x = _x;
+    }
+  });
+  const directions = [];
+  if(y < size - 1) {
+    directions.push("right");
+  }
+  if(y > 0) {
+    directions.push("left");
+  }
+  if(x < size - 1) {
+    directions.push("bottom");
+  }
+  if(x > 0) {
+    directions.push("top")
+  }
+  console.log(x, y)
+  return directions;
+}
 
-export function drawSwipZone(ctx, client, character, pinchSprite) {
+
+export function drawSwipZone(ctx, client, maze, character, pinchSprite) {
+  const directions = hasValidDirection(maze);
   const transformX = client.transform.x;
   const transformY = client.transform.y;
   const width = client.size.width;
@@ -105,7 +138,6 @@ export function drawSwipZone(ctx, client, character, pinchSprite) {
 
   ctx.shadowColor = '#a3a1a1';
   ctx.shadowBlur = 10;
-  ctx.strokeStyle = "rgba(255, 153, 12, 0.5)";
 
   const characterX = character.x;
   const characterY = character.y;
@@ -117,10 +149,10 @@ export function drawSwipZone(ctx, client, character, pinchSprite) {
   ctx.moveTo(transformX, transformY);
 
   if(characterX < transformX + width * swipeZone) {
+    ctx.strokeStyle = directions.includes("left") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
     ctx.lineTo(transformX, height + transformY);
     ctx.stroke();
     if(pinchSprite) {
-      console.log(lineWidth)
       pinchSprite.x = (width * swipeZone) / 2 - DefaultWidthPinch / 2;
       pinchSprite.y = height / 2 - DefaultHeightPinch / 2;
       pinchSprite.render(ctx);
@@ -129,6 +161,7 @@ export function drawSwipZone(ctx, client, character, pinchSprite) {
 
   // right
   if(characterX + characterWidth > transformX + width * (1 - swipeZone)) {
+    ctx.strokeStyle = directions.includes("right") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
     ctx.beginPath();
     ctx.moveTo(width + transformX, transformY);
     ctx.lineTo(width + transformX, height + transformY);
@@ -144,6 +177,7 @@ export function drawSwipZone(ctx, client, character, pinchSprite) {
   swipeZone = swipeZone / 2;
   // top
   if(characterY < transformY + height * swipeZone) {
+    ctx.strokeStyle = directions.includes("top") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
     ctx.beginPath();
     ctx.moveTo(transformX, transformY);
     ctx.lineTo(width + transformX, transformY);
@@ -157,6 +191,7 @@ export function drawSwipZone(ctx, client, character, pinchSprite) {
 
   // bottom
   if(characterY + characterHeight > transformY + height * (1 - swipeZone)) {
+    ctx.strokeStyle = directions.includes("bottom") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
     ctx.beginPath();
     ctx.moveTo(transformX, height + transformY);
     ctx.lineTo(width + transformX, height + transformY);
