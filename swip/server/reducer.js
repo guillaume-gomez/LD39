@@ -170,7 +170,7 @@ function createReducer (config) {
       const character = originCluster.data.character;
       //move and check if out of map
       console.log("swipe")
-      const isValid = validSwipe(character, originMaze, direction, originClient);
+      const isValid = validSwipe(character, originMaze, direction, originClient, originCluster.data.enableBorder);
       console.log(isValid)
       if(!isValid) {
         return clearSwipes(state);
@@ -413,12 +413,13 @@ function createReducer (config) {
     });
   }
 
-  function validSwipe(character, maze, direction, client) {
+  function validSwipe(character, maze, direction, client, noBorder) {
     const { swipeZone } = client.data;
     const { width, height } = client.size;
     const transformX = client.transform.x;
     const transformY = client.transform.y;
-    if(maze.nbMove === 0) {
+
+    if(maze.nbMove === 0 || !noBorder) {
       return maze.movePosition(direction);
     }
     //left
