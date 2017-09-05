@@ -169,9 +169,8 @@ function createReducer (config) {
       const originMaze = originCluster.data.maze;
       const character = originCluster.data.character;
       //move and check if out of map
-      console.log("swipe")
       const isValid = validSwipe(character, originMaze, direction, originClient, originCluster.data.enableBorder);
-      console.log(isValid)
+      console.log("swipe ok; has valid swipe: ", isValid)
       if(!isValid) {
         return clearSwipes(state);
       }
