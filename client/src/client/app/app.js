@@ -125,7 +125,7 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       let client = state.client;
-      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
+      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze, enableBorder } = state.cluster.data;
       const {  enemies, killEnemiesItems, medipackItems, holes } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
@@ -158,7 +158,9 @@ function app() {
           enemiesSprites[index].y = enemy.y;
           enemiesSprites[index].render(ctx);
         });
-        drawSwipZone(ctx, client, maze, character, pinchSprite, stopSprite);
+        if(enableBorder) {
+          drawSwipZone(ctx, client, maze, character, pinchSprite, stopSprite);
+        }
       }
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
