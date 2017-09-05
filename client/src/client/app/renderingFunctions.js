@@ -93,11 +93,9 @@ export function drawWalls (ctx, client) {
 function hasValidDirection(maze) {
   const { discoveredMatrix } = maze;
   const size = discoveredMatrix.length;
-  //change 2 by 4
-  const currentPosition = 2;
+  const currentPosition = 4;
   let y = 0;
   let x = 0;
-  console.log(discoveredMatrix)
   discoveredMatrix.forEach((row, _y) => {
     const _x = row.indexOf(currentPosition);
     if(_x !== -1) {
@@ -106,19 +104,18 @@ function hasValidDirection(maze) {
     }
   });
   const directions = [];
-  if(y < size - 1) {
+  if(x < size - 1) {
     directions.push("right");
   }
-  if(y > 0) {
+  if(x > 0) {
     directions.push("left");
   }
-  if(x < size - 1) {
+  if(y < size - 1) {
     directions.push("bottom");
   }
-  if(x > 0) {
+  if(y > 0) {
     directions.push("top")
   }
-  console.log(x, y)
   return directions;
 }
 
@@ -161,8 +158,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(transformX, height + transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = (width * swipeZone) / 2 - DefaultWidthPinch / 2;
-      sprite.y = height / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + (width * swipeZone) / 2 - DefaultWidthPinch / 2;
+      sprite.y = transformY + height / 2 - DefaultHeightPinch / 2;
       sprite.render(ctx);
     }
   }
@@ -181,8 +178,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = width - (width * swipeZone) / 2 - DefaultWidthPinch / 2;
-      sprite.y = height / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + width - (width * swipeZone) / 2 - DefaultWidthPinch / 2;
+      sprite.y = transformY + height / 2 - DefaultHeightPinch / 2;
       sprite.render(ctx);
     }
   }
@@ -203,8 +200,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(width + transformX, transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = width / 2 - DefaultWidthPinch / 2;
-      sprite.y = (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + width / 2 - DefaultWidthPinch / 2;
+      sprite.y = transformY + (height * swipeZone) / 2 - DefaultHeightPinch / 2;
       sprite.render(ctx);
     }
   }
@@ -223,8 +220,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = width / 2 - DefaultWidthPinch / 2;
-      sprite.y = height - (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + width / 2 - DefaultWidthPinch / 2;
+      sprite.y = transformY + height - (height * swipeZone) / 2 - DefaultHeightPinch / 2;
       sprite.render(ctx);
     }
   }

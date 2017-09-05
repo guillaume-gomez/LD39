@@ -130,7 +130,7 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      //if(hasStarted && character.life > 0) {
+      if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
         holes.forEach(hole => {
           drawHole(ctx, hole);
@@ -159,7 +159,7 @@ function app() {
           enemiesSprites[index].render(ctx);
         });
         drawSwipZone(ctx, client, maze, character, pinchSprite, stopSprite);
-      //}
+      }
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
       }
