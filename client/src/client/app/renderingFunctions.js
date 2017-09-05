@@ -123,13 +123,14 @@ function hasValidDirection(maze) {
 }
 
 
-export function drawSwipZone(ctx, client, maze, character, pinchSprite) {
+export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSprite) {
   const directions = hasValidDirection(maze);
   const transformX = client.transform.x;
   const transformY = client.transform.y;
   const width = client.size.width;
   const height = client.size.height;
   let swipeZone = client.data.swipeZone;
+  let sprite = null;
 
   ctx.save();
   let lineWidth = width * swipeZone;
@@ -149,27 +150,40 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite) {
   ctx.moveTo(transformX, transformY);
 
   if(characterX < transformX + width * swipeZone) {
+    if(directions.includes("left")) {
+      ctx.strokeStyle = "rgba(255, 153, 12, 0.5)";
+      sprite = pinchSprite;
+    } else {
+      ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+      sprite = stopSprite;
+    }
     ctx.strokeStyle = directions.includes("left") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
     ctx.lineTo(transformX, height + transformY);
     ctx.stroke();
-    if(pinchSprite) {
-      pinchSprite.x = (width * swipeZone) / 2 - DefaultWidthPinch / 2;
-      pinchSprite.y = height / 2 - DefaultHeightPinch / 2;
-      pinchSprite.render(ctx);
+    if(sprite) {
+      sprite.x = (width * swipeZone) / 2 - DefaultWidthPinch / 2;
+      sprite.y = height / 2 - DefaultHeightPinch / 2;
+      sprite.render(ctx);
     }
   }
 
   // right
   if(characterX + characterWidth > transformX + width * (1 - swipeZone)) {
-    ctx.strokeStyle = directions.includes("right") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
+    if(directions.includes("right")) {
+      ctx.strokeStyle = "rgba(255, 153, 12, 0.5)";
+      sprite = pinchSprite;
+    } else {
+      ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+      sprite = stopSprite;
+    }
     ctx.beginPath();
     ctx.moveTo(width + transformX, transformY);
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
-    if(pinchSprite) {
-      pinchSprite.x = width - (width * swipeZone) / 2 - DefaultWidthPinch / 2;
-      pinchSprite.y = height / 2 - DefaultHeightPinch / 2;
-      pinchSprite.render(ctx);
+    if(sprite) {
+      sprite.x = width - (width * swipeZone) / 2 - DefaultWidthPinch / 2;
+      sprite.y = height / 2 - DefaultHeightPinch / 2;
+      sprite.render(ctx);
     }
   }
   lineWidth = height * swipeZone;
@@ -177,29 +191,41 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite) {
   swipeZone = swipeZone / 2;
   // top
   if(characterY < transformY + height * swipeZone) {
-    ctx.strokeStyle = directions.includes("top") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
+    if(directions.includes("top")) {
+      ctx.strokeStyle = "rgba(255, 153, 12, 0.5)";
+      sprite = pinchSprite;
+    } else {
+      ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+      sprite = stopSprite;
+    }
     ctx.beginPath();
     ctx.moveTo(transformX, transformY);
     ctx.lineTo(width + transformX, transformY);
     ctx.stroke();
-    if(pinchSprite) {
-      pinchSprite.x = width / 2 - DefaultWidthPinch / 2;
-      pinchSprite.y = (height * swipeZone) / 2 - DefaultHeightPinch / 2;
-      pinchSprite.render(ctx);
+    if(sprite) {
+      sprite.x = width / 2 - DefaultWidthPinch / 2;
+      sprite.y = (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      sprite.render(ctx);
     }
   }
 
   // bottom
   if(characterY + characterHeight > transformY + height * (1 - swipeZone)) {
-    ctx.strokeStyle = directions.includes("bottom") ? "rgba(255, 153, 12, 0.5)" : "rgba(255, 0, 0, 0.5)";
+     if(directions.includes("bottom")) {
+      ctx.strokeStyle = "rgba(255, 153, 12, 0.5)";
+      sprite = pinchSprite;
+    } else {
+      ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+      sprite = stopSprite;
+    }
     ctx.beginPath();
     ctx.moveTo(transformX, height + transformY);
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
-    if(pinchSprite) {
-      pinchSprite.x = width / 2 - DefaultWidthPinch / 2;
-      pinchSprite.y = height - (height * swipeZone) / 2 - DefaultHeightPinch / 2;
-      pinchSprite.render(ctx);
+    if(sprite) {
+      sprite.x = width / 2 - DefaultWidthPinch / 2;
+      sprite.y = height - (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      sprite.render(ctx);
     }
   }
 

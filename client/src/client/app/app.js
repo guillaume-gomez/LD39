@@ -21,6 +21,8 @@ import {
   DefaultHeightRemoveEnemiesItem,
   DefaultWidthPinch,
   DefaultHeightPinch,
+  DefaultWidthStop,
+  DefaultHeightStop,
   MaxEnemies,
   MaxMedic,
   MaxRemoveEnemiesItem,
@@ -44,6 +46,7 @@ function app() {
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
   let pinchSprite = null;
+  let stopSprite = null;
   let enemiesSprites = [];
   let medikitSprites = [];
   let removeEnemiesSprites = [];
@@ -59,6 +62,7 @@ function app() {
     assetsLoader.getInstance().addFile(`${PathToAssets}/heal.png`,"medikit");
     assetsLoader.getInstance().addFile(`${PathToAssets}/clean.png`,"removeEnemies");
     assetsLoader.getInstance().addFile(`${PathToAssets}/pinch.png`,"pinch");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/stop.png`,"stop");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -126,7 +130,7 @@ function app() {
       ctx.save();
       applyTransform(ctx, converter, client.transform);
       drawBackground(ctx, client, currentRoomConstraint.bgColor);
-      if(hasStarted && character.life > 0) {
+      //if(hasStarted && character.life > 0) {
         drawWalls(ctx, client);
         holes.forEach(hole => {
           drawHole(ctx, hole);
@@ -154,8 +158,8 @@ function app() {
           enemiesSprites[index].y = enemy.y;
           enemiesSprites[index].render(ctx);
         });
-        drawSwipZone(ctx, client, maze, character, pinchSprite);
-      }
+        drawSwipZone(ctx, client, maze, character, pinchSprite, stopSprite);
+      //}
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
       }
@@ -236,6 +240,17 @@ function app() {
     pinchBmp.x = 0;
     pinchBmp.y = 0;
     pinchSprite = pinchBmp;
+
+    atlas.data = assetsManager.getInstance().getImageByAlias("stop");
+    atlas.createTexture("stop_tex", 0, 0, 200, 200);
+    texture = atlas.getTextureByName("stop_tex");
+    let stopBmp = new Bitmap();
+    stopBmp.texture = texture;
+    stopBmp.width = DefaultWidthPinch;
+    stopBmp.height = DefaultHeightPinch;
+    stopBmp.x = 0;
+    stopBmp.y = 0;
+    stopSprite = stopBmp;
   }
 
   function resizeHudCanvas() {

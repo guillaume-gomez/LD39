@@ -8,6 +8,8 @@ export const DefaultWidthRemoveEnemiesItem = 136/4;
 export const DefaultHeightRemoveEnemiesItem = 136/4;
 export const DefaultWidthPinch = 200 / 4;
 export const DefaultHeightPinch = 200 / 4;
+export const DefaultWidthStop = 200 / 4;
+export const DefaultHeightStop = 200 / 4;
 
 
 export const MaxEnemies = 2;
