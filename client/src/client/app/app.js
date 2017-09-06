@@ -10,14 +10,14 @@ import {
 } from "./renderingFunctions"
 
 import {
-  DefaultWidthEnemy,
-  DefaultHeightEnemy,
-  DefaultWidthCharacter,
-  DefaultHeightCharacter,
-  DefaultWidthMedikit,
-  DefaultHeightMedikit,
-  DefaultWidthRemoveEnemiesItem,
-  DefaultHeightRemoveEnemiesItem,
+  WidthEnemy,
+  HeightEnemy,
+  WidthCharacter,
+  HeightCharacter,
+  WidthMedikit,
+  HeightMedikit,
+  WidthRemoveEnemiesItem,
+  HeightRemoveEnemiesItem,
   MaxEnemies,
   MaxMedic,
   MaxRemoveEnemiesItem,
@@ -176,8 +176,8 @@ function app() {
     let texture = atlas.getTextureByName("character_tex");
     let characterBmp = new Bitmap();
     characterBmp.texture = texture;
-    characterBmp.width = DefaultWidthCharacter;
-    characterBmp.height = DefaultHeightCharacter;
+    characterBmp.width = WidthCharacter;
+    characterBmp.height = HeightCharacter;
     characterBmp.x = 0;
     characterBmp.y = 0;
     characterSprite = characterBmp;
@@ -188,8 +188,8 @@ function app() {
     for(let i = 0; i < MaxEnemies; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
-      bmp.width = DefaultWidthEnemy;
-      bmp.height = DefaultHeightEnemy;
+      bmp.width = WidthEnemy;
+      bmp.height = HeightEnemy;
       bmp.x = 0;
       bmp.y = 0;
       enemiesSprites[i] = bmp;
@@ -201,8 +201,8 @@ function app() {
     for(let i = 0; i < MaxMedic; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
-      bmp.width = DefaultWidthMedikit;
-      bmp.height = DefaultHeightMedikit;
+      bmp.width = WidthMedikit;
+      bmp.height = HeightMedikit;
       bmp.x = 0;
       bmp.y = 0;
       medikitSprites[i] = bmp;
@@ -214,8 +214,8 @@ function app() {
     for(let i = 0; i < MaxRemoveEnemiesItem ; ++i) {
       let bmp = new Bitmap();
       bmp.texture = texture;
-      bmp.width = DefaultWidthMedikit;
-      bmp.height = DefaultHeightMedikit;
+      bmp.width = WidthMedikit;
+      bmp.height = HeightMedikit;
       bmp.x = 0;
       bmp.y = 0;
       removeEnemiesSprites[i] = bmp;
@@ -234,8 +234,8 @@ function app() {
       createjs.Tween.get(characterSprite).to({
         width:0,
         height: 0,
-        x: originalX + DefaultWidthCharacter / 2,
-        y: originalY + DefaultHeightCharacter / 2,
+        x: originalX + WidthCharacter / 2,
+        y: originalY + HeightCharacter / 2,
       }, 500);
       hasDied = true;
     }

@@ -27,12 +27,12 @@ class Room {
     const y = 80;
     const speed = 8;
     const enemies = [
-      { x, y, speedX: 0, speedY: speed, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x + 250, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      { x, y, speedX: 0, speedY: speed, width: Constants.WidthEnemy, height: Constants.HeightEnemy },
+      { x: x + 250, y: y + 50, speedX: 0, speedY: -speed,  width: Constants.WidthEnemy, height: Constants.HeightEnemy }
     ];
 
     const medics = [
-      { x, y, width: Constants.DefaultWidthMedikit, height: Constants.DefaultHeightMedikit }
+      { x, y, width: Constants.WidthMedikit, height: Constants.HeightMedikit }
     ];
     this.enemies = enemies;
     this.medics = medics;
@@ -43,12 +43,12 @@ class Room {
     const y = -150;
     const speed = 8;
     const enemies = [
-      { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x , y: y + 250, speedX: speed, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      { x, y, speedX: speed, speedY: 0, width: Constants.WidthEnemy, height: Constants.HeightEnemy },
+      { x: x , y: y + 250, speedX: speed, speedY: 0,  width: Constants.WidthEnemy, height: Constants.HeightEnemy }
     ];
 
     const medics = [
-      { x, y, width: Constants.DefaultWidthMedikit, height: Constants.DefaultHeightMedikit }
+      { x, y, width: Constants.WidthMedikit, height: Constants.HeightMedikit }
     ];
 
     this.enemies = enemies;
@@ -60,16 +60,16 @@ class Room {
     const y = -150;
     const speed = 8;
     const enemies = [
-      { x, y, speedX: speed, speedY: 0, width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy },
-      { x: x , y: y + 250, speedX: speed, speedY: 0,  width: Constants.DefaultWidthEnemy, height: Constants.DefaultHeightEnemy }
+      { x, y, speedX: speed, speedY: 0, width: Constants.WidthEnemy, height: Constants.HeightEnemy },
+      { x: x , y: y + 250, speedX: speed, speedY: 0,  width: Constants.WidthEnemy, height: Constants.HeightEnemy }
     ];
 
     const medics = [
-      { x, y, width: Constants.DefaultWidthMedikit, height: Constants.DefaultHeightMedikit }
+      { x, y, width: Constants.WidthMedikit, height: Constants.HeightMedikit }
     ];
 
     const removeEnemyItems = [
-      { x: 10, y: 10, width: Constants.DefaultWidthRemoveEnemiesItem, height: Constants.DefaultHeightRemoveEnemiesItem }
+      { x: 10, y: 10, width: Constants.WidthRemoveEnemiesItem, height: Constants.HeightRemoveEnemiesItem }
     ]
 
     this.enemies = enemies;

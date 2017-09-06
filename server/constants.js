@@ -1,11 +1,11 @@
-const DefaultWidthEnemy = 136/2;
-const DefaultHeightEnemy = 132/2;
-const DefaultWidthCharacter = 136/2;
-const DefaultHeightCharacter = 130/2;
-const DefaultWidthMedikit = 136/4;
-const DefaultHeightMedikit = 135/4;
-const DefaultWidthRemoveEnemiesItem = 136/4;
-const DefaultHeightRemoveEnemiesItem = 136/4;
+const WidthEnemy = 136/2;
+const HeightEnemy = 132/2;
+const WidthCharacter = 136/2;
+const HeightCharacter = 130/2;
+const WidthMedikit = 136/4;
+const HeightMedikit = 135/4;
+const WidthRemoveEnemiesItem = 136/4;
+const HeightRemoveEnemiesItem = 136/4;
 
 const MaxEnemies = 2;
 const MaxMedic = 1;
@@ -37,14 +37,14 @@ const TYPES = {
 
 
 module.exports = {
-  DefaultHeightEnemy,
-  DefaultWidthEnemy,
-  DefaultWidthCharacter,
-  DefaultHeightCharacter,
-  DefaultWidthMedikit,
-  DefaultHeightMedikit,
-  DefaultWidthRemoveEnemiesItem,
-  DefaultHeightRemoveEnemiesItem,
+  HeightEnemy,
+  WidthEnemy,
+  WidthCharacter,
+  HeightCharacter,
+  WidthMedikit,
+  HeightMedikit,
+  WidthRemoveEnemiesItem,
+  HeightRemoveEnemiesItem,
   MaxEnemies,
   MaxMedic,
   MaxRemoveEnemiesItem,
