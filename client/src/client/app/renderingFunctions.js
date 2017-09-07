@@ -1,6 +1,6 @@
 import {
-  DefaultWidthPinch,
-  DefaultHeightPinch,
+  WidthPinch,
+  HeightPinch,
 } from "./constants";
 
 export function drawBackground (ctx, client, color = null) {
@@ -158,8 +158,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(transformX, height + transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = transformX + (width * swipeZone) / 2 - DefaultWidthPinch / 2;
-      sprite.y = transformY + height / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + (width * swipeZone) / 2 - WidthPinch / 2;
+      sprite.y = transformY + height / 2 - HeightPinch / 2;
       sprite.render(ctx);
     }
   }
@@ -178,8 +178,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = transformX + width - (width * swipeZone) / 2 - DefaultWidthPinch / 2;
-      sprite.y = transformY + height / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + width - (width * swipeZone) / 2 - WidthPinch / 2;
+      sprite.y = transformY + height / 2 - HeightPinch / 2;
       sprite.render(ctx);
     }
   }
@@ -200,8 +200,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(width + transformX, transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = transformX + width / 2 - DefaultWidthPinch / 2;
-      sprite.y = transformY + (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + width / 2 - WidthPinch / 2;
+      sprite.y = transformY + (height * swipeZone) / 2 - HeightPinch / 2;
       sprite.render(ctx);
     }
   }
@@ -220,8 +220,8 @@ export function drawSwipZone(ctx, client, maze, character, pinchSprite, stopSpri
     ctx.lineTo(width + transformX, height + transformY);
     ctx.stroke();
     if(sprite) {
-      sprite.x = transformX + width / 2 - DefaultWidthPinch / 2;
-      sprite.y = transformY + height - (height * swipeZone) / 2 - DefaultHeightPinch / 2;
+      sprite.x = transformX + width / 2 - WidthPinch / 2;
+      sprite.y = transformY + height - (height * swipeZone) / 2 - HeightPinch / 2;
       sprite.render(ctx);
     }
   }
