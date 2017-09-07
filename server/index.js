@@ -74,7 +74,7 @@ swip(io, ee, {
       merge: () => ({}),
     },
     init: () => ({
-      character: { x: 250, y: 250, width: Constants.DefaultWidthCharacter, height: Constants.DefaultHeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
+      character: { x: 250, y: 250, width: Constants.WidthCharacter, height: Constants.HeightCharacter, speedX: 0, speedY: 0, life: 100, radius: 35}, //radius must be destroyed
       currentScreenId: 0,
       pendingSplit: null,
       nbClients: 2,
