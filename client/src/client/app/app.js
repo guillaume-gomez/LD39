@@ -155,7 +155,7 @@ function app() {
         dieAnimation(character.x, character.y);
       }
       ctx.restore();
-      hud.draw(hasStarted, currentRoomConstraint, maze, character, converter);
+      hud.draw(hasStarted, currentRoomConstraint, maze, character, converter, client);
     });
   });
 
