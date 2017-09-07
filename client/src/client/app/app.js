@@ -19,6 +19,10 @@ import {
   HeightMedikit,
   WidthRemoveEnemiesItem,
   HeightRemoveEnemiesItem,
+  WidthPinch,
+  HeightPinch,
+  WidthStop,
+  HeightStop,
   MaxEnemies,
   MaxMedic,
   MaxRemoveEnemiesItem,
@@ -229,23 +233,23 @@ function app() {
     }
 
     atlas.data = assetsManager.getInstance().getImageByAlias("pinch");
-    atlas.createTexture("pinch_tex", 0, 0, 200, 200);
+    atlas.createTexture("pinch_tex", 0, 0, WidthPinch, HeightPinch);
     texture = atlas.getTextureByName("pinch_tex");
     let pinchBmp = new Bitmap();
     pinchBmp.texture = texture;
-    pinchBmp.width = DefaultWidthPinch;
-    pinchBmp.height = DefaultHeightPinch;
+    pinchBmp.width = WidthPinch;
+    pinchBmp.height = HeightPinch;
     pinchBmp.x = 0;
     pinchBmp.y = 0;
     pinchSprite = pinchBmp;
 
     atlas.data = assetsManager.getInstance().getImageByAlias("stop");
-    atlas.createTexture("stop_tex", 0, 0, 200, 200);
+    atlas.createTexture("stop_tex", 0, 0, WidthStop, HeightStop);
     texture = atlas.getTextureByName("stop_tex");
     let stopBmp = new Bitmap();
     stopBmp.texture = texture;
-    stopBmp.width = DefaultWidthPinch;
-    stopBmp.height = DefaultHeightPinch;
+    stopBmp.width = WidthStop;
+    stopBmp.height = HeightStop;
     stopBmp.x = 0;
     stopBmp.y = 0;
     stopSprite = stopBmp;
