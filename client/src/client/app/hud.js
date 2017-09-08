@@ -1,5 +1,4 @@
 class Hud {
-
 	constructor(canvas, mainCanvas) {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
@@ -18,9 +17,11 @@ class Hud {
     this.canvas.width = this.widthPanel;
   }
 
-  updateOpacity(character, converter) {
-    if( character.x + character.width < (this.widthPanel * converter.scalingFactor) &&
-        character.y < (this.heightPanel * converter.scalingFactor) ) {
+  updateOpacity(character, converter, client) {
+    const transformX = client.transform.x;
+    const transformY = client.transform.y;
+    if( character.x + character.width < (this.widthPanel * converter.scalingFactor) + transformX &&
+        character.y < (this.heightPanel * converter.scalingFactor) + transformY ) {
       this.opacity = 0.5;
       this.fillFontStyle = `rgba(255, 255, 255, ${this.opacity})`;
       this.fillBGStyle = `rgba(36, 41, 46, ${this.opacity})`;
@@ -32,9 +33,9 @@ class Hud {
   }
 
   //todo add abbraction in this function
-  draw(hasStarted, currentRoomConstraint, maze, character, converter) {
+  draw(hasStarted, currentRoomConstraint, maze, character, converter, client) {
     //maybe remove this line
-    this.updateOpacity(character, converter);
+    this.updateOpacity(character, converter, client);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.save();
     if(currentRoomConstraint.type === "o") { // duplicate from maze.js)
