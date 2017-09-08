@@ -95,8 +95,8 @@ function app() {
           }
           const { character } = state.cluster.data;
           client.emit('move', {
-             speedX: (evt.position[0].x - character.x) / 100,
-             speedY: (evt.position[0].y - character.y) / 100
+             speedX: (evt.position[0].x - character.x) / 50,
+             speedY: (evt.position[0].y - character.y) / 50
           });
           dragPosition = evt.position[0];
         }
