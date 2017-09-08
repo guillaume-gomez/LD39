@@ -104,8 +104,8 @@ function app() {
           }
           const { character } = state.cluster.data;
           client.emit('move', {
-             speedX: (evt.position[0].x - character.x) / 100,
-             speedY: (evt.position[0].y - character.y) / 100
+             speedX: (evt.position[0].x - character.x) / 50,
+             speedY: (evt.position[0].y - character.y) / 50
           });
           dragPosition = evt.position[0];
         }
@@ -166,7 +166,7 @@ function app() {
         dieAnimation(character.x, character.y);
       }
       ctx.restore();
-      hud.draw(hasStarted, currentRoomConstraint, maze, character, converter);
+      hud.draw(hasStarted, currentRoomConstraint, maze, character, converter, client);
     });
   });
 
