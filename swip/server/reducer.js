@@ -387,9 +387,11 @@ function createReducer (config) {
     const clientBCluster = state.clusters[clientB.clusterID];
     if(clientACluster.data.currentScreenId !== 0 || clientBCluster.data.currentScreenId !== 0) {
       const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeA.direction : swipeB.direction;
+      const otherDirection = clientACluster.data.currentScreenId === swipeA.id ? swipeA.direction : swipeB.direction;
+
       let originCluster = null;
       let targetCluster = null;
-      if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
+      if (clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
         originCluster = clientACluster;
         targetCluster = clientBCluster;
       } else {
@@ -400,7 +402,13 @@ function createReducer (config) {
       //move and check if out of map
       console.log("swipe")
       if(!originMaze.movePosition(direction)) {
-        return clearSwipes(state);
+        //if the game is about to begin
+        if(originMaze.getNbMove() === 0) {
+          console.log("force start")
+          originMaze.movePosition(otherDirection);
+        } else {
+          return clearSwipes(state);
+        }
       }
       const updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
       console.log(direction);
