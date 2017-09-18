@@ -63,6 +63,17 @@ function app() {
     let dragPosition = null;
     let dragging = false;
 
+    function hasNoise(evt) {
+      if(!dragPosition) {
+        return false;
+      }
+
+      if(Math.abs(evt.position[0].x - dragPosition.x) < 1.0 || Math.abs(evt.position[0].y - dragPosition.y) < 1.0) {
+        return true;
+      }
+      return false;
+    }
+
     client.onDragStart(function (evt) {
       if(hasDied) {
         return;
@@ -88,7 +99,7 @@ function app() {
       var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 
       if (dragging) {
-        if (distance > 150) {
+        if (!hasNoise(evt) && distance > 150) {
           dragPosition = {
             x: state.cluster.data.character.x + (distanceX / distance) * 150,
             y: state.cluster.data.character.y + (distanceY / distance) * 150
@@ -104,13 +115,11 @@ function app() {
     });
 
     client.onDragEnd(function (evt) {
-      if (dragging) {
         dragging = false;
         client.emit('move', {
           speedX: 0,
           speedY: 0
         });
-      }
     });
 
     client.onUpdate(function (evt) {
@@ -154,8 +163,8 @@ function app() {
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
       }
-      ctx.restore();
       hud.draw(hasStarted, currentRoomConstraint, maze, character, converter, client);
+      ctx.restore();
     });
   });
 
