@@ -6,7 +6,8 @@ import {
   drawArrow,
   drawRect,
   drawCircle,
-  drawHole
+  drawHole,
+  drawSwipZone
 } from "./renderingFunctions"
 
 import {
@@ -18,6 +19,10 @@ import {
   HeightMedikit,
   WidthRemoveEnemiesItem,
   HeightRemoveEnemiesItem,
+  WidthPinch,
+  HeightPinch,
+  WidthStop,
+  HeightStop,
   MaxEnemies,
   MaxMedic,
   MaxRemoveEnemiesItem,
@@ -40,6 +45,8 @@ function app() {
   let assetsManager = new AssetsManager();
   let assetsLoader = new AssetsLoader();
   let characterSprite = null;
+  let pinchSprite = null;
+  let stopSprite = null;
   let enemiesSprites = [];
   let medikitSprites = [];
   let removeEnemiesSprites = [];
@@ -54,6 +61,8 @@ function app() {
     assetsLoader.getInstance().addFile(`${PathToAssets}/enemy1.png`,"enemy");
     assetsLoader.getInstance().addFile(`${PathToAssets}/heal.png`,"medikit");
     assetsLoader.getInstance().addFile(`${PathToAssets}/clean.png`,"removeEnemies");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/pinch.png`,"pinch");
+    assetsLoader.getInstance().addFile(`${PathToAssets}/stop.png`,"stop");
     assetsLoader.getInstance().load();
     let converter = client.converter;
     let stage = client.stage;
@@ -125,7 +134,7 @@ function app() {
     client.onUpdate(function (evt) {
       state = evt;
       let client = state.client;
-      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze } = state.cluster.data;
+      const { currentScreenId, character, currentRoomConstraint, hasStarted, maze, enableBorder } = state.cluster.data;
       const {  enemies, killEnemiesItems, medipackItems, holes } = maze
       ctx.save();
       applyTransform(ctx, converter, client.transform);
@@ -139,7 +148,6 @@ function app() {
           removeEnemiesSprites[index].x = item.x;
           removeEnemiesSprites[index].y = item.y;
           removeEnemiesSprites[index].render(ctx);
-          drawRect(ctx, item, "rgba(0,0,255,0.5");
         });
         medipackItems.forEach((item, index) => {
           medikitSprites[index].x = item.x;
@@ -159,6 +167,9 @@ function app() {
           enemiesSprites[index].y = enemy.y;
           enemiesSprites[index].render(ctx);
         });
+        if(enableBorder) {
+          drawSwipZone(ctx, client, maze, character, pinchSprite, stopSprite);
+        }
       }
       if(character.life <= 0) {
         dieAnimation(character.x, character.y);
@@ -181,7 +192,7 @@ function app() {
     }
     let atlas = new TextureAtlas();
     atlas.data = assetsManager.getInstance().getImageByAlias("character");
-    atlas.createTexture("character_tex", 0,0,136,130);
+    atlas.createTexture("character_tex", 0, 0, 136, 130);
     let texture = atlas.getTextureByName("character_tex");
     let characterBmp = new Bitmap();
     characterBmp.texture = texture;
@@ -192,7 +203,7 @@ function app() {
     characterSprite = characterBmp;
 
     atlas.data = assetsManager.getInstance().getImageByAlias("enemy");
-    atlas.createTexture("enemy_tex", 0,0,136,132);
+    atlas.createTexture("enemy_tex", 0, 0, 136, 132);
     texture = atlas.getTextureByName("enemy_tex");
     for(let i = 0; i < MaxEnemies; ++i) {
       let bmp = new Bitmap();
@@ -205,7 +216,7 @@ function app() {
     }
 
     atlas.data = assetsManager.getInstance().getImageByAlias("medikit");
-    atlas.createTexture("medikit_tex", 0,0,136,135);
+    atlas.createTexture("medikit_tex", 0, 0, 136, 135);
     texture = atlas.getTextureByName("medikit_tex");
     for(let i = 0; i < MaxMedic; ++i) {
       let bmp = new Bitmap();
@@ -218,7 +229,7 @@ function app() {
     }
 
     atlas.data = assetsManager.getInstance().getImageByAlias("removeEnemies");
-    atlas.createTexture("remove_enemies_tex", 0,0,136,136);
+    atlas.createTexture("remove_enemies_tex", 0, 0, 136, 136);
     texture = atlas.getTextureByName("remove_enemies_tex");
     for(let i = 0; i < MaxRemoveEnemiesItem ; ++i) {
       let bmp = new Bitmap();
@@ -229,6 +240,28 @@ function app() {
       bmp.y = 0;
       removeEnemiesSprites[i] = bmp;
     }
+
+    atlas.data = assetsManager.getInstance().getImageByAlias("pinch");
+    atlas.createTexture("pinch_tex", 0, 0, WidthPinch, HeightPinch);
+    texture = atlas.getTextureByName("pinch_tex");
+    let pinchBmp = new Bitmap();
+    pinchBmp.texture = texture;
+    pinchBmp.width = WidthPinch;
+    pinchBmp.height = HeightPinch;
+    pinchBmp.x = 0;
+    pinchBmp.y = 0;
+    pinchSprite = pinchBmp;
+
+    atlas.data = assetsManager.getInstance().getImageByAlias("stop");
+    atlas.createTexture("stop_tex", 0, 0, WidthStop, HeightStop);
+    texture = atlas.getTextureByName("stop_tex");
+    let stopBmp = new Bitmap();
+    stopBmp.texture = texture;
+    stopBmp.width = WidthStop;
+    stopBmp.height = HeightStop;
+    stopBmp.x = 0;
+    stopBmp.y = 0;
+    stopSprite = stopBmp;
   }
 
   function resizeHudCanvas() {

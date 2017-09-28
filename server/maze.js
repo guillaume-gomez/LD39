@@ -98,7 +98,6 @@ class Maze {
       this.discoveredMatrix[newY][newX] = Constants.EXIT_EXPLORED;
     }
     else {
-      this.discoveredMatrix[newY][newX] = Constants.EXPLORED;
       this.discoveredMatrix[newY][newX] = Constants.CURRENT_POSITION_EXPLORED;
     }
     //let the begin visible, don't need to erase it

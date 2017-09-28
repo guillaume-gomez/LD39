@@ -16,6 +16,10 @@ const ee = new EventEmitter();
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
 const SPEED_THRESHOLD = 50;
+const SWIPE_ZONE_PERCENTAGE_OF_SCREEN = 0.30;
+
+const ENABLE_BORDER = (process.argv.length > 2 && process.argv[2] == "enable-border");
+console.log("enable border", ENABLE_BORDER)
 
 
 
@@ -52,7 +56,6 @@ swip(io, ee, {
 
         const { pendingSplit, currentScreenId } = removeFirstClient(cluster);
         const lifeLostAfterPinch = loseLifeAfterPinch(cluster, maze);
-
         return {
           character: {
             x: { $set: nextState.x },
@@ -65,7 +68,7 @@ swip(io, ee, {
           pendingSplit: { $set : pendingSplit },
           currentScreenId: { $set: currentScreenId},
           currentRoomConstraint: { $set: MazeTools.getRoomConstraint(maze.getCurrentRoomType()) },
-          maze: { $set: maze },
+          maze: { $set: maze }
         };
       },
       merge: () => ({}),
@@ -78,11 +81,12 @@ swip(io, ee, {
       hasStarted: false,
       currentRoomConstraint: MazeTools.getRoomConstraint(Constants.BEGIN),
       maze: new MazeTools.Maze(),
+      enableBorder: ENABLE_BORDER
     }),
   },
 
   client: {
-    init: () => ({ rotationX: 0, rotationY: 0 }),
+    init: () => ({ rotationX: 0, rotationY: 0, swipeZone: SWIPE_ZONE_PERCENTAGE_OF_SCREEN }),
     events: {
 
       move: ({ cluster, client }, { speedX, speedY }) => ({
@@ -279,6 +283,5 @@ function updateGame(client, character, maze ) {
 }
 
 server.listen(3000);
-
 // eslint-disable-next-line no-console
 console.log('started server: http://localhost:3000');
