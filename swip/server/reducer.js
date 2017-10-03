@@ -143,42 +143,16 @@ function createReducer (config) {
     const swipeB = swipes[0];
     const clientB = state.clients[swipeB.id];
 
-
-    //////////////////////////////////////////////////////////do a functionn
-    let updatedState = state;
     if(!clientA || !clientB) {
       return clearSwipes(state);
     }
-    const clientACluster = state.clusters[clientA.clusterID];
-    const clientBCluster = state.clusters[clientB.clusterID];
-    if(clientACluster.data.currentScreenId !== 0 || clientBCluster.data.currentScreenId !== 0) {
-      const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeA.direction : swipeB.direction;
-      let originCluster = null;
-      let targetCluster = null;
-      let originClient = null;
 
-      if(clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
-        originCluster = clientACluster;
-        targetCluster = clientBCluster;
-        originClient = clientA;
-      } else {
-        originCluster = clientBCluster;
-        targetCluster = clientACluster;
-        originClient = clientB;
-      }
-      const originMaze = originCluster.data.maze;
-      const character = originCluster.data.character;
-      //move and check if out of map
-      const isValid = validSwipe(character, originMaze, direction, originClient, originCluster.data.enableBorder);
-      console.log("swipe ok; has valid swipe: ", isValid)
-      if(!isValid) {
-        return clearSwipes(state);
-      }
-      updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
-      console.log(direction)
-      console.log(updatedState.clusters[targetCluster.id].data.maze.debug())
+    /// personnal verification
+    let [shoudBeUpdated, updatedState] = selectInstanceAndUpdateState(state, clientA, clientB, swipeA, swipeB);
+    if(!shoudBeUpdated) {
+      return updatedState;
     }
-    //////////////////////////////////////////////////// end of the the function
+    //////////////////////////////////////////////////// end
 
     if (clientA.clusterID === clientB.clusterID) {
       return clearSwipes(state);
@@ -412,6 +386,48 @@ function createReducer (config) {
     });
   }
 
+  function selectInstanceAndUpdateState(state, clientA, clientB, swipeA, swipeB) {
+    const clientACluster = state.clusters[clientA.clusterID];
+    const clientBCluster = state.clusters[clientB.clusterID];
+    if(clientACluster.data.currentScreenId !== 0 || clientBCluster.data.currentScreenId !== 0) {
+      const direction = clientACluster.data.currentScreenId !== swipeA.id ? swipeA.direction : swipeB.direction;
+      const otherDirection = clientACluster.data.currentScreenId === swipeA.id ? swipeA.direction : swipeB.direction;
+
+      let originCluster = null;
+      let targetCluster = null;
+      let originClient = null;
+
+      if (clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
+        originCluster = clientACluster;
+        targetCluster = clientBCluster;
+        originClient = clientA;
+      } else {
+        originCluster = clientBCluster;
+        targetCluster = clientACluster;
+        originClient = clientB;
+      }
+      const originMaze = originCluster.data.maze;
+      const character = originCluster.data.character;
+      //move and check if out of map
+      const isValid = validSwipe(character, originMaze, direction, originClient, originCluster.data.enableBorder);
+      console.log("swipe ok; has valid swipe: ", isValid)
+      if(!isValid) {
+        //if the game is about to begin
+        if(originMaze.getNbMove() === 0) {
+          console.log("force start")
+          originMaze.movePosition(otherDirection);
+        } else {
+          return [false, clearSwipes(state)];
+        }
+      }
+      const updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
+      console.log(direction);
+      console.log(updatedState.clusters[targetCluster.id].data.maze.debug());
+      return [true, updatedState];
+    }
+    return [true, state];
+  }
+
   function validSwipe(character, maze, direction, client, noBorder) {
     const { swipeZone } = client.data;
     const { width, height } = client.size;
@@ -443,17 +459,6 @@ function createReducer (config) {
 
     return false;
   }
-
-  // function changePendingCluster(state, { id }) {
-  //   const { clients, clusters } = state;
-  //   const { clusterID } = clients[id];
-  //   const clusterState = utils.getClusterState(state, clusterID);
-  //   const clusterUpdated = Object.assign({}, clusterState, {pendingSplit: false, currentScreenId: clusterID });
-  //   const updatedClusters = Object.assign({}, clusters, clusterUpdated );
-  //   return update(state, {
-  //     clusters: { $set: updatedClusters }
-  //   });
-  // }
 }
 
 module.exports = createReducer;
