@@ -108,8 +108,11 @@ class Maze {
     this.currentRoomType = this.matrix[newY][newX].getType();
     this.matrix[newY][newX].setType(Constants.CURRENT_POSITION);
     this.nbMove++;
-    //this.initElements(newX, newY);
     this.minMoves = this.computeMinMoves();
+
+    if(this.hasWin()) {
+      this.nbMove = 0;
+    }
     return true;
   }
 
@@ -171,8 +174,8 @@ class Maze {
     return this.currentRoomType;
   }
 
-  hasWin(type) {
-    return this.currentRoomType;
+  hasWin() {
+    return this.currentRoomType === Constants.EXIT) ;
   }
 
   setEnemies(enemiesArray) {
