@@ -1,10 +1,11 @@
 {
-  "name": "swip-golf",
+  "name": "PinchAndScape",
   "version": "1.0.0",
-  "description": "golf example",
+  "description": "LD39 entry",
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
+    "custom": "node server/index.js enable-border",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "dev": "webpack --watch"

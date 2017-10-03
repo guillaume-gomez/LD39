@@ -10,6 +10,11 @@ class Hud {
     this.heightPanel = 100;
 	}
 
+  showPosition(item) {
+    this.context.font = `22pt ${this.font}`;
+    this.context.fillText(`{${Math.trunc(item.x)}, ${Math.trunc(item.y)}}`,5, 45);
+  }
+
   resize(width, height) {
     //this.canvas.height = height;
     //this.canvas.width = width;

@@ -146,8 +146,12 @@ function createReducer (config) {
     if(!clientA || !clientB) {
       return clearSwipes(state);
     }
-     /// personnal verification
-    let updatedState = selectInstanceAndUpdateState(state, clientA, clientB, swipeA, swipeB);
+
+    /// personnal verification
+    let [shoudBeUpdated, updatedState] = selectInstanceAndUpdateState(state, clientA, clientB, swipeA, swipeB);
+    if(!shoudBeUpdated) {
+      return updatedState;
+    }
     //////////////////////////////////////////////////// end
 
     if (clientA.clusterID === clientB.clusterID) {
@@ -391,33 +395,70 @@ function createReducer (config) {
 
       let originCluster = null;
       let targetCluster = null;
+      let originClient = null;
+
       if (clientACluster.data.maze.getNbMove() > clientBCluster.data.maze.getNbMove()) {
         originCluster = clientACluster;
         targetCluster = clientBCluster;
+        originClient = clientA;
       } else {
         originCluster = clientBCluster;
         targetCluster = clientACluster;
+        originClient = clientB;
       }
       const originMaze = originCluster.data.maze;
+      const character = originCluster.data.character;
       //move and check if out of map
-      console.log("swipe")
-      if(!originMaze.movePosition(direction)) {
+      const isValid = validSwipe(character, originMaze, direction, originClient, originCluster.data.enableBorder);
+      console.log("swipe ok; has valid swipe: ", isValid)
+      if(!isValid) {
         //if the game is about to begin
         if(originMaze.getNbMove() === 0) {
           console.log("force start")
           originMaze.movePosition(otherDirection);
         } else {
-          return clearSwipes(state);
+          return [false, clearSwipes(state)];
         }
       }
       const updatedState = copyMazeAndCharacter(state, originCluster, targetCluster);
       console.log(direction);
       console.log(updatedState.clusters[targetCluster.id].data.maze.debug());
-      return updatedState;
+      return [true, updatedState];
     }
-    return state;
+    return [true, state];
   }
 
+  function validSwipe(character, maze, direction, client, noBorder) {
+    const { swipeZone } = client.data;
+    const { width, height } = client.size;
+    const transformX = client.transform.x;
+    const transformY = client.transform.y;
+
+    if(maze.nbMove === 0 || !noBorder) {
+      return maze.movePosition(direction);
+    }
+    //left
+    if((character.x < transformX + width * swipeZone) && direction === "LEFT") {
+      return maze.movePosition(direction);
+    }
+
+    // right
+    if((character.x + character.width > transformX + width * (1 - swipeZone)) && direction === "RIGHT") {
+      return maze.movePosition(direction);
+    }
+
+    // up
+    if((character.y < transformY + height * swipeZone) && direction === "UP") {
+      return maze.movePosition(direction);
+    }
+
+    // down
+    if((character.y + character.height > transformY + height * (1 - swipeZone)) && direction === "DOWN") {
+      return maze.movePosition(direction)
+    }
+
+    return false;
+  }
 }
 
 module.exports = createReducer;

@@ -1,3 +1,9 @@
+
+export const WidthPinch = 50;
+export const HeightPinch = 50;
+export const WidthStop = 50;
+export const HeightStop = 50;
+
 export const WidthEnemy = 136/2;
 export const HeightEnemy = 132/2;
 export const WidthCharacter = 136/2;
