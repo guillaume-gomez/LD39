@@ -69,9 +69,15 @@ class Maze {
   }
 
   movePosition(direction) {
+    //check if the game is already finish
+    if(this.hasWin()) {
+      return false;
+    }
+
     const {x, y} = this.getCurrentPosition();
     let newX = x;
     let newY = y;
+
     switch(direction) {
       case 'LEFT':
         newX -= 1;
@@ -106,13 +112,11 @@ class Maze {
       this.discoveredMatrix[y][x] = Constants.EXPLORED;
     }
     this.currentRoomType = this.matrix[newY][newX].getType();
+
     this.matrix[newY][newX].setType(Constants.CURRENT_POSITION);
     this.nbMove++;
     this.minMoves = this.computeMinMoves();
 
-    if(this.hasWin()) {
-      this.nbMove = 0;
-    }
     return true;
   }
 
@@ -175,7 +179,7 @@ class Maze {
   }
 
   hasWin() {
-    return this.currentRoomType === Constants.EXIT) ;
+    return this.currentRoomType === Constants.EXIT;
   }
 
   setEnemies(enemiesArray) {
