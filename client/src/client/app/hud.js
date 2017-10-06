@@ -102,7 +102,7 @@ class Hud {
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `20pt ${this.font}`;
-    this.context.fillText("You Won", 5, 60);
+    this.context.fillText("You Won :) Refresh the page", 5, 60);
   }
 
   showLoseGame() {
@@ -112,7 +112,7 @@ class Hud {
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `20pt ${this.font}`;
-    this.context.fillText("You Lose :( refresh the page", 5, 60);
+    this.context.fillText("You Lose :( Refresh the page", 5, 60);
   }
 
   displayMinMoves(minMoves, x = 5, y = 80) {
