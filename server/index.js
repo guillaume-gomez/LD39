@@ -33,7 +33,7 @@ swip(io, ee, {
         const { radius } = character;
 
         const clients = cluster.clients;
-        const hasStarted = maze.getNbMove() > 0;
+        const hasStarted = maze.getNbMove() > 0 || maze.hasWin();
         const boundaryOffset = radius + WALL_SIZE;
         const client = clients.find((c) => isParticleInClient(character, c));
         let nextState = null;
