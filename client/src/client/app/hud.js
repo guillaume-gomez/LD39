@@ -102,7 +102,9 @@ class Hud {
     this.context.fill();
     this.context.fillStyle = this.fillFontStyle;
     this.context.font = `20pt ${this.font}`;
-    this.context.fillText("You Won :) Refresh the page", 5, 60);
+    this.context.fillText("You Won :) ", 5, 60);
+    this.context.font = `12pt ${this.font}`;
+    this.context.fillText("Refresh the page", 5, 80);
   }
 
   showLoseGame() {
