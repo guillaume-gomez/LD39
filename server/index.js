@@ -16,7 +16,7 @@ const ee = new EventEmitter();
 const LEAVE_CLUSTER = "LEAVE_CLUSTER";
 const WALL_SIZE = 20;
 const SPEED_THRESHOLD = 50;
-const SWIPE_ZONE_PERCENTAGE_OF_SCREEN = 0.30;
+const SWIPE_ZONE_PERCENTAGE_OF_SCREEN = 0.40;
 
 const ENABLE_BORDER = (process.argv.length > 2 && process.argv[2] == "enable-border");
 console.log("enable border", ENABLE_BORDER)
