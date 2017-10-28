@@ -84,6 +84,7 @@ npm start (or npm custom)
 ```
 _The last command launch the server_. _For the basic version, use `npm start`_. _To enable a more challenging version use `npm custom`_.
 
+
 Ok, so your serveur is started (Do not kill the terminal until you stop playing the game).
 Now you can see the result on your computer, to visualize go to `localhost:3000` on your favorite browser.
 
@@ -113,6 +114,11 @@ For instance my local address is `192.168.1.125`
 
 **The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer)**
 
+#### Difference between the basic and the custom version
+
+The basic version allows you to move wherever the character is located in the main screen.
+In the second version, the character have to be at the edges of the screen. So to move on the left, the character have to go on the left corner.
+
 ## Let's play
 You can now play the game easily.
 Open a browser on both your devices, and type `(YourLocalAddress):3000.` (in the case above `192.168.1.125:3000`)
@@ -120,7 +126,7 @@ Open a browser on both your devices, and type `(YourLocalAddress):3000.` (in the
 The game will start on your devices.
 
 If something went wrong, don't hesitate to restart the server by killing the terminal where the server is running.
-And restart it with command `npm start` (in the folder LD39-master of course)
+And restart it with command `npm start` (or `npm custom` in the folder LD39-master of course)
 
 Enjoy !
 
