@@ -21,6 +21,12 @@ improvements.
 
 All assets have been made during the event.
 
+## Demo
+
+<a href="https://www.youtube.com/watch?v=j-0KVw4JqFs" target="_blank">
+<img src="./screenshots/preview-google.png"/>
+</a>
+
 ## Screenshots
 ![starting-game](screenshots/begin.gif)
 
@@ -120,6 +126,7 @@ Enjoy !
 
 _the server can be still buggy :| , but I will work on it_
 
+[link to ludum dare page](https://ldjam.com/events/ludum-dare/39/pinchscape)
 
 ## Team
 - Maxime Lambert: Concept / Game Design
