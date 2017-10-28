@@ -80,9 +80,9 @@ cd client
 npm install
 npm run build
 cd ..
-npm start
+npm start (or npm custom)
 ```
-_The last command launch the server_.
+_The last command launch the server_. _For the basic version, use `npm start`_. _To enable a more challenging version use `npm custom`_.
 
 Ok, so your serveur is started (Do not kill the terminal until you stop playing the game).
 Now you can see the result on your computer, to visualize go to `localhost:3000` on your favorite browser.
