@@ -110,7 +110,7 @@ For instance my local address is `192.168.1.125`
 
 **The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer)**
 
-### Basic Vs custom version
+### Basic Vs Custom version
 
 The basic version allows you to move wherever the character is located in the main screen.
 In the second version, the character have to be at the edges of the screen. So to move on the left, the character have to go on the left corner.
