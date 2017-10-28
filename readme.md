@@ -32,11 +32,7 @@ All assets have been made during the event.
 
 ![finish-game](screenshots/end.gif)
 
-![first-screen.png](screenshots/first-screen.png)
-
-![second-screen.png](screenshots/second-screen.png)
-
-![finish-screen.png](screenshots/finish-screen.png)
+<img src="screenshots/first-screen.png" width="250"> <img src="screenshots/second-screen.png" width="250"> <img src="screenshots/finish-screen.png" width="250">
 
 ### Controls
 - Move : Your fingers
@@ -114,10 +110,12 @@ For instance my local address is `192.168.1.125`
 
 **The local adress can change, so don't hesitate to check this address. It may changed when your computer leave the network (basicaly when you turn off your computer)**
 
-#### Difference between the basic and the custom version
+### Basic Vs custom version
 
 The basic version allows you to move wherever the character is located in the main screen.
 In the second version, the character have to be at the edges of the screen. So to move on the left, the character have to go on the left corner.
+
+<img src="screenshots/basic-version.png" width="400"> <img src="screenshots/custom-preview.png" width="400">
 
 ## Let's play
 You can now play the game easily.
