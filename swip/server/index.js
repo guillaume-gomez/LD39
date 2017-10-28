@@ -40,6 +40,10 @@ function swip (io, ee, config) {
       const clientState = utils.getClientState(state, id);
 
       socket.emit(actions.TYPE.CHANGED, clientState);
+
+      ee.removeListener(actions.TYPE.LEAVE_CLUSTER, (id) => {
+        console.log("removeListener");
+      });
     });
 
     ee.on(actions.TYPE.LEAVE_CLUSTER, (myid) => {

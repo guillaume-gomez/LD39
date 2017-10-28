@@ -1,0 +1,20 @@
+
+export const WidthPinch = 50;
+export const HeightPinch = 50;
+export const WidthStop = 50;
+export const HeightStop = 50;
+
+export const WidthEnemy = 136/2;
+export const HeightEnemy = 132/2;
+export const WidthCharacter = 136/2;
+export const HeightCharacter = 130/2;
+export const WidthMedikit = 136/4;
+export const HeightMedikit = 135/4;
+export const WidthRemoveEnemiesItem = 136/4;
+export const HeightRemoveEnemiesItem = 136/4;
+
+
+export const MaxEnemies = 2;
+export const MaxMedic = 1;
+export const MaxRemoveEnemiesItem = 1;
+export const MaxHoles = 2;
