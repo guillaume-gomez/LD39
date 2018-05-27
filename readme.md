@@ -135,3 +135,7 @@ _the server can be still buggy :| , but I will work on it_
 ## Team
 - Maxime Lambert: Concept / Game Design
 - Guillaume Gomez: Programming
+
+## Results
+
+![results](screenshots/results.png)
