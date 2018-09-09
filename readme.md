@@ -138,4 +138,5 @@ _the server can be still buggy :| , but I will work on it_
 
 ## Results
 1361 jam entries
+
 ![results](screenshots/results.png)
