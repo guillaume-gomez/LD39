@@ -17,7 +17,7 @@
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-node-logger": "0.0.3",
-    "socket.io": "^1.4.8",
+    "socket.io": "^2.4.0",
     "uid": "0.0.2",
     "webpack": "^3.3.0"
   },
